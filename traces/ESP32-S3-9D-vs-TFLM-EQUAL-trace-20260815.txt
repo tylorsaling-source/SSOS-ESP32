@@ -1,0 +1,27 @@
+ESP32-S3-WROOM-1U N16R8  MAC REDACTED
+Firmware 396816 B  2026-08-15  cpu=240 MHz  n=2000
+Cycle counter: ESP.getCycleCount() / CCOUNT  (not only esp_timer)
+
+SAME INPUT / SAME WEIGHTS / SAME MATH
+custom 9d_f32 = 7.048045
+tflm 9→1 f32 = 7.048045
+absdiff = 0  EQUAL_MATH yes
+
+EQUAL 9-MAC (use these ratios)
+kernel      us_each   cy_mean   p50   p95   p99   label
+9d_f32      0.287     69.2      65    65    65    EQUAL 9fmac IRAM
+9d_s8       0.336     80.8      77    77    77    EQUAL 9imac
+espnn9      1.021     245.2     243   243   244   EQUAL esp_nn_fc_ansi
+tflm9f      5.906     1417.6    1395  1395  1629  EQUAL tflm FC 9→1 float
+tflm9s8     5.543     1330.4    —     —     —     EQUAL tflm FC 9→1 int8
+
+ratio tflm9f / 9d_f32  = 20.54   same 9-MAC float
+ratio tflm9s8 / 9d_s8  = 16.47   same 9-MAC int8
+ratio espnn9 / 9d_f32  = 3.55
+ratio 9d_s8 / 9d_f32   = 1.17    float still wins at n=9
+
+UNEQUAL (do not quote as the speedup)
+tflm_hw hello_world  25.702 us  6168.7 cy   DIFFERENT MODEL
+
+cold first 9d_f32 call  273 cycles
+scale n=1/10/100/1000 tensorOnRecv  27.0 / 4.7 / 4.9 / 4.6 us each

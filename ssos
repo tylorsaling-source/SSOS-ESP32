@@ -1,0 +1,21 @@
+#!/data/data/com.termux/files/usr/bin/sh
+# Launch the SSOS host against the granted USB device.
+PREFIX="${PREFIX:-/data/data/com.termux/files/usr}"
+ROOT="$(CDPATH= cd -- "$(dirname "$0")" && pwd)"
+BIN="$ROOT/host/ssos_host"
+if [ ! -x "$BIN" ]; then
+  echo "ssos: host binary missing, build host/ssos_host first" >&2
+  exit 1
+fi
+
+DEV="${SSOS_USB:-}"
+if [ -z "$DEV" ]; then
+  DEV="$("$PREFIX/bin/termux-usb" -l 2>/dev/null | sed -n 's/.*"\(\/dev\/bus\/usb\/[0-9]*\/[0-9]*\)".*/\1/p' | tail -n 1)"
+fi
+if [ -z "$DEV" ]; then
+  echo "ssos: no USB device (termux-usb -l empty)" >&2
+  exit 1
+fi
+
+"$PREFIX/bin/termux-usb" -r "$DEV" >/dev/null
+exec "$PREFIX/bin/termux-usb" -e "$BIN $*" "$DEV"

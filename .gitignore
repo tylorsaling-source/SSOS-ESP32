@@ -1,0 +1,14 @@
+firmware/build/
+host/cdc-pty
+host/usb_bl_reset
+host/usb_app_reset
+host/ssos_cmd
+host/ssos_host
+host/ssos_dump
+host/ssos_model
+host/pty.path
+host/__pycache__/
+*.pyc
+*.log
+.DS_Store
+Thumbs.db

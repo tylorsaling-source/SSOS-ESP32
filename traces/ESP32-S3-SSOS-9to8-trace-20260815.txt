@@ -1,0 +1,37 @@
+SSOS_ESP32  ESP32-S3-WROOM-1U N16R8  MAC REDACTED
+Firmware 399776 B  2026-08-15  cpu=240 MHz  n=2000
+Cycle counter: ESP.getCycleCount() / CCOUNT
+
+SAME INPUT / SAME 72 WEIGHTS / SAME 8 OUTPUTS
+fuse98 y0 = 7.048045
+eight9to1 y0 = 7.048045
+9d_f32 (row 0) = 7.048045
+maxdiff across 8 outputs = 0  EQUAL_MATH yes
+
+KERNELS (do not report 8 × 9d_f32 as the 9→8 time)
+kernel       us_each  cy_mean  p50   p95   p99   notes
+9d_f32       0.277    66.8     64    64    64    EQUAL 9fmac IRAM
+9d_s8        0.352    84.7     77    77    77    EQUAL 9imac
+espnn9       1.018    244.6    241   241   242   EQUAL esp_nn_fc_ansi
+tflm9f       5.894    1414.8   1395  1399  2539  EQUAL TFLM 9→1 float
+fuse98       1.436    344.5    328   328   328   EQUAL 9→8 72w  MEASURED
+eight9to1    1.547    371.4    347   347   347   EQUAL 8×9→1  MEASURED
+
+ratio eight9to1 / fuse98 = 1.08   same 72 MAC, one parse vs 8 dispatches
+ratio tflm9f / 9d_f32    = 21.28  same 9-MAC float
+ratio espnn9 / 9d_f32    = 3.68
+
+OS PATH (this is the bottleneck the 9→8 was built for)
+recv_fuse   6.459 us   1550 cy   parse 9 + fuse 9→8 + batch apply/ack
+recv_x8    24.980 us   (us=49960 / 2000)   8× prepare + dot + apply
+ratio recv_x8 / recv_fuse ≈ 3.87
+
+fused_recv scale 1/10/100/1000: 6.0 / 7.3 / 6.46 / 6.53 us each
+
+UNEQUAL (do not quote)
+tflm_hw hello_world  25.704 us  6168.9 cy
+
+cold 9d_f32  168 cy
+cold fuse98  747 cy
+p50 9d_f32   64 cy   (was 89, then 65)
+EOF

@@ -1,0 +1,9 @@
+SSOS ESP32-S3
+
+This distribution contains a TensorFlow Lite model representation derived from
+TensorFlow example material in firmware/ssos_kernel/model.cpp and model.h.
+Those files retain their upstream Apache License 2.0 notice.
+
+The firmware builds against Arduino-ESP32, TensorFlow Lite Micro components,
+ESP-NN, and other Espressif SDK components supplied by the pinned ESP32 board
+package. Their respective licenses and notices remain applicable.

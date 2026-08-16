@@ -1,0 +1,30 @@
+SSOS ESP32-S3 release image
+
+Target: ESP32-S3-WROOM-1U N16R8
+Flash size: 16 MB
+USB: native Serial/JTAG 303A:1001
+Arduino-ESP32: 3.3.5
+Application size: 399776 bytes
+Application SHA-256: 5e120bd8812f0111382c5eff15a47ec72ceaf0afdefe8a135d6ba47386239d54
+
+Flash map:
+  0x0000  ssos_kernel.ino.bootloader.bin
+  0x8000  ssos_kernel.ino.partitions.bin
+  0xe000  boot_app0.bin
+  0x10000 ssos_kernel.ino.bin
+
+Use SHA256SUMS to verify all four images before flashing. The guided scripts
+perform this check automatically. The full benchmark output for this build is
+traces/ESP32-S3-SSOS-9to8-trace-20260815.txt.
+
+Build settings:
+  USBMode=hwcdc
+  CDCOnBoot=cdc
+  UploadMode=default
+  FlashMode=qio
+  FlashSize=16M
+  PSRAM=disabled
+  PartitionScheme=app3M_fat9M_16MB
+
+The tested write command uses esptool flash_mode=dio, flash_freq=80m, and
+flash_size=16MB, matching images/flash/flash_args.
