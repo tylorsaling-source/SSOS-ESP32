@@ -1,0 +1,29 @@
+name: Release integrity
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Verify release image checksums
+        shell: bash
+        run: bash ./scripts/verify-release.sh
+      - name: Parse JSON model artifacts when present
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          for path in Path('models').rglob('*.json') if Path('models').exists() else []:
+              with path.open('r', encoding='utf-8') as stream:
+                  json.load(stream)
+              print(f'valid json: {path}')
+          PY

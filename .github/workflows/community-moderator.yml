@@ -1,0 +1,79 @@
+name: Community moderator
+
+on:
+  issues:
+    types: [opened, reopened]
+  pull_request_target:
+    types: [opened, reopened, edited, synchronize, ready_for_review]
+
+permissions:
+  contents: read
+
+jobs:
+  issue-routing:
+    if: github.event_name == 'issues'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Welcome and route
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const issue = context.payload.issue;
+            if (context.payload.action === 'opened') {
+              await github.rest.issues.createComment({
+                ...context.repo,
+                issue_number: issue.number,
+                body: 'Thanks for opening a structured request. The moderator has queued it for human triage; it will not accept or close the request automatically.'
+              });
+            }
+
+  review-request:
+    if: github.event_name == 'pull_request_target'
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      issues: write
+    steps:
+      - name: Validate and route pull request
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const required = [
+              '## Change',
+              '## Why',
+              '## Validation',
+              '## Compatibility and risk',
+              '## Checklist'
+            ];
+            const body = pr.body || '';
+            const missing = required.filter(section => !body.includes(section));
+            const files = await github.paginate(github.rest.pulls.listFiles, {
+              ...context.repo,
+              pull_number: pr.number,
+              per_page: 100
+            });
+            const labels = new Set(['status: needs-review']);
+            for (const file of files) {
+              if (file.filename.startsWith('firmware/') || file.filename.startsWith('images/')) labels.add('area: firmware');
+              if (file.filename.startsWith('host/') || file.filename.startsWith('scripts/')) labels.add('area: host-tools');
+              if (file.filename.startsWith('models/')) labels.add('area: models');
+              if (file.filename.endsWith('.md') || file.filename.startsWith('docs/')) labels.add('area: documentation');
+            }
+            await github.rest.issues.addLabels({
+              ...context.repo,
+              issue_number: pr.number,
+              labels: [...labels]
+            });
+            if (context.payload.action === 'opened') {
+              await github.rest.issues.createComment({
+                ...context.repo,
+                issue_number: pr.number,
+                body: 'Thanks for collaborating. The moderator has routed this pull request for human review. It never approves or merges changes.'
+              });
+            }
+            if (missing.length) {
+              core.setFailed(`Complete the PR template sections: ${missing.join(', ')}`);
+            }

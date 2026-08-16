@@ -11,9 +11,9 @@ development builds are not public security releases.
 ## Reporting
 
 Do not include credentials, private packet contents, full device identifiers,
-or exploit payloads in a public issue. Repository maintainers should configure
-GitHub private vulnerability reporting before the first public release and put
-that contact link here.
+or exploit payloads in a public issue. Use the repository's
+[private vulnerability report](https://github.com/tylorsaling-source/SSOS-ESP32/security/advisories/new)
+so maintainers can investigate before details are disclosed publicly.
 
 ## Flashing guarantees
 

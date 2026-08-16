@@ -1,0 +1,45 @@
+name: Change request
+description: Propose a feature, protocol change, board port, or collaboration.
+title: "[Change]: "
+labels: ["type: change-request", "status: needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for proposing a change. Explain the goal before prescribing an implementation.
+  - type: textarea
+    id: goal
+    attributes:
+      label: Goal
+      description: What should become possible, and who benefits?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: Describe the packet, firmware, host, model, documentation, or hardware change.
+    validations:
+      required: true
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: Compatibility and safety
+      description: Cover packet versions, persistence, flash layout, board support, and failure modes.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence or reproduction plan
+      description: Link prior art or state how the change will be built, tested, and measured.
+    validations:
+      required: true
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Submission checks
+      options:
+        - label: I searched existing issues and pull requests.
+          required: true
+        - label: I removed credentials, private packets, Wi-Fi details, and full device IDs.
+          required: true

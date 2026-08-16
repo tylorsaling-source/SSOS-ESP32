@@ -1,0 +1,52 @@
+name: Bug report
+description: Report reproducible firmware, host-tool, flashing, or documentation behavior.
+title: "[Bug]: "
+labels: ["type: bug", "status: needs-triage"]
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options: [Firmware, Windows tools, Termux tools, Linux or macOS tools, Model bridge, Documentation]
+    validations:
+      required: true
+  - type: input
+    id: release
+    attributes:
+      label: Release or commit
+      placeholder: v1.0.0, v2.0.0, or commit SHA
+    validations:
+      required: true
+  - type: textarea
+    id: hardware
+    attributes:
+      label: Hardware and environment
+      description: State board module, flash size, OS, tool versions, and connection type. Redact unique IDs.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction steps
+    validations:
+      required: true
+  - type: textarea
+    id: observed
+    attributes:
+      label: Observed and expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Redacted logs
+      render: shell
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety checks
+      options:
+        - label: I removed credentials, Wi-Fi details, private packets, and full device IDs.
+          required: true
+        - label: This report does not contain a vulnerability or exploit; those are reported privately.
+          required: true
