@@ -1,4 +1,7 @@
-/* Tiny linear model that uses the SSOS packet controller as memory.
+/* LEGACY RESEARCH PROTOTYPE — NOT COMPATIBLE WITH THE V2 MODEL BRIDGE.
+ * Excluded from the default Termux build; see host/README.md.
+ *
+ * Tiny linear model that uses the SSOS packet controller as memory.
  *
  * Host trains a 9-D / 4-class softmax. Weights, examples, and receipts
  * are PKT'd onto the chip. Inference reloads W from GET, never from
