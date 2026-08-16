@@ -1,4 +1,7 @@
-/* Termux USB console for the SSOS-S3 kernel. */
+/* LEGACY RESEARCH PROTOTYPE — NOT A CURRENT ssos.packet.v1 CLIENT.
+ * PUT/MOVE/QUERY/NEIGHBORS/ROUTE/SEND are not implemented by current firmware.
+ * Excluded from the default Termux build; see host/README.md.
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

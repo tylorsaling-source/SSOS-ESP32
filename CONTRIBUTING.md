@@ -11,6 +11,22 @@ reviewable changes with direct evidence are easier to merge and reproduce.
 - Never post credentials, Wi-Fi details, private packets, or full device IDs.
 - Keep V1 compatibility claims separate from V2 features.
 
+## Contributions that fit the current project
+
+Good contribution areas include:
+
+- packet-protocol documentation and interoperable host tools;
+- source-built support for additional ESP32-S3 boards with explicit layouts;
+- additional host transports that do not claim to exist before implementation;
+- tooling for the fixed packet-backed 9-to-8 model head;
+- reproducible equal-work kernel measurements; and
+- examples that include every input contract needed for independent use.
+
+Proposals for networking, mesh coordination, dynamic model shapes, sensors,
+on-device training, or larger runtimes should be described as new work, not as
+already-supported behavior. SSOS should not be presented as a general-purpose
+OS, secure store, filesystem, database, or safety system.
+
 ## Development flow
 
 1. Fork the repository.

@@ -1,5 +1,11 @@
 # Flashing and recovery
 
+Flashing installs the SSOS firmware application and its two seed controller
+records. The published images do not install V2 model rows. Additional packet
+state and model rows are sent afterward through the serial protocol. `SAVE`
+forces an immediate persistence attempt; the runtime can also persist after its
+adaptive background flush threshold.
+
 ## Before connecting the board
 
 Confirm that the target is an ESP32-S3-WROOM-1U N16R8 with 16 MB flash. The

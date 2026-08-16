@@ -4,6 +4,12 @@ This is a compact communication/inference adapter for the separate SSOS model
 head. It does not replace the full `basic_surv` policy and it does not use the
 OS packet-scheduling tensor as survival input.
 
+This directory currently demonstrates the architecture and preserves validated
+artifacts; it is not a complete public training or end-user inference recipe.
+The ordered 48-field observation contract belongs to the external `basic_surv`
+project and is not included in this repository. Without that exact field order,
+new observations cannot be projected reproducibly by this package alone.
+
 The sender computes:
 
 ```text
@@ -52,5 +58,9 @@ python host/basic_surv_9d.py observation.json --port COM4
 ```
 
 NumPy is required for projection. Serial execution additionally requires
-PySerial. The 48-field order is the `observation_fields` array recorded in the
-teacher manifest and `basic_surv` contract.
+PySerial. Do not invent or reorder the 48 inputs. Publish and verify the external
+observation contract before presenting this example as independently
+reproducible.
+
+The recorded agreement and rollout values are external simulation results, not
+physical-world survival capability, on-device training, or autonomous behavior.
