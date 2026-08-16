@@ -6,4 +6,4 @@ updates:
       interval: monthly
     labels:
       - dependencies
-      - status: needs-review
+      - "status: needs-review"
