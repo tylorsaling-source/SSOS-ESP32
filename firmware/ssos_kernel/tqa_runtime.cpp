@@ -14,6 +14,8 @@ static const char *kName[9] = {
 
 // Row-major 8×9. Row 0 is the original 9→1 seed so y0 matches 9d_f32.
 static DRAM_ATTR alignas(16) float w72[72];
+static DRAM_ATTR alignas(16) float model_w72[72];
+static bool model_ready = false;
 static DRAM_ATTR float x[9];
 static DRAM_ATTR float y8[8];
 static float score = 0;
@@ -247,3 +249,36 @@ void tensorClearFlush() { since_flush = 0; }
 const float *tensorW72() { return w72; }
 void tensorCopyY8(float out[8]) { memcpy(out, y8, sizeof(y8)); }
 void tensorCopyX(float out[9]) { memcpy(out, x, sizeof(x)); }
+
+bool modelSetW(int i, float v) {
+  if (i < 0 || i >= 72 || !isfinite(v) || v < -8.0f || v > 8.0f) return false;
+  model_w72[i] = v;
+  model_ready = true;
+  return true;
+}
+
+void modelLoadW72(const float in[72]) {
+  memcpy(model_w72, in, sizeof(model_w72));
+  model_ready = true;
+}
+
+void modelSaveW72(float out[72]) { memcpy(out, model_w72, sizeof(model_w72)); }
+
+void modelClear() {
+  memset(model_w72, 0, sizeof(model_w72));
+  model_ready = false;
+}
+
+bool modelReady() { return model_ready; }
+
+void modelInfer(const float x9[9], float out[8]) {
+  if (!model_ready) {
+    memset(out, 0, sizeof(float) * 8);
+    return;
+  }
+  for (int r = 0; r < 8; ++r) {
+    const float *w = model_w72 + r * 9;
+    out[r] = w[0]*x9[0]+w[1]*x9[1]+w[2]*x9[2]+w[3]*x9[3]+w[4]*x9[4]+
+             w[5]*x9[5]+w[6]*x9[6]+w[7]*x9[7]+w[8]*x9[8];
+  }
+}

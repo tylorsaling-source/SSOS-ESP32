@@ -83,12 +83,30 @@ commands, and safety behavior.
 At 115200 baud the console accepts:
 
 ```text
-ID DUMP PKT GET DEL STATS SAVE LOAD CLEAR TENSOR TSET TRESET BENCH HELP
+ID DUMP PKT GET DEL STATS SAVE LOAD CLEAR TENSOR TSET TRESET MODEL MLOAD MINFER MCLEAR BENCH HELP
 ```
 
 Start with `ID`, `STATS`, and `TENSOR`. `HELP` prints the packet syntax.
 `CLEAR`, `DEL`, `SAVE`, `LOAD`, `PKT`, `TSET`, and `TRESET` change controller
 state; inspect the command before sending it.
+
+`MODEL`, `MLOAD`, `MINFER`, and `MCLEAR` operate on a replaceable
+9-input/8-output execution head; they never alter the OS packet-scheduling tensor.
+The authoritative weights remain eight ordinary `ssos.packet.v1` records named
+`model:w:0` through `model:w:7`; `MLOAD` reconstructs the fast float matrix from
+their signed Q10 bodies. `SAVE` persists those packets with the rest of the
+bank. After this firmware
+has been flashed once, a Windows model update needs no firmware flash:
+
+```powershell
+.\scripts\install-model-windows.ps1 -Port COM4
+```
+
+The included `models/basic_surv_esp4` example is a 72-weight head distilled
+from the accepted `basic_surv` policy. Its companion NPZ contains the learned
+48-to-8 projection that a laptop, Pi, or Uno Q uses to form eight latent
+coordinates; the ninth transmitted coordinate is the constant `1.0` bias.
+See the model's README for measured held-out and rollout results.
 
 ## Build from source
 

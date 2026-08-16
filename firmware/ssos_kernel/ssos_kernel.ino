@@ -295,11 +295,13 @@ static void cmdId() {
 
 static void cmdHelp() {
   Serial.println("OK ssos.packet.v1 replaceable packet controller");
-  Serial.println("  ID DUMP PKT GET DEL STATS SAVE LOAD CLEAR TENSOR TSET TRESET BENCH HELP");
+  Serial.println("  ID DUMP PKT GET DEL STATS SAVE LOAD CLEAR TENSOR TSET TRESET MODEL MLOAD MINFER MCLEAR BENCH HELP");
   Serial.println("  PKT id=... d=x,y,z,d3,d4,d5,d6,d7,d8 role=... hash=... perm=... body=...");
   Serial.println("  GET id=... | GET d=...");
   Serial.println("  DUMP is the install tape for a replacement controller");
   Serial.println("  TENSOR TSET i=0..8 v=... TRESET  — live 9-D tensor");
+  Serial.println("  MODEL MLOAD MINFER x=x0,...,x8 MCLEAR — packet-backed 9-D model head");
+  Serial.println("  model rows: PKT id=model:w:0..7 ... body=q0,...,q8 (signed Q10)");
   Serial.println("GPIO48 follows dominant tensor axis (green=start, red=fault):");
   Serial.println("  green=start  amber=idle/9beat  yellow=DUMP/scale");
   Serial.println("  orange=PKT/burst  violet=GET/cache  teal=SAVE/flush");
@@ -319,6 +321,82 @@ static void cmdStats() {
                 packetCount(), PKT_MAX - packetCount(), nextGen,
                 (unsigned long)recvCount, (unsigned long)millis());
   tensorPrint();
+  Serial.printf("OK model ready=%u dims=9 outputs=8 weights=72\n", modelReady() ? 1 : 0);
+}
+
+static bool parseFloat9(const char *s, float out[9]) {
+  const char *p = s;
+  for (int i = 0; i < 9; ++i) {
+    char *end = nullptr;
+    out[i] = strtof(p, &end);
+    if (end == p || !isfinite(out[i])) return false;
+    if (i < 8) {
+      if (*end != ',') return false;
+      p = end + 1;
+    } else if (*end != 0 && *end != ' ') {
+      return false;
+    }
+  }
+  return true;
+}
+
+static void printModel();
+
+static void printModel() {
+  uint8_t rows = 0;
+  char id[20];
+  for (int r = 0; r < 8; ++r) {
+    snprintf(id, sizeof(id), "model:w:%d", r);
+    if (findById(id) >= 0) ++rows;
+  }
+  Serial.printf("OK model ready=%u source=packet-bank encoding=q10 rows=%u dims=9 outputs=8 weights=72\n",
+                modelReady() ? 1 : 0, rows);
+}
+
+static bool isModelPacketId(const char *id) {
+  return id && strncmp(id, "model:w:", 8) == 0;
+}
+
+static bool parseModelQ10Row(const char *body, float out[9]) {
+  const char *p = body;
+  for (int i = 0; i < 9; ++i) {
+    char *end = nullptr;
+    long value = strtol(p, &end, 10);
+    if (end == p || value < -8192 || value > 8192) return false;
+    out[i] = (float)value / 1024.0f;
+    if (i < 8) {
+      if (*end != ',') return false;
+      p = end + 1;
+    } else if (*end != 0) {
+      return false;
+    }
+  }
+  return true;
+}
+
+static bool loadModelPackets() {
+  float weights[72];
+  char id[20];
+  for (int r = 0; r < 8; ++r) {
+    snprintf(id, sizeof(id), "model:w:%d", r);
+    int slot = findById(id);
+    if (slot < 0 || !parseModelQ10Row(bank[slot].body, weights + r * 9)) {
+      modelClear();
+      return false;
+    }
+  }
+  modelLoadW72(weights);
+  return true;
+}
+
+static void clearModelPackets() {
+  char id[20];
+  for (int r = 0; r < 8; ++r) {
+    snprintf(id, sizeof(id), "model:w:%d", r);
+    int slot = findById(id);
+    if (slot >= 0) bank[slot].used = 0;
+  }
+  modelClear();
 }
 
 static void handlePkt(char *cur) {
@@ -376,6 +454,7 @@ static void handlePkt(char *cur) {
     tqaShow(TQA_FAULT);
     return;
   }
+  if (isModelPacketId(id)) modelClear();
   tensorOnRecv(packetCount(), PKT_MAX);
   tqaShow((TqaAxis)(TQA_PACKET_SCALE + tensorDominant()));
   int slot = findById(id);
@@ -418,7 +497,9 @@ static void handleDel(char *cur) {
   const char *id = kv(&cur, "id");
   int slot = id ? findById(id) : -1;
   if (slot < 0) { tqaShow(TQA_FAULT); Serial.println("ERR not found"); return; }
+  bool wasModel = isModelPacketId(id);
   bank[slot].used = 0;
+  if (wasModel) modelClear();
   Serial.printf("OK deleted id=%s\n", id);
 }
 
@@ -451,12 +532,14 @@ static void handleLine(char *line) {
   }
   if (strcmp(line, "LOAD") == 0) {
     bool ok = loadBank();
+    if (ok) loadModelPackets();
     tqaShow(ok ? TQA_REST_RECOVERY : TQA_FAULT);
     Serial.println(ok ? "OK loaded" : "ERR load failed");
     return;
   }
   if (strcmp(line, "CLEAR") == 0) {
     seedController();
+    modelClear();
     tqaShow(TQA_POWER_WAVE);
     Serial.println("OK cleared");
     return;
@@ -498,6 +581,30 @@ static void handleLine(char *line) {
     tensorPrint();
     return;
   }
+  if (strcmp(line, "MODEL") == 0) { printModel(); return; }
+  if (strcmp(line, "MCLEAR") == 0) {
+    clearModelPackets();
+    Serial.println("OK model packets cleared; send SAVE to persist");
+    return;
+  }
+  if (strcmp(line, "MLOAD") == 0) {
+    bool ok = loadModelPackets();
+    Serial.println(ok ? "OK model loaded from packet bank" : "ERR model requires valid model:w:0..7 Q10 packets");
+    return;
+  }
+  if (strcmp(line, "MINFER") == 0) {
+    while (*rest == ' ') ++rest;
+    if (strncmp(rest, "x=", 2) != 0) { Serial.println("ERR usage: MINFER x=x0,...,x8"); return; }
+    float input[9], output[8];
+    if (!modelReady()) { Serial.println("ERR model not loaded"); return; }
+    if (!parseFloat9(rest + 2, input)) { Serial.println("ERR bad 9-D input"); return; }
+    modelInfer(input, output);
+    int best = 0;
+    for (int i = 1; i < 8; ++i) if (output[i] > output[best]) best = i;
+    Serial.printf("OK model y8=%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f argmax=%d\n",
+                  output[0], output[1], output[2], output[3], output[4], output[5], output[6], output[7], best);
+    return;
+  }
   tensorOnFault();
   tqaShow(TQA_FAULT);
   Serial.println("ERR unknown command");
@@ -510,6 +617,7 @@ void setup() {
   tqaBenchInit();
   tensorInit();
   if (!loadBank()) seedController();
+  loadModelPackets();
   ++bootCount;
   Serial.println("SSOS_ESP32 ready proto=ssos.packet.v1 tensor=9to8.fused");
   cmdId();

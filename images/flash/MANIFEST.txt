@@ -4,8 +4,8 @@ Target: ESP32-S3-WROOM-1U N16R8
 Flash size: 16 MB
 USB: native Serial/JTAG 303A:1001
 Arduino-ESP32: 3.3.5
-Application size: 399776 bytes
-Application SHA-256: 5e120bd8812f0111382c5eff15a47ec72ceaf0afdefe8a135d6ba47386239d54
+Application size: 372544 bytes
+Application SHA-256: 1930d580579328563b3b66e73e02a60246331472249f2d897e85af742bb11af0
 
 Flash map:
   0x0000  ssos_kernel.ino.bootloader.bin

@@ -28,3 +28,11 @@ void tensorOnRecvNaive8(uint8_t used, uint8_t cap);
 const float *tensorW72();
 void tensorCopyY8(float out[8]);
 void tensorCopyX(float out[9]);
+
+// Separate deployable 9-D model head. It never mutates the OS scheduling tensor.
+bool modelSetW(int i, float v);
+void modelLoadW72(const float w[72]);
+void modelSaveW72(float w[72]);
+void modelClear();
+bool modelReady();
+void modelInfer(const float x9[9], float y8[8]);

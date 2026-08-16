@@ -1,16 +1,20 @@
-# SSOS ESP32 V1
+# SSOS ESP32 V2
 
-V1 is the frozen, model-agnostic packet-controller release that was flashed
-and verified on an ESP32-S3-WROOM-1U N16R8 through Windows. The user separately
-validated the Termux path.
+V2 preserves the V1 `ssos.packet.v1` bank, 9-D addressing, opaque packet
+bodies, `DUMP` replacement tape, persistence, and fused OS matcher.
 
-Its product is the `ssos.packet.v1` bank: 32 persistent records with 9-D
-coordinates, IDs, generations, roles, permissions, hashes, and opaque bodies;
-`DUMP`/`PKT` provide the replaceable-controller tape.
+Its additive feature is a packet-backed model execution bridge:
 
-The included model-related host demo and TFLM `hello_world` binary exist only
-to demonstrate opaque payload use and benchmark labeling. V1 does not install
-an application model or interpret packet bodies as a fixed model contract.
+1. Eight ordinary packets named `model:w:0` through `model:w:7` hold signed
+   Q10 weight rows in their opaque bodies.
+2. `MLOAD` validates those eight packets and reconstructs a volatile contiguous
+   72-float execution cache.
+3. `MINFER` executes a supplied 9-D tensor through that cache.
+4. Reboot or `LOAD` reconstructs the cache from the saved packet bank.
 
-V1 contains no `MODEL`, `MLOAD`, or `MINFER` execution bridge. That additive
-packet-backed bridge belongs only to the separately distributed V2 release.
+The packets remain authoritative. The execution matrix is not an independent
+model store and is never written to NVS separately.
+
+The separately distributed V1 release is the frozen, hardware-tested,
+model-agnostic packet-controller baseline. V2 has passed compilation and host
+artifact validation but has not been flashed to physical hardware.

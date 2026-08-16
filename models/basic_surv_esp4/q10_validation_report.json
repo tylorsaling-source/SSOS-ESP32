@@ -1,0 +1,45 @@
+{
+  "system": "basic_surv",
+  "representation": "eight ssos.packet.v1 model:w rows with signed Q10 bodies",
+  "artifact": "models/basic_surv_esp4/basic_surv_esp4_ssos_9d.npz",
+  "artifact_sha256": "a41e8d23f02c70a39242a2e8892a5fb05acad06b3db7efcaa28c862f513da43f",
+  "teacher_sha256": "2e6ae57a27db0849146fb87e2dc391718d9e6321ecfd48a528322831254f87d5",
+  "max_float_weight_error": 0.00048810243606567383,
+  "packet_body_lengths": [
+    44,
+    42,
+    39,
+    45,
+    43,
+    43,
+    40,
+    45
+  ],
+  "max_packet_body_length": 45,
+  "packet_body_limit": 63,
+  "heldout_examples": 6000,
+  "heldout_seed": 27081504,
+  "heldout_teacher_agreement": 0.9655,
+  "rollout_seed_range": [
+    28081504,
+    28081533
+  ],
+  "unseen_rollouts": {
+    "success_count": 30,
+    "success_rate": 1.0,
+    "safe_action_rate": 1.0,
+    "mean_reward": 28.43146666666665,
+    "mean_steps": 177.63333333333333,
+    "median_steps": 176.0
+  },
+  "packet_bodies": [
+    "906,-152,-1035,-240,-1009,1581,858,1337,-413",
+    "-1290,-246,-3,-706,1183,561,-668,1572,-281",
+    "1335,52,901,148,1027,1277,-1281,945,283",
+    "1401,390,-1689,547,-1732,-1069,-1525,-1038,35",
+    "-1204,710,739,899,1037,-1086,1210,-1169,302",
+    "-652,-735,-330,-597,-380,-258,267,-401,-781",
+    "-979,211,-990,-61,1276,-985,956,-695,296",
+    "-361,-1292,-464,-951,-671,-133,-277,532,-1009"
+  ]
+}

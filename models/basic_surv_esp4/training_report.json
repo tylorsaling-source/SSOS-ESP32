@@ -1,0 +1,71 @@
+{
+  "system": "basic_surv",
+  "deployment_role": "esp4",
+  "teacher_role": "pi5",
+  "method": "accepted Pi5 node-distilled policy into learned 48-to-8 projection plus SSOS fused 9-to-8 head",
+  "teacher_checkpoint": "external accepted pi5_distilled checkpoint; verify by SHA-256",
+  "teacher_sha256": "2e6ae57a27db0849146fb87e2dc391718d9e6321ecfd48a528322831254f87d5",
+  "seed": 26081504,
+  "train_examples": 28000,
+  "heldout_examples": 6000,
+  "heldout_seed": 27081504,
+  "rollout_seed_range": [
+    28081504,
+    28081533
+  ],
+  "parameter_count_total": 464,
+  "esp_head_parameters": 72,
+  "esp_head_float32_bytes": 288,
+  "transport_tensor_dimensions": 9,
+  "selected_trial": {
+    "learning_rate": 0.003,
+    "epochs": 30,
+    "heldout_teacher_agreement": 0.965499997138977,
+    "heldout_masked_teacher_accuracy": 0.965499997138977,
+    "heldout_kl": 0.03908207267522812
+  },
+  "trials": [
+    {
+      "learning_rate": 0.003,
+      "epochs": 30,
+      "heldout_teacher_agreement": 0.965499997138977,
+      "heldout_masked_teacher_accuracy": 0.965499997138977,
+      "heldout_kl": 0.03908207267522812
+    },
+    {
+      "learning_rate": 0.0015,
+      "epochs": 30,
+      "heldout_teacher_agreement": 0.9580000042915344,
+      "heldout_masked_teacher_accuracy": 0.9580000042915344,
+      "heldout_kl": 0.05473041161894798
+    },
+    {
+      "learning_rate": 0.0008,
+      "epochs": 30,
+      "heldout_teacher_agreement": 0.9350000023841858,
+      "heldout_masked_teacher_accuracy": 0.9350000023841858,
+      "heldout_kl": 0.10508476942777634
+    }
+  ],
+  "unseen_rollouts": {
+    "success_count": 30,
+    "success_rate": 1.0,
+    "safe_action_rate": 1.0,
+    "mean_reward": 28.43146666666665,
+    "mean_steps": 177.63333333333333,
+    "median_steps": 176.0
+  },
+  "artifacts": {
+    "basic_surv_esp4_ssos_9d.npz": {
+      "bytes": 2796,
+      "sha256": "a41e8d23f02c70a39242a2e8892a5fb05acad06b3db7efcaa28c862f513da43f"
+    },
+    "ssos_head_rows.json": {
+      "bytes": 1752,
+      "sha256": "012f85295cc6cea0b8db9f2cf0b0e070883f5737916cbf52165eaf4d91d5af71"
+    }
+  },
+  "deployment_status": "trained_and_heldout_tested_not_written_to_esp4",
+  "runtime_limitation": "the SSOS V1 image currently installed on the tested ESP4 predates the V2 MODEL/MLOAD/MINFER packet bridge; installing V2 on that device requires a future explicitly authorized firmware update",
+  "training_seconds": 99.01144313812256
+}
