@@ -50,6 +50,7 @@ jobs:
             ];
             const body = pr.body || '';
             const missing = required.filter(section => !body.includes(section));
+            const trustedAutomation = pr.user.login === 'dependabot[bot]';
             const files = await github.paginate(github.rest.pulls.listFiles, {
               ...context.repo,
               pull_number: pr.number,
@@ -74,6 +75,6 @@ jobs:
                 body: 'Thanks for collaborating. The moderator has routed this pull request for human review. It never approves or merges changes.'
               });
             }
-            if (missing.length) {
+            if (missing.length && !trustedAutomation) {
               core.setFailed(`Complete the PR template sections: ${missing.join(', ')}`);
             }
