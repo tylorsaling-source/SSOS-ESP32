@@ -1,0 +1,44 @@
+{
+  "format": "ssos.language.550k.cluster-checkpoint.v1",
+  "release": "4.0.1",
+  "cluster": "3-4-5",
+  "lineage": "cluster-345-fresh",
+  "execution": "host split-boundary reference",
+  "initialization": "fresh weights",
+  "model": {
+    "parameters": 549984,
+    "master_parameters": 274944,
+    "worker_parameters": 275040,
+    "vocabulary": 940,
+    "width": 96,
+    "layers": 4,
+    "heads": 4,
+    "context": 256
+  },
+  "training": {
+    "step": 5000,
+    "batch_size": 16,
+    "sequence_length": 64,
+    "presented_tokens": 5120000,
+    "tokens_per_parameter": 9.3093617268866,
+    "corpus_passes": 1.5900813705507613,
+    "training_loss": 3.4686667919158936,
+    "validation_loss": 3.48871111869812,
+    "learning_rate": 0.0002977638838148035,
+    "seed": 345984,
+    "target_tokens_per_parameter": 100.0
+  },
+  "checkpoint": {
+    "path": "checkpoints/step-00005000.pt",
+    "bytes": 6652561,
+    "sha256": "f397e0eb18b74a2acf88e65bcc797628a49ab7612ee833a8b60a326bb3e0f27a",
+    "format": "ssos.language.550k.checkpoint.v2",
+    "parent_checkpoint": null
+  },
+  "corpus_identity": {
+    "corpus_sha256": "cea5658dba2c6407c4ba0a42c2ac40684da5e173e33946c9598ce0d336bf6b07",
+    "vocab_sha256": "7aa138b645048db4c685cef473be6bbd1873749118f9b7f7cf8f2abe8f69b9c1",
+    "merges_sha256": "ccbb157cc31da39d06387198bb51075eb56d9b19c32b018c76399356b64db0a9"
+  },
+  "quality_samples": "results/quality.json"
+}

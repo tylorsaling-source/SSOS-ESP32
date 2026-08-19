@@ -1,5 +1,23 @@
 # SSOS ESP32 release guide
 
+## V4.0.1: independent cluster lineage
+
+V4.0.1 adds `cluster-345-fresh`, a separately initialized training lineage for
+the same 549,984-parameter split architecture. It owns independent model
+weights, AdamW state, RNG state, training schedule and checkpoint history.
+
+Its first durable checkpoint is step 5,000 after 5,120,000 presented tokens
+(9.309362 tokens per parameter). Training loss at the checkpoint was 3.468667
+and held-out loss was 3.488711. The checkpoint records no parent checkpoint,
+confirming that it was initialized independently rather than copied from the
+original lineage.
+
+The release includes the exact 6,652,561-byte checkpoint, its SHA-256 identity,
+cluster manifest, deterministic language samples and machine-readable result.
+Both lineages retain the same parameter split, tokenizer/corpus contract and
+9-D transaction format, allowing direct comparison without sharing learned
+state.
+
 ## V4.0.0: reproducible split-language training and first checkpoint
 
 V4 publishes the first reproducible checkpoint for a custom

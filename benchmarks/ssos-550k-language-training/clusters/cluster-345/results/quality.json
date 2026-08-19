@@ -1,0 +1,38 @@
+{
+  "format": "ssos.language.550k.quality.v1",
+  "checkpoint_step": 5000,
+  "samples": [
+    {
+      "prompt": "The northern bridge shifted after heavy rain, so the team first",
+      "text": "The northern bridge shifted after heavy rain, so the team first ruled by the pastian citicals.\n\n<eos>\n\n1952 1962\u20131929 - Christmas Psyaught, the Grusto French, the Canada and the King November 1.1. The Septazilohol",
+      "repeated_bigram_fraction": 0.0,
+      "contains_blocked_story_opening": false
+    },
+    {
+      "prompt": "A scout reports smoke beyond the ridge but cannot identify its source. We know",
+      "text": "A scout reports smoke beyond the ridge but cannot identify its source. We knowledge is patients of low treatment. In some of the world, it is the city in the finital gloride, and strong puts of the voice of the purpology of a true sets the finishes with antiody.\n\n<eos>",
+      "repeated_bigram_fraction": 0.04081632653061229,
+      "contains_blocked_story_opening": false
+    },
+    {
+      "prompt": "The stored water looks clear, but before anyone drinks it",
+      "text": "The stored water looks clear, but before anyone drinks it would be determined in a history of oxygen, including the instruments.\n\n<eos>\n\nThis is a marriend of the body. Many was the Britain, the edition of the sales of taxuof, it may be f",
+      "repeated_bigram_fraction": 0.023255813953488413,
+      "contains_blocked_story_opening": false
+    },
+    {
+      "prompt": "Nara asked, \"Why did the shelter flood?\" Tomas answered,",
+      "text": "Nara asked, \"Why did the shelter flood?\" Tomas answered, the basic goals for the Germany, and the Earth had to make this settled facthom.\n\n<eos>\n\nIts the lack of the men are a free.\n\n<eos>\n\nAll Hiergy (ANGD) is the foley to",
+      "repeated_bigram_fraction": 0.0,
+      "contains_blocked_story_opening": false
+    },
+    {
+      "prompt": "The compass and the visible landmark disagree. Rather than guessing, the navigator",
+      "text": "The compass and the visible landmark disagree. Rather than guessing, the navigator is no trained.\n\n<eos>\n\nAlliners are the non-forming detectors, the Marine, and was downed by the stones that can be temple together. The further towns can be immediately digumes, st",
+      "repeated_bigram_fraction": 0.023809523809523836,
+      "contains_blocked_story_opening": false
+    }
+  ],
+  "blocked_openings": 0,
+  "mean_repeated_bigram_fraction": 0.017576332858724907
+}

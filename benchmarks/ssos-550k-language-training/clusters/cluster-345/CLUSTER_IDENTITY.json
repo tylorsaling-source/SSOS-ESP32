@@ -1,0 +1,14 @@
+{
+  "format": "ssos.language.cluster.v1",
+  "cluster": "3-4-5",
+  "lineage": "cluster-345-fresh",
+  "initialization": "fresh weights",
+  "parameter_count": 549984,
+  "master_parameters": 274944,
+  "worker_parameters": 275040,
+  "seed": 345984,
+  "target_tokens_per_parameter": 100,
+  "checkpoint_interval_steps": 5000,
+  "host_compute_threads": 2,
+  "execution": "host split-boundary reference"
+}

@@ -12,12 +12,12 @@ language inference, and reproducible split-language training for ESP32-S3.**
 SSOS publishes four deliberately different systems. Choose by function, not
 merely by version number:
 
-| Release | What runs on the board | Choose it when | Validation |
+| Release | System payload | Choose it when | Validation |
 | --- | --- | --- | --- |
 | [V1.0.0](https://github.com/tylorsaling-source/SSOS-ESP32/releases/tag/v1.0.0) | One-board packet controller with persistent compact state and an internal 9-D runtime | You need device-owned records, replay, migration, or the original kernel experiments | Hardware-tested on ESP32-S3-WROOM-1U N16R8 |
 | [V2.0.0](https://github.com/tylorsaling-source/SSOS-ESP32/releases/tag/v2.0.0) | V1 plus one packet-backed fixed 9-input/8-output linear head | You need a replaceable tiny scoring/action head | Compiled and host/artifact-validated; not physically flashed |
 | [V3.0.1](https://github.com/tylorsaling-source/SSOS-ESP32/releases/tag/v3.0.1) | Quark-v2-0.5M split across a pair, with an optional two-lane three-board extension | You want physical boards cooperating on pretrained text inference | Pair: 240/240 at 44.731 tok/s median; trio gate: 96/96 at 87.927 tok/s |
-| V4.0.0 | Custom 549,984-parameter language model split into independently owned master and worker training stages | You want to reproduce the first custom checkpoint, verify split gradients, or continue cumulative training | 100.00023 tokens/parameter; best held-out loss 2.991671; exact one-step split-equivalence gate |
+| [V4.0.1](https://github.com/tylorsaling-source/SSOS-ESP32/releases/tag/v4.0.1) | Custom 549,984-parameter language model with two separately initialized, independently checkpointed split-training lineages | You want to reproduce the first custom checkpoint, start independent cultures, verify split gradients, or continue cumulative training | Original: 100.00023 tokens/parameter; cluster 3–4–5 first checkpoint: 5.12M tokens; exact one-step split-equivalence gate |
 
 V3 is a dedicated multi-board application with distinct master and worker
 roles. Installing it writes the selected boards' application regions, so
@@ -25,7 +25,7 @@ preserve any existing firmware or learned state first.
 
 ## V4: train a custom split language model
 
-V4.0.0 packages the model, tokenizer, deterministic curriculum builders,
+V4.0.1 packages the model, tokenizer, deterministic curriculum builders,
 master/worker split, optimizer state, 9-D transaction identity, first
 checkpoint, and numerical equivalence gate for a custom 549,984-parameter
 causal-language model. Master owns 274,944 parameters and worker owns 275,040;
@@ -36,6 +36,13 @@ The first checkpoint represents 54,998,528 presented tokens, or 100.00023
 tokens per parameter. It is resumable and retains both stages, AdamW, RNG,
 tokenizer/corpus identity, and schedule. Start with the complete
 [V4 training package](benchmarks/ssos-550k-language-training/README.md).
+
+V4.0.1 adds a second lineage named `cluster-345-fresh`. It starts from fresh
+weights with its own RNG and optimizer, while preserving the same architecture,
+tokenizer and corpus identity. Its independent step-5,000 checkpoint contains
+5,120,000 presented tokens and is packaged with its own quality evidence and
+SHA-256 identity. This makes lineage separation reproducible instead of merely
+using different labels on one shared model.
 
 ## V3: two boards run one language model
 
