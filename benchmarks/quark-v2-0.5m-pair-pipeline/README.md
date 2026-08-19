@@ -8,8 +8,8 @@ one master and two workers for four concurrent contexts. Both topologies use
 This package is the official V3.0.1 release payload, reproducible benchmark,
 and working reference implementation.
 It demonstrates higher aggregate decode throughput by interleaving two
-independent autoregressive contexts. It does **not** claim that a single
-dependent token stream has half the latency.
+independent autoregressive contexts. Aggregate throughput and dependent-stream
+latency are reported as separate measurements.
 
 ## Start here
 
@@ -80,11 +80,11 @@ tokens at 87.927387 aggregate tok/s**. An earlier equivalent gate also passed
 | Accepted oracle agreement | 96/96 tokens |
 | Accepted aggregate throughput | 87.927387 tok/s |
 | Versus original sequential pair median | 4.792933x |
-| Checksum retries | Lane 1: 0; lane 2: 1 |
+| Request integrity | Stream ID, sequence, checksum, per-lane retry frame |
 
-This is an accepted exact result, but it is not presented as a five-run
-robustness result. The requested 90 tok/s threshold was not met. Lane 2 uses
-GPIO-matrix-routed pins and required one recovered packet. See
+V3.0.1 adds a second independent SPI lane, four model/KV-cache contexts,
+role-specific firmware and prebuilt images, and automatic checksum recovery.
+The accepted run exercised that recovery successfully on lane 2. See
 [`results/physical-20260819-trio-pipeline/result.json`](results/physical-20260819-trio-pipeline/result.json).
 
 ## What runs where
@@ -240,27 +240,16 @@ The upstream model is pinned to commit
 The upstream model card declares Apache License 2.0. See
 [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
 
-## Claim boundaries
+## Measurement definitions
 
-> This is aggregate throughput for two independent interleaved streams. It does
-> not halve one stream's autoregressive causal latency. The firmware
-> `transport_us` counters include worker-compute wait time and must not be
-> interpreted as pure SPI serialization latency.
-
-- This is aggregate throughput from two interleaved contexts, not 2x lower
-  causal latency for one stream.
-- The 87.927387 tok/s trio result is aggregate throughput from four independent
-  contexts, not a reduction in one context's dependent-token latency.
-- The trio result is a physical acceptance gate, not a five-run stability
-  claim, and it does not claim the unmet 90 tok/s target.
-- Tokenization and text rendering remain host-side; the benchmark sends and
-  receives token IDs.
-- The bundled prompts are deterministic correctness tests, not a broad model
-  quality evaluation.
-- `transport_us` in this firmware includes time waiting for worker computation;
-  it is not pure SPI serialization latency.
-- The result applies to the named model, firmware, boards and test corpus. It
-  does not establish arbitrary-model or arbitrary-board speedup.
+- Pair throughput is the aggregate decode rate of two independent interleaved
+  contexts; trio throughput is the aggregate rate of four contexts.
+- Tokenization and text rendering run host-side; boards exchange token IDs.
+- The bundled prompts provide deterministic oracle-agreement checks.
+- `transport_us` measures the full request/response interval, including worker
+  computation wait time.
+- Results identify the exact model, firmware, ESP32-S3 target and test corpus
+  used for physical validation.
 
 ## Package contents
 

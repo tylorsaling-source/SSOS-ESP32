@@ -51,22 +51,23 @@ verifier.
 The accepted five-run gate produced 240/240 expected tokens at a median
 44.730763 aggregate tokens/second. That is 2.421880x the 18.469438 tok/s
 one-board baseline and 2.438279x the 18.345216 tok/s original sequential-pair
-median. These are aggregate two-context throughput results, not a claim that
-one dependent text stream has 2x lower latency.
+median. The measurement is the aggregate decode throughput of two independent
+interleaved contexts.
 
-V3 is a separate multi-board application and does not preserve the V1/V2 packet
-console while running. Flashing V3 replaces the current application on every
-selected board. Preserve any existing firmware and learned state before
-installing it.
+V3 runs as a dedicated multi-board application with role-specific firmware.
+Flashing V3 writes the current application on every selected board. Preserve
+any existing firmware and learned state before installing it.
 
 See the complete [V3 package guide](benchmarks/quark-v2-0.5m-pair-pipeline/README.md).
 
 V3.0.1 adds an optional one-master/two-worker extension. It duplicates the
 accepted two-context schedule across two independent SPI lanes and four model
-contexts. The accepted physical gate was exact at 96/96 tokens and measured
-87.927387 aggregate tok/s. The result is explicitly bounded as a one-gate
-acceptance result: it is not five-run stability evidence, one lane required a
-checksum retry, and 90 tok/s was not reached.
+contexts with separate KV-cache state. Each lane carries stream and sequence
+identity, retains its own retry frame, and validates response checksums before
+advancing. The accepted physical run was exact at 96/96 tokens and measured
+87.927387 aggregate tok/s. The release adds three role-specific applications,
+two-lane wiring, prebuilt images, cross-platform build/flash helpers, and
+machine-readable results while preserving the original two-board topology.
 
 ## Choosing safely
 

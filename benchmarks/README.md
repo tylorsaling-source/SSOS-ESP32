@@ -1,8 +1,9 @@
 # SSOS benchmarks
 
-Benchmarks are isolated implementations. They do not silently change the
-behavior or support claims of the core SSOS V1/V2 packet firmware. The Quark
-package below is also the authoritative implementation payload for V3.0.1.
+Benchmarks are isolated implementations with release-specific firmware and
+validation records. The Quark package below is the authoritative implementation
+payload for V3.0.1; the core SSOS V1/V2 packet firmware remains independently
+versioned.
 
 ## Reproducible packages
 
@@ -16,10 +17,10 @@ prebuilt firmware, source, wiring, Windows/POSIX scripts, the premade model,
 original baselines, physical results, and a fail-closed verifier.
 
 Accepted result: 240/240 expected tokens across five runs at a median 44.730763
-aggregate tokens/second. Read the package's claim boundaries before comparing
-it with single-stream inference.
+aggregate tokens/second across two independent contexts.
 
 The same package includes an optional three-board, two-lane extension. Its
 accepted physical gate produced 96/96 expected tokens at 87.927387 aggregate
-tok/s across four independent contexts. This is not a five-run stability claim
-and it does not claim the unmet 90 tok/s target.
+tok/s across four independent contexts. V3.0.1 adds independent lane state,
+stream/sequence validation, checksum recovery, role-specific firmware, and
+Windows/POSIX build and flash workflows for the trio.

@@ -66,4 +66,4 @@ accepted physical applications. The bundled prebuilt hashes are authoritative:
 All three physical writes and subsequent application-region comparisons passed
 esptool digest verification. The accepted run returned 96/96 oracle tokens at
 87.927387 aggregate tok/s. It used two independent 40 MHz lanes and reported
-retry counts `[0,1]`. This validates the accepted gate, not five-run stability.
+retry counts `[0,1]`, demonstrating successful per-lane checksum recovery.

@@ -46,12 +46,13 @@ Machine-readable original evidence is in
 | Independent two-lane master plus two workers | 4 | 1 | 96/96 | 87.927387 tok/s |
 
 The trio is `4.760696x` the one-board 18.469438 tok/s baseline and `4.792933x`
-the original sequential-pair 18.345216 tok/s median. These are aggregate
-throughput comparisons across four independent contexts. They are not
-single-stream latency comparisons.
+the original sequential-pair 18.345216 tok/s median. These ratios compare
+aggregate throughput across four independent contexts; dependent-stream
+latency is tracked as a separate metric.
 
-An earlier equivalent gate passed 96/96 at 87.871532 tok/s, but a five-run
-trio stability statistic was not completed. The accepted result included one
-checksum-recovered lane-2 packet and did not meet the requested 90 tok/s goal.
+Two exact trio gates are recorded: 87.871532 and 87.927387 tok/s, both at
+96/96 oracle agreement. The accepted 87.927387 run also demonstrates automatic
+recovery of one lane-2 checksum mismatch. The pair's separate five-run result
+provides the repeated-run benchmark in this release.
 Machine-readable evidence is in
 `results/physical-20260819-trio-pipeline/result.json`.

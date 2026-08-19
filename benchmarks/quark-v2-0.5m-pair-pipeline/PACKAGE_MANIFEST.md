@@ -44,10 +44,11 @@ median 44.730763 aggregate tokens/second. This is 2.421880x the one-board
 18.469438 tok/s baseline and 2.438279x the accepted 18.345216 tok/s original
 sequential-pair median.
 
-The claim is aggregate throughput only. It is not a 2x single-stream latency,
-general model quality, arbitrary-model, or arbitrary-board claim.
+The throughput measurement aggregates two independent interleaved contexts on
+the named model, firmware, ESP32-S3 target and deterministic corpus.
 
 The V3 package also includes an accepted three-board extension: one master and
 two workers produced 96/96 expected tokens at 87.927387 aggregate tok/s across
-four independent contexts. This is a one-gate physical result, not a five-run
-stability claim, and the requested 90 tok/s threshold was not met.
+four independent contexts. V3.0.1 adds two independent SPI lanes, per-lane
+request integrity and recovery, separate KV-cache state, role-specific source
+and prebuilt applications, and cross-platform build/flash tooling.

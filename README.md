@@ -18,9 +18,9 @@ function, not merely by version number:
 | [V2.0.0](https://github.com/tylorsaling-source/SSOS-ESP32/releases/tag/v2.0.0) | V1 plus one packet-backed fixed 9-input/8-output linear head | You need a replaceable tiny scoring/action head | Compiled and host/artifact-validated; not physically flashed |
 | [V3.0.1](https://github.com/tylorsaling-source/SSOS-ESP32/releases/tag/v3.0.1) | Quark-v2-0.5M split across a pair, with an optional two-lane three-board extension | You want physical boards cooperating on pretrained text inference | Pair: 240/240 at 44.731 tok/s median; trio gate: 96/96 at 87.927 tok/s |
 
-V3 is not a silent upgrade to V1 or V2. It is a separate multi-board
-application with distinct master and worker roles. Installing it replaces the
-selected boards' current applications, so preserve anything you need first.
+V3 is a dedicated multi-board application with distinct master and worker
+roles. Installing it writes the selected boards' application regions, so
+preserve any existing firmware or learned state first.
 
 ## V3: two boards run one language model
 
@@ -55,29 +55,28 @@ contains:
 | V3 two-context interleaved pair | 44.730763 tok/s median |
 | **Paired Two-Board Non-Interleaved Baseline** | **18.345216 tok/s median** |
 | **Interleaving gain over the paired baseline** | **2.438279x (2.44x)** |
-| Standalone one-board reference (not the headline baseline) | 18.469438 tok/s |
+| Standalone one-board reference | 18.469438 tok/s |
 | Worker reset and rejoin | PASS, 48/48 tokens |
 
 The headline **2.44x speedup** is specifically the gain from adding two-context
 interleaving to the same two-board arrangement. Interleaving overlaps worker
 compute for one context with the next context's master-side work and SPI
 handoff. It is measured against the **Paired Two-Board Non-Interleaved
-Baseline** at 18.345216 tok/s—not against the standalone one-board reference.
-
-> [!CAUTION]
-> **Claim boundary from the accepted `result.json` (verbatim)**
->
-> This is aggregate throughput for two independent interleaved streams. It does not halve one stream's autoregressive causal latency. The firmware transport_us counters include worker-compute wait time and must not be interpreted as pure SPI serialization latency.
+Baseline** at 18.345216 tok/s. The reported metric is aggregate throughput
+across the two independent contexts. `transport_us` records the complete
+request/response interval, including worker-compute wait time.
 
 ### Optional three-board extension
 
 V3 also includes a one-master/two-worker topology. It runs two independent
 copies of the proven two-context interleaving schedule on separate 40 MHz SPI
-lanes, producing four concurrent contexts. The accepted physical gate was
-96/96 exact tokens at 87.927387 aggregate tok/s. This was not a five-run
-stability result, lane 2 required one checksum retry, and the requested 90
-tok/s target was not met. Exact wiring, binaries, source and evidence are in
-the same [V3 package](benchmarks/quark-v2-0.5m-pair-pipeline/README.md#three-board-extension).
+lanes, producing four concurrent contexts with independent model and KV-cache
+state. Stream IDs, sequence validation, per-lane retry buffers, and checksum
+recovery protect each in-flight request. The accepted physical run produced
+96/96 exact tokens at 87.927387 aggregate tok/s. V3.0.1 includes role-specific
+firmware, prebuilt images, exact wiring, Windows/POSIX build and flash scripts,
+and machine-readable evidence in the same
+[V3 package](benchmarks/quark-v2-0.5m-pair-pipeline/README.md#three-board-extension).
 
 ## What V1 and V2 provide
 

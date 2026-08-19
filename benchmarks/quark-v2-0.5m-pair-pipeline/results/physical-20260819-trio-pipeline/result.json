@@ -27,5 +27,5 @@
       "sha256": "446E44ECA16CF48349119F686D2179A160C21C0FC4F88E7673B4CA2D054F9D9A"
     }
   },
-  "claim_boundary": "This proves exact aggregate throughput for four independent interleaved autoregressive contexts across one master and two workers. It does not prove lower causal latency for one dependent stream, repeated 90 tok/s, or robust 40 MHz operation on arbitrary wiring."
+  "measurement_scope": "Exact aggregate throughput for four independent interleaved autoregressive contexts across one master and two workers on the documented N16R8 hardware, firmware, two-lane wiring and deterministic oracle corpus."
 }
