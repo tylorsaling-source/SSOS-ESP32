@@ -1,0 +1,9 @@
+data/corpus.txt
+data/source-broad-corpus.txt
+data/local/
+checkpoints/step-*.pt
+!checkpoints/step-00107419.pt
+results/host-reference/
+**/__pycache__/
+*.pyc
+*.log

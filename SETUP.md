@@ -17,6 +17,8 @@ Other boards require a source build and validation.
 - V4.0.0 is the reproducible 549,984-parameter split-language training package
   and first checkpoint. Use its host reference, integrity file and physical
   transaction protocol to reproduce or continue the training state.
+- V4.0.1 is the separate fresh cluster 3–4–5 training package and checkpoint.
+  It has its own weights, optimizer, RNG, schedule and integrity file.
 
 Download and extract the matching ZIP from
 [GitHub Releases](https://github.com/tylorsaling-source/SSOS-ESP32/releases).
@@ -34,6 +36,9 @@ documented role.
 For V4, follow the [training package guide](benchmarks/ssos-550k-language-training/README.md).
 Verify `SHA256SUMS`, run `tools/verify_split.py`, and inspect the bundled first
 checkpoint before beginning a continuation.
+
+For the independent V4.0.1 lineage, use the separate
+[cluster 3–4–5 guide](benchmarks/ssos-550k-language-cluster-345/README.md).
 
 Flashing any release replaces the selected board's current application.
 
