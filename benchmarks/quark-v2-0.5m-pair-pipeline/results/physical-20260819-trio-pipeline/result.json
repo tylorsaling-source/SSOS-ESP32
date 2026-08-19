@@ -1,0 +1,31 @@
+{
+  "status": "accuracy_pass_speed_target_not_met",
+  "clock_hz": 40000000,
+  "model_params_per_context": 465504,
+  "lanes": 2,
+  "streams": 4,
+  "interleaving": "two independent copies of the accepted two-context pair schedule",
+  "accepted_run": {
+    "oracle_match": "96/96",
+    "wall_us": 1596789,
+    "decode_wall_us": 1091810,
+    "aggregate_tok_s": 87.927387,
+    "retries": [0, 1]
+  },
+  "target": {
+    "aggregate_tok_s": 90.0,
+    "met": false
+  },
+  "roles": {
+    "master": {
+      "sha256": "31E70721B6F49656A540495BC8DF90040BC59A4C09DC630D6A2FD34270DA8743"
+    },
+    "worker1": {
+      "sha256": "76D6D5A55ADD390593221F19B80AF327CE6C8CFCB0A9C35F2D8EDEE8B7E6E9DF"
+    },
+    "worker2": {
+      "sha256": "446E44ECA16CF48349119F686D2179A160C21C0FC4F88E7673B4CA2D054F9D9A"
+    }
+  },
+  "measurement_scope": "Exact aggregate throughput for four independent interleaved autoregressive contexts across one master and two workers on the documented N16R8 hardware, firmware, two-lane wiring and deterministic oracle corpus."
+}

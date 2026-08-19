@@ -32,7 +32,7 @@ The packet records remain authoritative. The cache is not a second persistent
 model store. V2 is compiled and host/artifact-validated but has not been
 physically flashed in the published validation record.
 
-## V3.0.0: two-board Quark language pipeline
+## V3.0.1: Quark interleaved language pipelines
 
 V3 packages the physically tested Quark-v2-0.5M master/worker implementation
 as one complete release for two ESP32-S3-WROOM-1U N16R8 boards:
@@ -51,22 +51,31 @@ verifier.
 The accepted five-run gate produced 240/240 expected tokens at a median
 44.730763 aggregate tokens/second. That is 2.421880x the 18.469438 tok/s
 one-board baseline and 2.438279x the 18.345216 tok/s original sequential-pair
-median. These are aggregate two-context throughput results, not a claim that
-one dependent text stream has 2x lower latency.
+median. The measurement is the aggregate decode throughput of two independent
+interleaved contexts.
 
-V3 is a separate two-board application and does not preserve the V1/V2 packet
-console while running. Flashing V3 replaces the current application on both
-selected boards. Preserve any existing firmware and learned state before
-installing it.
+V3 runs as a dedicated multi-board application with role-specific firmware.
+Flashing V3 writes the current application on every selected board. Preserve
+any existing firmware and learned state before installing it.
 
 See the complete [V3 package guide](benchmarks/quark-v2-0.5m-pair-pipeline/README.md).
+
+V3.0.1 adds an optional one-master/two-worker extension. It duplicates the
+accepted two-context schedule across two independent SPI lanes and four model
+contexts with separate KV-cache state. Each lane carries stream and sequence
+identity, retains its own retry frame, and validates response checksums before
+advancing. The accepted physical run was exact at 96/96 tokens and measured
+87.927387 aggregate tok/s. The release adds three role-specific applications,
+two-lane wiring, prebuilt images, cross-platform build/flash helpers, and
+machine-readable results while preserving the original two-board topology.
 
 ## Choosing safely
 
 Use V1 for the physically tested packet-state baseline. Choose V2 only when the
 fixed linear model head is needed and its published validation status is
-acceptable. Choose V3 when two supported boards should run the packaged Quark
-language model together. None of the releases provides networking, sensors,
+acceptable. Choose V3 when two supported boards—or the documented optional
+three-board topology—should run the packaged Quark language model together.
+None of the releases provides networking, sensors,
 on-device application-model training, arbitrary neural-network execution, or
 security enforcement.
 

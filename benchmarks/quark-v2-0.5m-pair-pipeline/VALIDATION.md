@@ -42,3 +42,28 @@ correctly rejected a capture with one stream changed to 23/24.
   are absent.
 - The only COM values in documentation are replaceable examples.
 - No serial port was opened and no board was flashed during package validation.
+
+## Three-board extension
+
+The trio source compiled as three separate `-O2` roles. The exact accepted
+application images bundled under `prebuilt/trio-*` have these SHA-256 values:
+
+| Rebuilt role | Application bytes | Static RAM bytes |
+|---|---:|---:|
+| Trio master | 1,044,464 | 23,720 |
+| Trio worker 1 | 1,030,336 | 23,152 |
+| Trio worker 2 | 1,030,336 | 23,152 |
+
+Rebuilt hashes vary with embedded build-path metadata; the sizes match the
+accepted physical applications. The bundled prebuilt hashes are authoritative:
+
+| Role | SHA-256 |
+|---|---|
+| Trio master | `31e70721b6f49656a540495bc8df90040bc59a4c09dc630d6a2fd34270da8743` |
+| Trio worker 1 | `76d6d5a55add390593221f19b80af327ce6c8cfcb0a9c35f2d8edee8b7e6e9df` |
+| Trio worker 2 | `446e44eca16cf48349119f686d2179a160c21c0fc4f88e7673b4ca2d054f9d9a` |
+
+All three physical writes and subsequent application-region comparisons passed
+esptool digest verification. The accepted run returned 96/96 oracle tokens at
+87.927387 aggregate tok/s. It used two independent 40 MHz lanes and reported
+retry counts `[0,1]`, demonstrating successful per-lane checksum recovery.
