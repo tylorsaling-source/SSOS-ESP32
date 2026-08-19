@@ -34,6 +34,7 @@ and reflashing the application for every update.
 | Split host/MCU inference experiments | A laptop, Pi, or phone computes a feature vector while the ESP32 owns and runs the final 9-to-8 head | Interface and example artifacts are included |
 | Tiny-kernel research | Device benchmarks and raw traces for the custom 9-to-1 and fused 9-to-8 kernels, with equal-work comparisons labeled | V1 device traces included |
 | Controller-state backup or migration | `DUMP` emits packet records that can be replayed as `PKT` commands on compatible SSOS firmware | Packet state only; it does not copy firmware |
+| Two-board tiny-language inference | A separate reproducible package pipelines a pretrained 465,504-parameter model across two ESP32-S3 boards | Physically tested at 44.731 aggregate tok/s with 240/240 expected tokens |
 
 Examples include a small device-mode registry, replaceable thresholds or action
 scores, a portable controller manifest, and experiments where a larger host
@@ -41,10 +42,37 @@ model delegates its last tiny linear decision layer to an ESP32-S3. See
 [What you can build](docs/USE_CASES.md) for concrete boundaries and examples.
 
 > [!IMPORTANT]
-> SSOS is not a general-purpose operating system, database, secure store,
-> filesystem, LLM runtime, on-device training framework, sensor platform,
-> Wi-Fi/BLE mesh, MCP server, or autonomous safety controller. The current
-> public firmware is controlled through USB serial.
+> The core V1/V2 packet firmware is not a general-purpose operating system,
+> database, secure store, filesystem, LLM runtime, on-device training
+> framework, sensor platform, Wi-Fi/BLE mesh, MCP server, or autonomous safety
+> controller. The separate Quark benchmark below is an intentionally scoped
+> two-board language-model experiment, not a capability of the packet firmware.
+
+## Two-board language-model benchmark
+
+If you want to reproduce the distributed language experiment, start with the
+[Quark two-board pipeline](benchmarks/quark-v2-0.5m-pair-pipeline/README.md).
+
+In plain language, the package puts the first half of one tiny pretrained text
+model on a master ESP32-S3 and the second half on a worker ESP32-S3. It keeps
+two independent text contexts alive. While the worker finishes one context,
+the master starts work on the other, increasing total output across both
+contexts.
+
+The physically tested package includes:
+
+- the premade 465,504-parameter Quark-v2-0.5M model;
+- exact master and worker firmware plus full source;
+- a six-wire connection table with a shared ground;
+- Windows, Linux, and macOS build and flashing commands;
+- a five-run pass/fail verifier; and
+- original standalone and sequential-pair baselines.
+
+The accepted five-run result was 240/240 expected tokens at a median 44.730763
+aggregate tokens/second. That is 2.421880x the one-board baseline and 2.438279x
+the original sequential two-board pair. "Aggregate" is important: two
+independent contexts produce more total tokens, but one dependent text stream
+does not receive a 2x latency reduction.
 
 ## First useful session
 

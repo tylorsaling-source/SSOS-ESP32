@@ -1,0 +1,7 @@
+build/
+capture*.json
+__pycache__/
+*.pyc
+*.log
+.DS_Store
+Thumbs.db

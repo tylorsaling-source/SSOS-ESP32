@@ -1,0 +1,92 @@
+{
+  "date": "2026-08-18",
+  "architecture": "two independent autoregressive contexts interleaved across one ESP32-S3 master and one ESP32-S3 worker",
+  "model": {
+    "name": "LH-Tech-AI/Quark-v2-0.5M",
+    "parameters": 465504,
+    "quantization": "Q8_0 group 8",
+    "artifact_bytes": 700672
+  },
+  "hardware": {
+    "master": {
+      "role": "master",
+      "contexts": 2,
+      "application_sha256": "C9301FF8F2EE4BAC3D449AD896AFFA9BBA9908D3BB28879D09F4DB77393E9292"
+    },
+    "worker": {
+      "role": "worker",
+      "contexts": 2,
+      "application_sha256": "2DEE55D71E679F120BDDEF34550656A7CF0D79A6561F3403F11CED0930DD8E38"
+    },
+    "spi_hz": 40000000
+  },
+  "build": {
+    "compiler_optimization": "-O2",
+    "master_application_bytes": 1042304,
+    "worker_application_bytes": 1030000,
+    "source": "firmware/quark_pair_pipeline"
+  },
+  "baseline": {
+    "standalone": {
+      "trials": 1,
+      "tok_s": 18.469438,
+      "oracle_match": "24/24",
+      "prefill_us": 624414,
+      "decode_us": 1299444
+    },
+    "original_sequential_pair": {
+      "trials": 5,
+      "min_tok_s": 18.344879,
+      "median_tok_s": 18.345216,
+      "max_tok_s": 18.346576,
+      "oracle_match": "120/120",
+      "pair_over_standalone": 0.993274
+    },
+    "prechange_pair_recheck": {
+      "trials": 5,
+      "min_tok_s": 18.344711,
+      "median_tok_s": 18.344921,
+      "max_tok_s": 18.345931,
+      "oracle_match": "120/120",
+      "prefill_us_range": [628879, 629047],
+      "decode_us_range": [1308192, 1308279],
+      "transport_us_range": [11603, 11674]
+    },
+    "target_2x_tok_s": 36.938876
+  },
+  "five_run_gate": {
+    "runs": 5,
+    "oracle_tokens": "240/240",
+    "errors": 0,
+    "aggregate_tok_s": [
+      44.730763,
+      44.729429,
+      44.735265,
+      44.729887,
+      44.731346
+    ],
+    "min_tok_s": 44.729429,
+    "median_tok_s": 44.730763,
+    "max_tok_s": 44.735265,
+    "speedup_over_standalone": 2.421880027,
+    "speedup_over_original_pair_median": 2.438279440,
+    "speedup_over_prechange_pair_recheck_median": 2.438318650,
+    "passed": true
+  },
+  "recovery_gates": {
+    "both_boards_reset": {
+      "oracle_tokens": "48/48",
+      "aggregate_tok_s": 44.731096,
+      "errors": 0
+    },
+    "worker_reset_and_rejoin": {
+      "worker_ready_role": "worker",
+      "worker_contexts": 2,
+      "oracle_tokens": "48/48",
+      "aggregate_tok_s": 44.728929,
+      "errors": 0,
+      "passed": true
+    }
+  },
+  "claim_boundary": "This is aggregate throughput for two independent interleaved streams. It does not halve one stream's autoregressive causal latency. The firmware transport_us counters include worker-compute wait time and must not be interpreted as pure SPI serialization latency."
+}
