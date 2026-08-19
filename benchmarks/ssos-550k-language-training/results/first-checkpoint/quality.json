@@ -1,0 +1,38 @@
+{
+  "format": "ssos.language.550k.quality.v1",
+  "checkpoint_step": 107419,
+  "samples": [
+    {
+      "prompt": "The northern bridge shifted after heavy rain, so the team first",
+      "text": "The northern bridge shifted after heavy rain, so the team first moved to the now World Trade Center, without a third places with a culture who came from Florence in the 11th century. The districts of Australia was in the Supera National Atlaseva's lands area",
+      "repeated_bigram_fraction": 0.022727272727272707,
+      "contains_blocked_story_opening": false
+    },
+    {
+      "prompt": "A scout reports smoke beyond the ridge but cannot identify its source. We know",
+      "text": "A scout reports smoke beyond the ridge but cannot identify its source. We know that he was the street requiring dog to the late 19th century and the Solar Princess System. Other websites Marxists There are some gold-hairs of a video, origptive buses, the patting piege to the Mon",
+      "repeated_bigram_fraction": 0.020408163265306145,
+      "contains_blocked_story_opening": false
+    },
+    {
+      "prompt": "The stored water looks clear, but before anyone drinks it",
+      "text": "The stored water looks clear, but before anyone drinks it, it is less than anyone.\n\n<eos>\n\nThese failed stations are seen in a focus, or reactive inside the current molecules. Many variations have been the first service to seriously in a high press, so we cann",
+      "repeated_bigram_fraction": 0.022222222222222254,
+      "contains_blocked_story_opening": false
+    },
+    {
+      "prompt": "Nara asked, \"Why did the shelter flood?\" Tomas answered,",
+      "text": "Nara asked, \"Why did the shelter flood?\" Tomas answered, in 1977, and the balance of the last level of the body peace.\n\n<eos>\n\nHe started the stone of the way.\n<eos>\n\nNo, the Sunstara ver, tested allowing as the probleman. Thered",
+      "repeated_bigram_fraction": 0.05128205128205132,
+      "contains_blocked_story_opening": false
+    },
+    {
+      "prompt": "The compass and the visible landmark disagree. Rather than guessing, the navigator",
+      "text": "The compass and the visible landmark disagree. Rather than guessing, the navigator and sexual majority can be affective, affecting the wounding the mass.\n\n<eos>\n\nThey are very important ascomplements and mass ofference. A features can be used when they are dist origies,\". Claturable pro",
+      "repeated_bigram_fraction": 0.046511627906976716,
+      "contains_blocked_story_opening": false
+    }
+  ],
+  "blocked_openings": 0,
+  "mean_repeated_bigram_fraction": 0.03263026748076583
+}

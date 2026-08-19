@@ -14,6 +14,9 @@ Other boards require a source build and validation.
 - V3.0.1 is the physically tested Quark language pipeline. It supports the
   accepted two-board pair and an optional one-master/two-worker topology. It
   does not expose the V1/V2 packet console while running.
+- V4.0.0 is the reproducible 549,984-parameter split-language training package
+  and first checkpoint. Use its host reference, integrity file and physical
+  transaction protocol to reproduce or continue the training state.
 
 Download and extract the matching ZIP from
 [GitHub Releases](https://github.com/tylorsaling-source/SSOS-ESP32/releases).
@@ -27,6 +30,10 @@ For V3, follow the package's [wiring and flashing
 guide](benchmarks/quark-v2-0.5m-pair-pipeline/README.md). V3 requires two boards
 for the pair or three for the optional extension, with one distinct image per
 documented role.
+
+For V4, follow the [training package guide](benchmarks/ssos-550k-language-training/README.md).
+Verify `SHA256SUMS`, run `tools/verify_split.py`, and inspect the bundled first
+checkpoint before beginning a continuation.
 
 Flashing any release replaces the selected board's current application.
 

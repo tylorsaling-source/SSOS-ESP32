@@ -1,0 +1,166 @@
+{
+  "format": "ssos.language.550k.first-checkpoint.v1",
+  "release": "4.0.0",
+  "execution": "host split-boundary reference",
+  "model": {
+    "parameters": 549984,
+    "master_parameters": 274944,
+    "worker_parameters": 275040,
+    "vocabulary": 940,
+    "width": 96,
+    "layers": 4,
+    "heads": 4,
+    "context": 256
+  },
+  "training": {
+    "step": 107419,
+    "batch_size": 8,
+    "sequence_length": 64,
+    "presented_tokens": 54998528,
+    "tokens_per_parameter": 100.00023273404317,
+    "corpus_passes": 17.080495074319224,
+    "initial_validation_loss": 3.6612517088651657,
+    "final_validation_loss": 2.9952222295105457,
+    "best_validation": {
+      "event": "validation",
+      "step": 105000,
+      "loss": 2.9916713759303093
+    },
+    "validation_history": [
+      {
+        "event": "validation",
+        "step": 5000,
+        "loss": 3.6612517088651657
+      },
+      {
+        "event": "validation",
+        "step": 10000,
+        "loss": 3.412860505282879
+      },
+      {
+        "event": "validation",
+        "step": 15000,
+        "loss": 3.3093280121684074
+      },
+      {
+        "event": "validation",
+        "step": 20000,
+        "loss": 3.243801712989807
+      },
+      {
+        "event": "validation",
+        "step": 25000,
+        "loss": 3.1800195649266243
+      },
+      {
+        "event": "validation",
+        "step": 30000,
+        "loss": 3.2034749165177345
+      },
+      {
+        "event": "validation",
+        "step": 35000,
+        "loss": 3.142002396285534
+      },
+      {
+        "event": "validation",
+        "step": 40000,
+        "loss": 3.13850961625576
+      },
+      {
+        "event": "validation",
+        "step": 45000,
+        "loss": 3.104641333222389
+      },
+      {
+        "event": "validation",
+        "step": 50000,
+        "loss": 3.0877310410141945
+      },
+      {
+        "event": "validation",
+        "step": 55000,
+        "loss": 3.1110928058624268
+      },
+      {
+        "event": "validation",
+        "step": 60000,
+        "loss": 3.0754337683320045
+      },
+      {
+        "event": "validation",
+        "step": 65000,
+        "loss": 3.048406656831503
+      },
+      {
+        "event": "validation",
+        "step": 70000,
+        "loss": 3.053366858512163
+      },
+      {
+        "event": "validation",
+        "step": 75000,
+        "loss": 3.041210141032934
+      },
+      {
+        "event": "validation",
+        "step": 80000,
+        "loss": 3.0367851220071316
+      },
+      {
+        "event": "validation",
+        "step": 85000,
+        "loss": 3.0146907828748226
+      },
+      {
+        "event": "validation",
+        "step": 90000,
+        "loss": 3.0001668594777584
+      },
+      {
+        "event": "validation",
+        "step": 95000,
+        "loss": 3.0107094198465347
+      },
+      {
+        "event": "validation",
+        "step": 100000,
+        "loss": 2.997572246938944
+      },
+      {
+        "event": "validation",
+        "step": 105000,
+        "loss": 2.9916713759303093
+      },
+      {
+        "event": "validation",
+        "step": 107419,
+        "loss": 2.9952222295105457
+      }
+    ]
+  },
+  "checkpoint": {
+    "path": "checkpoints/step-00107419.pt",
+    "bytes": 6652305,
+    "sha256": "0a328c6938af044d65ae26758f7a8fe0a6e8f50e3db71d1af0eaed11b9bcc03c",
+    "format": "ssos.language.550k.checkpoint.v1",
+    "contains": [
+      "master weights",
+      "worker weights",
+      "AdamW optimizer state",
+      "RNG state",
+      "corpus identity",
+      "training schedule"
+    ]
+  },
+  "corpus_identity": {
+    "corpus_sha256": "cea5658dba2c6407c4ba0a42c2ac40684da5e173e33946c9598ce0d336bf6b07",
+    "vocab_sha256": "7aa138b645048db4c685cef473be6bbd1873749118f9b7f7cf8f2abe8f69b9c1",
+    "merges_sha256": "ccbb157cc31da39d06387198bb51075eb56d9b19c32b018c76399356b64db0a9"
+  },
+  "tokenizer": {
+    "vocab_sha256": "7aa138b645048db4c685cef473be6bbd1873749118f9b7f7cf8f2abe8f69b9c1",
+    "merges_sha256": "ccbb157cc31da39d06387198bb51075eb56d9b19c32b018c76399356b64db0a9"
+  },
+  "quality_samples": "results/first-checkpoint/quality.json"
+}

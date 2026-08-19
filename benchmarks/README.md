@@ -7,6 +7,20 @@ versioned.
 
 ## Reproducible packages
 
+### [SSOS 550k split-language training](ssos-550k-language-training/README.md)
+
+**Official release:** SSOS ESP32 V4.0.0
+
+Reproduce and continue a custom 549,984-parameter causal-language model with
+independently owned master and worker stages. The package includes the exact
+step-107,419 checkpoint, tokenizer, deterministic curriculum builders,
+resumable cumulative-token trainer, 9-D transaction protocol, quality evidence
+and continuous-versus-split numerical gate.
+
+First-checkpoint result: 54,998,528 presented tokens (100.00023
+tokens/parameter), best held-out loss 2.991671 and exact one-step split
+equivalence.
+
 ### [Quark-v2-0.5M interleaved pipelines](quark-v2-0.5m-pair-pipeline/README.md)
 
 **Official release:** SSOS ESP32 V3.0.1

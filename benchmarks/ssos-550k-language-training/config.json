@@ -1,0 +1,14 @@
+{
+  "format": "ssos.language.550k.v1",
+  "vocab_size": 940,
+  "dim": 96,
+  "hidden_dim": 192,
+  "n_layers": 4,
+  "n_heads": 4,
+  "max_seq_len": 256,
+  "split_layer": 2,
+  "parameter_count": 549984,
+  "master_parameter_count": 274944,
+  "worker_parameter_count": 275040,
+  "special_tokens": ["<bos>", "<pad>", "<eos>", "<unk>"]
+}

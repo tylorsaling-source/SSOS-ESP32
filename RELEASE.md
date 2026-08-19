@@ -1,5 +1,26 @@
 # SSOS ESP32 release guide
 
+## V4.0.0: reproducible split-language training and first checkpoint
+
+V4 publishes the first reproducible checkpoint for a custom
+549,984-parameter causal-language model with separately owned master and worker
+stages. The package contains the exact checkpoint, tokenizer, architecture,
+curriculum builders, resumable trainer, 9-D transaction contract and a
+deterministic continuous-versus-split update gate.
+
+The first checkpoint reached 54,998,528 presented tokens, or 100.00023 tokens
+per parameter. Its best recorded held-out loss was 2.991671 at step 105,000;
+the final step-107,419 evaluation was 2.995222. The checkpoint retains master
+and worker weights, AdamW state, RNG state, tokenizer/corpus identity and the
+training schedule.
+
+The master owns embeddings and layers 0-1 (274,944 parameters). The worker owns
+layers 2-3, final normalization and the language head (275,040 parameters).
+The split-equivalence gate verifies identical loss, gradients and updated
+weights for one continuous update and one detached-boundary update.
+
+See the complete [V4 training package](benchmarks/ssos-550k-language-training/README.md).
+
 ## V1.0.0: packet-controller baseline
 
 V1 is the frozen, hardware-tested baseline for the stated ESP32-S3-WROOM-1U
