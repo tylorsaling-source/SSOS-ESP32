@@ -7,6 +7,15 @@ versioned.
 
 ## Reproducible packages
 
+### [SSOS 550k cluster 3–4–5](ssos-550k-language-cluster-345/README.md)
+
+**Official release:** SSOS ESP32 V4.0.1
+
+A standalone fresh training lineage for the same 549,984-parameter split
+architecture. It includes only the cluster 3–4–5 step-5,000 checkpoint and its
+own identity, quality evidence, tokenizer, trainer and verification tools. The
+V4.0.0 checkpoint remains in its separate package.
+
 ### [SSOS 550k split-language training](ssos-550k-language-training/README.md)
 
 **Official release:** SSOS ESP32 V4.0.0

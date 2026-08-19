@@ -18,6 +18,11 @@ Both lineages retain the same parameter split, tokenizer/corpus contract and
 9-D transaction format, allowing direct comparison without sharing learned
 state.
 
+V4.0.1 is packaged independently at
+[`benchmarks/ssos-550k-language-cluster-345`](benchmarks/ssos-550k-language-cluster-345/README.md).
+Its release ZIP does not contain the V4.0.0 checkpoint. The original V4.0.0
+package and release remain separate.
+
 ## V4.0.0: reproducible split-language training and first checkpoint
 
 V4 publishes the first reproducible checkpoint for a custom

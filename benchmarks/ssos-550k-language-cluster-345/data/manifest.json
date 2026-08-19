@@ -1,0 +1,14 @@
+{
+  "format": "ssos.language.curriculum.v2",
+  "design": "adult domain windows plus Simple English; no TinyStories",
+  "domain_windows": 8350,
+  "general_windows": 12480,
+  "domain_characters": 4000319,
+  "general_characters": 4000609,
+  "domain_fraction_by_characters": 0.4999818771022561,
+  "characters": 8000928,
+  "vocab_size": 940,
+  "corpus_sha256": "cea5658dba2c6407c4ba0a42c2ac40684da5e173e33946c9598ce0d336bf6b07",
+  "vocab_sha256": "7aa138b645048db4c685cef473be6bbd1873749118f9b7f7cf8f2abe8f69b9c1",
+  "merges_sha256": "ccbb157cc31da39d06387198bb51075eb56d9b19c32b018c76399356b64db0a9"
+}

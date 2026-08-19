@@ -1,16 +1,10 @@
-# SSOS ESP32 V4.0.1: independent 550k split-language training
+# SSOS ESP32 V4.0.0: reproducible 550k split-language training
 
 V4.0.0 publishes the first reproducible training checkpoint for a custom
 549,984-parameter causal-language model divided into master and worker stages.
 The package includes the exact checkpoint, tokenizer, model and split-boundary
 implementation, corpus builder, deterministic gradient-equivalence gate,
 quality samples, continuation controls, and physical split-training protocol.
-
-V4.0.1 adds a second, independently initialized lineage under
-[`clusters/cluster-345`](clusters/cluster-345/README.md). Its weights,
-optimizer, RNG and checkpoints are separate from the original lineage while
-the architecture, tokenizer, corpus identity and split transaction remain
-comparable.
 
 ## What V4.0.0 adds
 
@@ -139,4 +133,3 @@ first checkpoint that physical implementations compare against.
 - `data/` — accepted tokenizer and identity manifest
 - `domain/` — authored field-language material
 - `results/` — compact first-checkpoint evidence
-- `clusters/cluster-345/` — independent lineage identity, checkpoint and evidence

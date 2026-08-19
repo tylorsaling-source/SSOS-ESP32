@@ -1,11 +1,11 @@
-# V4.0.1 package manifest
+# V4.0.0 package manifest
 
 ## Included capabilities
 
 | Path | Purpose |
 |---|---|
 | `README.md` | Start-to-finish public guide |
-| `VERSION` | Package version 4.0.1 |
+| `VERSION` | Package version 4.0.0 |
 | `config.json` | Exact 549,984-parameter architecture |
 | `TRAINING_PROTOCOL.md` | 9-D physical forward/backward/update contract |
 | `checkpoints/step-00107419.pt` | First resumable master/worker checkpoint |
@@ -21,7 +21,6 @@
 | `tools/quality_gate.py` | Deterministic language inspection |
 | `tools/generate.py` | Prompted checkpoint generation |
 | `results/first-checkpoint/` | Compact checkpoint and quality evidence |
-| `clusters/cluster-345/` | Independent fresh-lineage checkpoint and evidence |
 | `SHA256SUMS` | Integrity for every packaged file |
 
 ## Excluded runtime material
