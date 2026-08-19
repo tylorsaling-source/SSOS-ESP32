@@ -2,17 +2,18 @@
 
 ## 1. Confirm the target
 
-Prebuilt images are only for ESP32-S3-WROOM-1U N16R8 with 16 MB QIO flash,
-native USB Serial/JTAG, and PSRAM disabled. Other boards require a source build.
+Prebuilt images are only for ESP32-S3-WROOM-1U N16R8 with 16 MB QIO flash and
+native USB Serial/JTAG. V1/V2 disable PSRAM; V3.0.1 requires 8 MB OPI PSRAM.
+Other boards require a source build and validation.
 
 ## 2. Choose a release
 
 - V1 is the hardware-tested packet-controller baseline.
 - V2 adds a fixed packet-backed 9-input/8-output linear head but has not been
   physically flashed in the published validation record.
-- V3 is the physically tested two-board Quark language pipeline. It uses
-  separate master and worker applications and does not expose the V1/V2 packet
-  console while running.
+- V3.0.1 is the physically tested Quark language pipeline. It supports the
+  accepted two-board pair and an optional one-master/two-worker topology. It
+  does not expose the V1/V2 packet console while running.
 
 Download and extract the matching ZIP from
 [GitHub Releases](https://github.com/tylorsaling-source/SSOS-ESP32/releases).
@@ -24,7 +25,8 @@ path validates the target and requires an explicit `FLASH <port>` confirmation.
 
 For V3, follow the package's [wiring and flashing
 guide](benchmarks/quark-v2-0.5m-pair-pipeline/README.md). V3 requires two boards
-and flashes one as master and one as worker.
+for the pair or three for the optional extension, with one distinct image per
+documented role.
 
 Flashing any release replaces the selected board's current application.
 

@@ -38,3 +38,20 @@ They do not establish a 2x reduction in one stream's causal token latency.
 
 Machine-readable original evidence is in
 `results/physical-20260818-original-baseline/benchmark.json`.
+
+## Three-board four-context extension
+
+| Path | Contexts | Accepted gate | Oracle | Aggregate decode throughput |
+|---|---:|---:|---:|---:|
+| Independent two-lane master plus two workers | 4 | 1 | 96/96 | 87.927387 tok/s |
+
+The trio is `4.760696x` the one-board 18.469438 tok/s baseline and `4.792933x`
+the original sequential-pair 18.345216 tok/s median. These are aggregate
+throughput comparisons across four independent contexts. They are not
+single-stream latency comparisons.
+
+An earlier equivalent gate passed 96/96 at 87.871532 tok/s, but a five-run
+trio stability statistic was not completed. The accepted result included one
+checksum-recovered lane-2 packet and did not meet the requested 90 tok/s goal.
+Machine-readable evidence is in
+`results/physical-20260819-trio-pipeline/result.json`.
