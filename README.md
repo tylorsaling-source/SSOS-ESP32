@@ -1,7 +1,7 @@
 # SSOS ESP32-S3
 
 **Packet-state firmware, replaceable 9-D heads, and physically tested
-two-board language inference for ESP32-S3.**
+two- and three-board language inference for ESP32-S3.**
 
 [![Release](https://img.shields.io/github/v/release/tylorsaling-source/SSOS-ESP32)](https://github.com/tylorsaling-source/SSOS-ESP32/releases)
 [![Integrity](https://github.com/tylorsaling-source/SSOS-ESP32/actions/workflows/release-integrity.yml/badge.svg)](https://github.com/tylorsaling-source/SSOS-ESP32/actions/workflows/release-integrity.yml)
@@ -16,11 +16,11 @@ function, not merely by version number:
 | --- | --- | --- | --- |
 | [V1.0.0](https://github.com/tylorsaling-source/SSOS-ESP32/releases/tag/v1.0.0) | One-board packet controller with persistent compact state and an internal 9-D runtime | You need device-owned records, replay, migration, or the original kernel experiments | Hardware-tested on ESP32-S3-WROOM-1U N16R8 |
 | [V2.0.0](https://github.com/tylorsaling-source/SSOS-ESP32/releases/tag/v2.0.0) | V1 plus one packet-backed fixed 9-input/8-output linear head | You need a replaceable tiny scoring/action head | Compiled and host/artifact-validated; not physically flashed |
-| [V3.0.0](https://github.com/tylorsaling-source/SSOS-ESP32/releases/tag/v3.0.0) | One Quark-v2-0.5M language model split across a master and worker | You want two boards cooperating on pretrained text inference | Physically tested: 240/240 expected tokens, 44.731 aggregate tok/s median |
+| [V3.0.1](https://github.com/tylorsaling-source/SSOS-ESP32/releases/tag/v3.0.1) | Quark-v2-0.5M split across a pair, with an optional two-lane three-board extension | You want physical boards cooperating on pretrained text inference | Pair: 240/240 at 44.731 tok/s median; trio gate: 96/96 at 87.927 tok/s |
 
-V3 is not a silent upgrade to V1 or V2. It is a separate two-board application
-with different master and worker firmware. Installing it replaces the selected
-boards' current applications, so preserve anything you need first.
+V3 is not a silent upgrade to V1 or V2. It is a separate multi-board
+application with distinct master and worker roles. Installing it replaces the
+selected boards' current applications, so preserve anything you need first.
 
 ## V3: two boards run one language model
 
@@ -68,6 +68,16 @@ Baseline** at 18.345216 tok/s—not against the standalone one-board reference.
 > **Claim boundary from the accepted `result.json` (verbatim)**
 >
 > This is aggregate throughput for two independent interleaved streams. It does not halve one stream's autoregressive causal latency. The firmware transport_us counters include worker-compute wait time and must not be interpreted as pure SPI serialization latency.
+
+### Optional three-board extension
+
+V3 also includes a one-master/two-worker topology. It runs two independent
+copies of the proven two-context interleaving schedule on separate 40 MHz SPI
+lanes, producing four concurrent contexts. The accepted physical gate was
+96/96 exact tokens at 87.927387 aggregate tok/s. This was not a five-run
+stability result, lane 2 required one checksum retry, and the requested 90
+tok/s target was not met. Exact wiring, binaries, source and evidence are in
+the same [V3 package](benchmarks/quark-v2-0.5m-pair-pipeline/README.md#three-board-extension).
 
 ## What V1 and V2 provide
 
@@ -153,19 +163,23 @@ persistence instead of waiting for the background flush threshold.
 
 ## Supported hardware
 
-All supplied prebuilt images target exactly:
+The V1/V2 prebuilt images target exactly:
 
 - ESP32-S3-WROOM-1U N16R8;
 - 16 MB flash in QIO mode;
 - native USB Serial/JTAG (`303A:1001`); and
 - PSRAM disabled.
 
+The V3.0.1 Quark images instead require the documented N16R8 target with
+8 MB OPI PSRAM enabled. Use only the V3 package's own build and flash scripts;
+do not mix V1/V2 and V3 images or board settings.
+
 Do not flash the supplied images onto another ESP32 family or flash layout.
 Other ESP32-S3 boards require a source build with the correct board settings.
 
-V1 and V2 run on one board. V3 requires two supported boards, two USB
-connections for installation and observation, and the documented five SPI
-signals plus a common ground between them.
+V1 and V2 run on one board. The base V3 topology requires two supported boards;
+the optional extension requires three. Use the documented five signals per SPI
+lane and a common ground.
 
 ## Install
 

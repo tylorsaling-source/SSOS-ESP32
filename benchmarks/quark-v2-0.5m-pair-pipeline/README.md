@@ -1,9 +1,11 @@
-# SSOS ESP32 V3.0.0: Quark two-board pipeline
+# SSOS ESP32 V3.0.1: Quark interleaved pipelines
 
 Run one pretrained 465,504-parameter causal-language model as a two-context
-pipeline across two ESP32-S3 boards connected by 40 MHz SPI.
+pipeline across two ESP32-S3 boards, or duplicate that proven schedule across
+one master and two workers for four concurrent contexts. Both topologies use
+40 MHz SPI.
 
-This package is the official V3.0.0 release payload, reproducible benchmark,
+This package is the official V3.0.1 release payload, reproducible benchmark,
 and working reference implementation.
 It demonstrates higher aggregate decode throughput by interleaving two
 independent autoregressive contexts. It does **not** claim that a single
@@ -11,14 +13,16 @@ dependent token stream has half the latency.
 
 ## Start here
 
-This project is for someone who wants to see two small physical boards
-cooperate on real pretrained language-model inference.
+This project is for someone who wants to see small physical boards cooperate
+on real pretrained language-model inference.
 
 - The **master** runs model layers 0-1 and sends a 96-number intermediate
   representation over SPI.
 - The **worker** runs layers 2-3 and chooses the next token.
 - Two separate text contexts alternate, so neither board waits idle for the
   other on every step.
+- The optional three-board topology runs two independent copies of that
+  interleaving schedule at once: four contexts total.
 - A computer sends token IDs and receives token IDs over the master's USB
   serial port. Text tokenization and rendering stay on the computer.
 
@@ -26,13 +30,13 @@ Choose a path:
 
 | You want to... | Start with... |
 |---|---|
-| Use the exact tested firmware | [Wiring](WIRING.md), then **Quick start with prebuilt firmware** below |
+| Use the exact tested firmware | [Wiring](WIRING.md), then choose the two- or three-board quick start below |
 | Inspect or modify the implementation | **Build from source** below |
 | Check the speed claim | [Original baselines](BASELINES.md), then **Run the acceptance test** |
 | Audit every included file | [Publication manifest](PACKAGE_MANIFEST.md) and `SHA256SUMS` |
 
-You need two supported ESP32-S3 boards, two USB connections, and six jumper
-connections between the boards: five signals plus one common ground. No Wi-Fi,
+The accepted pair needs two supported boards. The accepted trio needs three
+boards, two independent five-signal SPI lanes, and common ground. No Wi-Fi,
 cloud service, Pi, Uno, sensor, or training step is required.
 
 ## Verified physical result
@@ -60,6 +64,29 @@ The exact result is in
 The complete original comparison, including prefill/decode/transport timing and
 the pre-change pair health recheck, is in [`BASELINES.md`](BASELINES.md).
 
+### Three-board extension
+
+The three-board firmware duplicates the accepted pair interleaving across two
+independent SPI lanes. A physical acceptance run produced **96/96 exact oracle
+tokens at 87.927387 aggregate tok/s**. An earlier equivalent gate also passed
+96/96 at 87.871532 tok/s.
+
+| Gate | Result |
+|---|---:|
+| Boards | One master plus two workers |
+| Independent contexts | 4 |
+| Model per context | 465,504 parameters, Q8_0 group 8 |
+| SPI | Two independent 40 MHz lanes |
+| Accepted oracle agreement | 96/96 tokens |
+| Accepted aggregate throughput | 87.927387 tok/s |
+| Versus original sequential pair median | 4.792933x |
+| Checksum retries | Lane 1: 0; lane 2: 1 |
+
+This is an accepted exact result, but it is not presented as a five-run
+robustness result. The requested 90 tok/s threshold was not met. Lane 2 uses
+GPIO-matrix-routed pins and required one recovered packet. See
+[`results/physical-20260819-trio-pipeline/result.json`](results/physical-20260819-trio-pipeline/result.json).
+
 ## What runs where
 
 ```text
@@ -72,6 +99,16 @@ schedule: worker(context 0) overlaps master(context 1), then alternates
 Each board owns two independent Transformer instances and two independent KV
 caches. Every SPI frame carries a stream ID and per-stream sequence number.
 Responses with the wrong stream or sequence are rejected.
+
+The trio runs this schedule twice:
+
+```text
+lane 1: master contexts 0/1 <-> worker 1 contexts 0/1
+lane 2: master contexts 2/3 <-> worker 2 contexts 0/1
+```
+
+Each lane preserves its in-flight request separately from the next prepared
+request, so a checksum retry cannot accidentally resend the other stream.
 
 ## Hardware scope
 
@@ -126,6 +163,21 @@ python3 -m pip install esptool pyserial
 Flash the worker first. When idle, the worker LED is green and the master LED
 is violet.
 
+### Three-board prebuilt firmware
+
+Wire both lanes exactly as shown in [`WIRING.md`](WIRING.md), then flash both
+workers before the master:
+
+```powershell
+python -m pip install esptool pyserial
+.\scripts\flash-trio-prebuilt-windows.ps1 -Role trio-worker1 -Port COM5
+.\scripts\flash-trio-prebuilt-windows.ps1 -Role trio-worker2 -Port COM6
+.\scripts\flash-trio-prebuilt-windows.ps1 -Role trio-master -Port COM7
+```
+
+POSIX equivalents are in `scripts/flash-trio-prebuilt-posix.sh`. Worker 1 is
+green, worker 2 is orange, and the trio master is violet while idle.
+
 ## Build from source
 
 Install Arduino CLI and the Espressif `esp32` core version 3.3.11. The scripts
@@ -145,6 +197,21 @@ Linux or macOS:
 ```
 
 Outputs are written under `build/master` and `build/worker`.
+
+For the three-board roles:
+
+```powershell
+.\scripts\build-trio-windows.ps1
+```
+
+or:
+
+```sh
+./scripts/build-trio-posix.sh
+```
+
+Outputs are written under `build/trio-master`, `build/trio-worker1`, and
+`build/trio-worker2`.
 
 ## Run the acceptance test
 
@@ -175,8 +242,17 @@ The upstream model card declares Apache License 2.0. See
 
 ## Claim boundaries
 
+> This is aggregate throughput for two independent interleaved streams. It does
+> not halve one stream's autoregressive causal latency. The firmware
+> `transport_us` counters include worker-compute wait time and must not be
+> interpreted as pure SPI serialization latency.
+
 - This is aggregate throughput from two interleaved contexts, not 2x lower
   causal latency for one stream.
+- The 87.927387 tok/s trio result is aggregate throughput from four independent
+  contexts, not a reduction in one context's dependent-token latency.
+- The trio result is a physical acceptance gate, not a five-run stability
+  claim, and it does not claim the unmet 90 tok/s target.
 - Tokenization and text rendering remain host-side; the benchmark sends and
   receives token IDs.
 - The bundled prompts are deterministic correctness tests, not a broad model
@@ -188,8 +264,8 @@ The upstream model card declares Apache License 2.0. See
 
 ## Package contents
 
-- `firmware/` - master/worker source and embedded pretrained model
-- `prebuilt/` - exact tested boot, partition and application images
+- `firmware/` - pair/trio role source and embedded pretrained model
+- `prebuilt/` - exact tested boot, partition and pair/trio application images
 - `model/` - accepted Q8_0 group-8 checkpoint artifact
 - `scripts/` - Windows and POSIX build/flash helpers
 - `tools/` - serial capture and fail-closed verifier

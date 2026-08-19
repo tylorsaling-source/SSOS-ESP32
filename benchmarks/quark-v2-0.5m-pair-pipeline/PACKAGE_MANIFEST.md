@@ -1,4 +1,4 @@
-# SSOS ESP32 V3.0.0 publication manifest
+# SSOS ESP32 V3.0.1 publication manifest
 
 Authoritative repository destination:
 `benchmarks/quark-v2-0.5m-pair-pipeline/`
@@ -7,13 +7,17 @@ Authoritative repository destination:
 
 | Path | Purpose |
 |---|---|
-| `VERSION` | Official package version (`3.0.0`) |
+| `VERSION` | Official package version (`3.0.1`) |
 | `firmware/quark_pair_pipeline/` | Two-context SPI pipeline and role entrypoint |
+| `firmware/quark_trio_pipeline/` | Two independent lanes running four interleaved contexts |
 | `firmware/quark_esp32/` | Q8 runtime and embedded accepted model |
 | `model/quark-q8-g8.bin` | Accepted premade Q8_0 model artifact |
 | `prebuilt/common/` | Exact bootloader, partition and boot-app images |
 | `prebuilt/master/app.bin` | Exact tested `-O2` master application |
 | `prebuilt/worker/app.bin` | Exact tested `-O2` worker application |
+| `prebuilt/trio-master/app.bin` | Exact accepted four-context master application |
+| `prebuilt/trio-worker1/app.bin` | Exact accepted lane-1 worker application |
+| `prebuilt/trio-worker2/app.bin` | Exact accepted lane-2 worker application |
 | `scripts/` | Windows and POSIX build/flash commands |
 | `tools/` | Five-run serial capture and fail-closed verification |
 | `results/` | Accepted physical result and claim boundaries |
@@ -29,7 +33,7 @@ Authoritative repository destination:
 - The FP32 conversion artifact and original safetensors checkpoint
 - Arduino build objects, ELF files, maps and compiler caches
 - Downloaded Zig or other toolchains
-- Experimental three-board firmware that did not pass its response gate
+- Rejected three-board timing experiments and compiler/build caches
 - Private filesystem paths, Tailscale addresses and machine names
 
 ## Public claim
@@ -42,3 +46,8 @@ sequential-pair median.
 
 The claim is aggregate throughput only. It is not a 2x single-stream latency,
 general model quality, arbitrary-model, or arbitrary-board claim.
+
+The V3 package also includes an accepted three-board extension: one master and
+two workers produced 96/96 expected tokens at 87.927387 aggregate tok/s across
+four independent contexts. This is a one-gate physical result, not a five-run
+stability claim, and the requested 90 tok/s threshold was not met.
