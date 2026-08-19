@@ -52,17 +52,22 @@ contains:
 | Measurement | Result |
 | --- | ---: |
 | Five-run oracle agreement | 240/240 tokens |
-| Median aggregate throughput | 44.730763 tok/s |
-| One-board baseline | 18.469438 tok/s |
-| Original sequential-pair median | 18.345216 tok/s |
-| V3 / one-board | 2.421880x |
-| V3 / original pair | 2.438279x |
+| V3 two-context interleaved pair | 44.730763 tok/s median |
+| **Paired Two-Board Non-Interleaved Baseline** | **18.345216 tok/s median** |
+| **Interleaving gain over the paired baseline** | **2.438279x (2.44x)** |
+| Standalone one-board reference (not the headline baseline) | 18.469438 tok/s |
 | Worker reset and rejoin | PASS, 48/48 tokens |
 
-"Aggregate" is essential: the pair produces more total tokens by interleaving
-two independent contexts. V3 does not claim 2x lower latency for one dependent
-autoregressive text stream. The firmware's transport timer includes time spent
-waiting for worker computation and is not a pure SPI-serialization measurement.
+The headline **2.44x speedup** is specifically the gain from adding two-context
+interleaving to the same two-board arrangement. Interleaving overlaps worker
+compute for one context with the next context's master-side work and SPI
+handoff. It is measured against the **Paired Two-Board Non-Interleaved
+Baseline** at 18.345216 tok/s—not against the standalone one-board reference.
+
+> [!CAUTION]
+> **Claim boundary from the accepted `result.json` (verbatim)**
+>
+> This is aggregate throughput for two independent interleaved streams. It does not halve one stream's autoregressive causal latency. The firmware transport_us counters include worker-compute wait time and must not be interpreted as pure SPI serialization latency.
 
 ## What V1 and V2 provide
 
@@ -277,9 +282,11 @@ quoted as an SSOS speedup. The fused 9-to-8 kernel is measured directly rather
 than estimated as eight 9-to-1 calls.
 
 V3 has a separate evidence set under
-`benchmarks/quark-v2-0.5m-pair-pipeline/results/`. Its 2.421880x figure compares
-aggregate output from two interleaved contexts against the recorded one-board
-baseline on the named model and hardware. It is not a general 2x inference or
+`benchmarks/quark-v2-0.5m-pair-pipeline/results/`. Its headline 2.438279x
+(2.44x) figure is the gain from two-context interleaving over the **Paired
+Two-Board Non-Interleaved Baseline** on the named model and hardware. The
+18.469438 tok/s standalone result is retained as a secondary one-board
+reference, not the headline baseline. This is not a general 2x inference or
 accuracy claim.
 
 ## Collaborate
