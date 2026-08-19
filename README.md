@@ -1,80 +1,88 @@
 # SSOS ESP32-S3
 
-**Persistent packet state and replaceable tiny inference heads on ESP32-S3.**
+**Packet-state firmware, replaceable 9-D heads, and physically tested
+two-board language inference for ESP32-S3.**
 
 [![Release](https://img.shields.io/github/v/release/tylorsaling-source/SSOS-ESP32)](https://github.com/tylorsaling-source/SSOS-ESP32/releases)
 [![Integrity](https://github.com/tylorsaling-source/SSOS-ESP32/actions/workflows/release-integrity.yml/badge.svg)](https://github.com/tylorsaling-source/SSOS-ESP32/actions/workflows/release-integrity.yml)
 [![License](https://img.shields.io/github/license/tylorsaling-source/SSOS-ESP32)](LICENSE)
 
-## What SSOS is for
+## Start here: choose the system you want
 
-SSOS turns a supported ESP32-S3 into a small, host-controlled edge state and
-inference node. A computer or Android phone sends text commands over native USB
-serial. The board can:
+SSOS now publishes three deliberately different firmware releases. Choose by
+function, not merely by version number:
 
-- hold up to 32 compact records and find them by ID or nine-number coordinate;
-- save those records to flash immediately on command or through the runtime's
-  adaptive background flush, then load them after a restart;
-- export the packet bank as replayable text for backup, migration, or versioning;
-- run an experimental internal 9-D heuristic whose adaptive flush threshold
-  controls background persistence while its other outputs remain internal; and
-- in V2, rebuild and execute one fixed 9-input/8-output linear model head whose
-  72 weights are stored as ordinary packets.
+| Release | What runs on the board | Choose it when | Validation |
+| --- | --- | --- | --- |
+| [V1.0.0](https://github.com/tylorsaling-source/SSOS-ESP32/releases/tag/v1.0.0) | One-board packet controller with persistent compact state and an internal 9-D runtime | You need device-owned records, replay, migration, or the original kernel experiments | Hardware-tested on ESP32-S3-WROOM-1U N16R8 |
+| [V2.0.0](https://github.com/tylorsaling-source/SSOS-ESP32/releases/tag/v2.0.0) | V1 plus one packet-backed fixed 9-input/8-output linear head | You need a replaceable tiny scoring/action head | Compiled and host/artifact-validated; not physically flashed |
+| [V3.0.0](https://github.com/tylorsaling-source/SSOS-ESP32/releases/tag/v3.0.0) | One Quark-v2-0.5M language model split across a master and worker | You want two boards cooperating on pretrained text inference | Physically tested: 240/240 expected tokens, 44.731 aggregate tok/s median |
 
-The practical idea is simple: flash the compatible firmware once, then change
-small controller state or a tiny decision head as data instead of rebuilding
-and reflashing the application for every update.
+V3 is not a silent upgrade to V1 or V2. It is a separate two-board application
+with different master and worker firmware. Installing it replaces the selected
+boards' current applications, so preserve anything you need first.
 
-## What you can use it for now
+## V3: two boards run one language model
 
-| Use | What SSOS provides | Current status |
-| --- | --- | --- |
-| Portable device configuration | Small named records with role metadata, 9-number coordinates, NVS persistence, and text export/replay | V1 hardware-tested on the stated board |
-| Replaceable edge scoring or action head | A host supplies 9 floats; V2 returns 8 linear scores using packet-stored Q10 weights | V2 compiled and artifact-validated; not physically flashed |
-| Split host/MCU inference experiments | A laptop, Pi, or phone computes a feature vector while the ESP32 owns and runs the final 9-to-8 head | Interface and example artifacts are included |
-| Tiny-kernel research | Device benchmarks and raw traces for the custom 9-to-1 and fused 9-to-8 kernels, with equal-work comparisons labeled | V1 device traces included |
-| Controller-state backup or migration | `DUMP` emits packet records that can be replayed as `PKT` commands on compatible SSOS firmware | Packet state only; it does not copy firmware |
-| Two-board tiny-language inference | A separate reproducible package pipelines a pretrained 465,504-parameter model across two ESP32-S3 boards | Physically tested at 44.731 aggregate tok/s with 240/240 expected tokens |
+V3 divides a real pretrained 465,504-parameter causal-language model across two
+ESP32-S3 boards connected by 40 MHz SPI:
 
-Examples include a small device-mode registry, replaceable thresholds or action
-scores, a portable controller manifest, and experiments where a larger host
-model delegates its last tiny linear decision layer to an ESP32-S3. See
-[What you can build](docs/USE_CASES.md) for concrete boundaries and examples.
+```text
+computer ─USB─> master: layers 0-1 ─SPI─> worker: layers 2-3 + next token
+                 context B starts       while context A finishes
+```
+
+The master and worker each keep two independent Transformer/KV-cache contexts.
+While the worker completes one context, the master begins the other. Stream IDs
+and per-stream sequence numbers reject crossed or stale responses.
+
+The complete [V3 package](benchmarks/quark-v2-0.5m-pair-pipeline/README.md)
+contains:
+
+- the premade Q8 group-8 Quark-v2-0.5M model;
+- exact physically tested master and worker firmware plus source;
+- a six-wire table covering five signals and the required shared ground;
+- Windows, Linux, and macOS build and flashing commands;
+- original one-board and sequential-pair comparison measurements;
+- result capture and a fail-closed five-run verifier; and
+- checksums, licenses, notices, and a publication manifest.
+
+### Accepted physical result
+
+| Measurement | Result |
+| --- | ---: |
+| Five-run oracle agreement | 240/240 tokens |
+| Median aggregate throughput | 44.730763 tok/s |
+| One-board baseline | 18.469438 tok/s |
+| Original sequential-pair median | 18.345216 tok/s |
+| V3 / one-board | 2.421880x |
+| V3 / original pair | 2.438279x |
+| Worker reset and rejoin | PASS, 48/48 tokens |
+
+"Aggregate" is essential: the pair produces more total tokens by interleaving
+two independent contexts. V3 does not claim 2x lower latency for one dependent
+autoregressive text stream. The firmware's transport timer includes time spent
+waiting for worker computation and is not a pure SPI-serialization measurement.
+
+## What V1 and V2 provide
+
+The one-board packet firmware accepts text commands over native USB serial. It
+can hold up to 32 compact records, find them by ID or nine-number coordinate,
+save/load them through NVS, export them as replayable text, and run an internal
+9-D adaptive heuristic. V2 additionally reconstructs a fixed 9-input/8-output
+linear head from eight packet-stored Q10 rows.
+
+That makes V1/V2 useful for compact device-owned configuration, tiny scoring
+heads, controller-state backup/migration, and equal-work kernel experiments.
+See [What you can build](docs/USE_CASES.md) for the exact boundaries.
 
 > [!IMPORTANT]
-> The core V1/V2 packet firmware is not a general-purpose operating system,
-> database, secure store, filesystem, LLM runtime, on-device training
-> framework, sensor platform, Wi-Fi/BLE mesh, MCP server, or autonomous safety
-> controller. The separate Quark benchmark below is an intentionally scoped
-> two-board language-model experiment, not a capability of the packet firmware.
+> SSOS is not a general-purpose operating system, database, secure store,
+> filesystem, on-device training framework, sensor platform, Wi-Fi/BLE mesh,
+> MCP server, or autonomous safety controller. V3 executes only its packaged
+> model shape and firmware; it is not an arbitrary-model LLM runtime.
 
-## Two-board language-model benchmark
-
-If you want to reproduce the distributed language experiment, start with the
-[Quark two-board pipeline](benchmarks/quark-v2-0.5m-pair-pipeline/README.md).
-
-In plain language, the package puts the first half of one tiny pretrained text
-model on a master ESP32-S3 and the second half on a worker ESP32-S3. It keeps
-two independent text contexts alive. While the worker finishes one context,
-the master starts work on the other, increasing total output across both
-contexts.
-
-The physically tested package includes:
-
-- the premade 465,504-parameter Quark-v2-0.5M model;
-- exact master and worker firmware plus full source;
-- a six-wire connection table with a shared ground;
-- Windows, Linux, and macOS build and flashing commands;
-- a five-run pass/fail verifier; and
-- original standalone and sequential-pair baselines.
-
-The accepted five-run result was 240/240 expected tokens at a median 44.730763
-aggregate tokens/second. That is 2.421880x the one-board baseline and 2.438279x
-the original sequential two-board pair. "Aggregate" is important: two
-independent contexts produce more total tokens, but one dependent text stream
-does not receive a 2x latency reduction.
-
-## First useful session
+## First useful V1/V2 session
 
 After installing a compatible release, open a serial terminal at 115200 baud
 and send:
@@ -100,7 +108,7 @@ records, 39 stored ID characters, 63 body characters, and nine signed 16-bit
 coordinate values. Read the [packet protocol](docs/PROTOCOL.md) before building
 an integration.
 
-## Three different things are called 9-D
+## Three V1/V2 concepts are called 9-D
 
 They are independent and are not copied into one another automatically:
 
@@ -126,12 +134,7 @@ threshold for background persistence and uses other values within the runtime.
 Its small update is not general neural-network training. The V2 application
 model is trained externally.
 
-## V1 or V2?
-
-| Release | Choose it when | Validation status |
-| --- | --- | --- |
-| [V1.0.0](https://github.com/tylorsaling-source/SSOS-ESP32/releases/tag/v1.0.0) | You want the frozen model-agnostic packet bank, persistence, replay, internal runtime, and benchmark baseline | Hardware-tested on ESP32-S3-WROOM-1U N16R8 |
-| [V2.0.0](https://github.com/tylorsaling-source/SSOS-ESP32/releases/tag/v2.0.0) | You also need the packet-backed fixed 9-to-8 linear execution head | Compiled and host/artifact-validated; not physically flashed |
+## V1/V2 packet-model details
 
 V2 preserves the V1 `ssos.packet.v1` bank. Eight records named `model:w:0`
 through `model:w:7` hold signed-Q10 rows. `MLOAD` validates the rows and builds
@@ -143,9 +146,9 @@ After compatible V2 firmware is installed, replacing those eight model packets
 does not require another firmware flash. Use `SAVE` to force immediate
 persistence instead of waiting for the background flush threshold.
 
-## Supported release hardware
+## Supported hardware
 
-The supplied binary images target exactly:
+All supplied prebuilt images target exactly:
 
 - ESP32-S3-WROOM-1U N16R8;
 - 16 MB flash in QIO mode;
@@ -155,10 +158,23 @@ The supplied binary images target exactly:
 Do not flash the supplied images onto another ESP32 family or flash layout.
 Other ESP32-S3 boards require a source build with the correct board settings.
 
+V1 and V2 run on one board. V3 requires two supported boards, two USB
+connections for installation and observation, and the documented five SPI
+signals plus a common ground between them.
+
 ## Install
 
 Download and extract a ZIP from [Releases](https://github.com/tylorsaling-source/SSOS-ESP32/releases).
 Do not run scripts from inside the ZIP.
+
+### V3 master/worker installation
+
+Start with the V3 [wiring guide](benchmarks/quark-v2-0.5m-pair-pipeline/WIRING.md),
+then use its [prebuilt flashing instructions](benchmarks/quark-v2-0.5m-pair-pipeline/README.md#quick-start-with-prebuilt-firmware).
+Select each port explicitly: one board receives the worker application and the
+other receives the master application. Do not guess ports.
+
+### V1/V2 packet-firmware installation
 
 ### Windows 10 or 11
 
@@ -192,7 +208,7 @@ python3 -m pip install --upgrade esptool
 ./scripts/flash-posix.sh /dev/ttyACM0
 ```
 
-Scripts are supplied for all four host paths. Hardware-validation status is
+V1/V2 scripts are supplied for all four host paths. Hardware-validation status is
 release-specific; the presence of a script is not a claim that every platform
 and board combination was physically tested. Follow the full
 [flashing and recovery guide](docs/FLASHING.md).
@@ -237,7 +253,7 @@ See [Protocol and limits](docs/PROTOCOL.md) for grammar, replacement behavior,
 persistence, response formats, and replay guidance. The [host-tool guide](host/README.md)
 separates current release tooling from older research prototypes.
 
-## Build from source
+## Build V1/V2 from source
 
 The reference build uses Arduino-ESP32 3.3.5 and:
 
@@ -248,6 +264,9 @@ esp32:esp32:esp32s3:USBMode=hwcdc,CDCOnBoot=cdc,UploadMode=default,FlashMode=qio
 Install `arduino-cli`, install the pinned ESP32 core, then run `./build.sh`.
 Release images under `images/flash` remain separate from local build output.
 
+For V3 source builds, use the pinned Arduino-ESP32 3.3.11 commands in the
+[V3 package](benchmarks/quark-v2-0.5m-pair-pipeline/README.md#build-from-source).
+
 ## Benchmark claims
 
 Raw device traces are under `traces/`, with the unique hardware address
@@ -256,6 +275,12 @@ equal-MAC kernels named in those traces. They are not overall AI, model, or
 application speedups. The `hello_world` comparison is unequal and must not be
 quoted as an SSOS speedup. The fused 9-to-8 kernel is measured directly rather
 than estimated as eight 9-to-1 calls.
+
+V3 has a separate evidence set under
+`benchmarks/quark-v2-0.5m-pair-pipeline/results/`. Its 2.421880x figure compares
+aggregate output from two interleaved contexts against the recorded one-board
+baseline on the named model and hardware. It is not a general 2x inference or
+accuracy claim.
 
 ## Collaborate
 

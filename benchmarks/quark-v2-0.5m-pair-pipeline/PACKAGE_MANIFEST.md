@@ -1,12 +1,13 @@
-# Publication manifest
+# SSOS ESP32 V3.0.0 publication manifest
 
-Proposed SSOS-ESP32 destination:
+Authoritative repository destination:
 `benchmarks/quark-v2-0.5m-pair-pipeline/`
 
 ## Included
 
 | Path | Purpose |
 |---|---|
+| `VERSION` | Official package version (`3.0.0`) |
 | `firmware/quark_pair_pipeline/` | Two-context SPI pipeline and role entrypoint |
 | `firmware/quark_esp32/` | Q8 runtime and embedded accepted model |
 | `model/quark-q8-g8.bin` | Accepted premade Q8_0 model artifact |

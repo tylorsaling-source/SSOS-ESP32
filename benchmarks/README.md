@@ -1,11 +1,14 @@
 # SSOS benchmarks
 
-Benchmarks are isolated experiments. They do not silently change the behavior
-or support claims of the core SSOS V1/V2 packet firmware.
+Benchmarks are isolated implementations. They do not silently change the
+behavior or support claims of the core SSOS V1/V2 packet firmware. The Quark
+package below is also the authoritative implementation payload for V3.0.0.
 
 ## Reproducible packages
 
 ### [Quark-v2-0.5M two-board pipeline](quark-v2-0.5m-pair-pipeline/README.md)
+
+**Official release:** SSOS ESP32 V3.0.0
 
 Use two ESP32-S3-WROOM-1U N16R8 boards to run one pretrained 465,504-parameter
 English text model with two independent contexts. The package includes exact

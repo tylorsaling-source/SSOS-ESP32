@@ -10,17 +10,25 @@ native USB Serial/JTAG, and PSRAM disabled. Other boards require a source build.
 - V1 is the hardware-tested packet-controller baseline.
 - V2 adds a fixed packet-backed 9-input/8-output linear head but has not been
   physically flashed in the published validation record.
+- V3 is the physically tested two-board Quark language pipeline. It uses
+  separate master and worker applications and does not expose the V1/V2 packet
+  console while running.
 
 Download and extract the matching ZIP from
 [GitHub Releases](https://github.com/tylorsaling-source/SSOS-ESP32/releases).
 
 ## 3. Install firmware
 
-Follow [docs/FLASHING.md](docs/FLASHING.md). The guided Windows path validates
-the target and requires an explicit `FLASH <port>` confirmation. Flashing
-replaces the board's current application.
+For V1 or V2, follow [docs/FLASHING.md](docs/FLASHING.md). The guided Windows
+path validates the target and requires an explicit `FLASH <port>` confirmation.
 
-## 4. Verify the console
+For V3, follow the package's [wiring and flashing
+guide](benchmarks/quark-v2-0.5m-pair-pipeline/README.md). V3 requires two boards
+and flashes one as master and one as worker.
+
+Flashing any release replaces the selected board's current application.
+
+## 4. Verify V1 or V2
 
 Open the board's serial port at 115200 baud and send:
 
@@ -49,3 +57,6 @@ does not back up firmware.
 
 Read [docs/PROTOCOL.md](docs/PROTOCOL.md) before writing an application and
 [docs/USE_CASES.md](docs/USE_CASES.md) for supported uses and current limits.
+
+For V3, use the package's `tools/capture-pair.py` and
+`tools/verify-result.py`; the V1/V2 packet commands above do not apply.

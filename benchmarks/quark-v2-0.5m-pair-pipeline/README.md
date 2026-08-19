@@ -1,9 +1,10 @@
-# SSOS Quark two-board pipeline
+# SSOS ESP32 V3.0.0: Quark two-board pipeline
 
 Run one pretrained 465,504-parameter causal-language model as a two-context
 pipeline across two ESP32-S3 boards connected by 40 MHz SPI.
 
-This package is a reproducible benchmark and working reference implementation.
+This package is the official V3.0.0 release payload, reproducible benchmark,
+and working reference implementation.
 It demonstrates higher aggregate decode throughput by interleaving two
 independent autoregressive contexts. It does **not** claim that a single
 dependent token stream has half the latency.

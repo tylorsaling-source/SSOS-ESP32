@@ -32,12 +32,43 @@ The packet records remain authoritative. The cache is not a second persistent
 model store. V2 is compiled and host/artifact-validated but has not been
 physically flashed in the published validation record.
 
+## V3.0.0: two-board Quark language pipeline
+
+V3 packages the physically tested Quark-v2-0.5M master/worker implementation
+as one complete release for two ESP32-S3-WROOM-1U N16R8 boards:
+
+1. The master executes model layers 0-1.
+2. A 40 MHz SPI link transfers the intermediate representation.
+3. The worker executes layers 2-3 and next-token selection.
+4. Two independent autoregressive contexts alternate so master and worker
+   computation overlap.
+
+The release contains the pinned 465,504-parameter Q8 group-8 model, exact
+physically tested master and worker images, source, wiring, Windows and POSIX
+build/flash scripts, baseline evidence, result capture, and a fail-closed
+verifier.
+
+The accepted five-run gate produced 240/240 expected tokens at a median
+44.730763 aggregate tokens/second. That is 2.421880x the 18.469438 tok/s
+one-board baseline and 2.438279x the 18.345216 tok/s original sequential-pair
+median. These are aggregate two-context throughput results, not a claim that
+one dependent text stream has 2x lower latency.
+
+V3 is a separate two-board application and does not preserve the V1/V2 packet
+console while running. Flashing V3 replaces the current application on both
+selected boards. Preserve any existing firmware and learned state before
+installing it.
+
+See the complete [V3 package guide](benchmarks/quark-v2-0.5m-pair-pipeline/README.md).
+
 ## Choosing safely
 
 Use V1 for the physically tested packet-state baseline. Choose V2 only when the
 fixed linear model head is needed and its published validation status is
-acceptable. Neither release provides networking, sensors, on-device application
-model training, arbitrary neural-network execution, or security enforcement.
+acceptable. Choose V3 when two supported boards should run the packaged Quark
+language model together. None of the releases provides networking, sensors,
+on-device application-model training, arbitrary neural-network execution, or
+security enforcement.
 
 See [README.md](README.md), [docs/PROTOCOL.md](docs/PROTOCOL.md), and
 [docs/FLASHING.md](docs/FLASHING.md).
