@@ -7,6 +7,10 @@ language inference, and reproducible split-language training for ESP32-S3.**
 [![Integrity](https://github.com/tylorsaling-source/SSOS-ESP32/actions/workflows/release-integrity.yml/badge.svg)](https://github.com/tylorsaling-source/SSOS-ESP32/actions/workflows/release-integrity.yml)
 [![License](https://img.shields.io/github/license/tylorsaling-source/SSOS-ESP32)](LICENSE)
 
+**Platform:** Espressif ESP32-S3, built with the Espressif Arduino-ESP32 core.
+SSOS is an independent community project and is not affiliated with or endorsed
+by Espressif Systems or Arduino.
+
 ## Start here: choose the system you want
 
 SSOS publishes separately downloadable systems. Choose by function, not
@@ -324,6 +328,21 @@ Two-Board Non-Interleaved Baseline** on the named model and hardware. The
 18.469438 tok/s standalone result is retained as a secondary one-board
 reference, not the headline baseline. This is not a general 2x inference or
 accuracy claim.
+
+### For Espressif reviewers
+
+The [V3 physical package](benchmarks/quark-v2-0.5m-pair-pipeline/README.md) is
+the shortest reproducible path for evaluating the multi-board work on
+Espressif hardware. It pins the ESP32-S3-WROOM-1U N16R8 target,
+Arduino-ESP32 version, role-specific source and binaries, SPI wiring, model
+artifact, checksums, raw measurements and fail-closed oracle verifier. The
+original sequential two-board result and interleaved result remain side by
+side so scheduling gains are distinguishable from standalone-board or generic
+model claims.
+
+Espressif engineers and Arduino-ESP32 maintainers are invited to reproduce the
+measurements, review the SPI/DMA and PSRAM integration, or propose changes
+through the repository's issue and pull-request workflow.
 
 ## Collaborate
 
