@@ -1,7 +1,7 @@
 # SSOS ESP32-S3
 
-**Packet-state firmware, replaceable 9-D heads, and physically tested
-two- and three-board language inference for ESP32-S3.**
+**Packet-state firmware, replaceable 9-D heads, physically tested multi-board
+language inference, and reproducible split-language training for ESP32-S3.**
 
 [![Release](https://img.shields.io/github/v/release/tylorsaling-source/SSOS-ESP32)](https://github.com/tylorsaling-source/SSOS-ESP32/releases)
 [![Integrity](https://github.com/tylorsaling-source/SSOS-ESP32/actions/workflows/release-integrity.yml/badge.svg)](https://github.com/tylorsaling-source/SSOS-ESP32/actions/workflows/release-integrity.yml)
@@ -9,18 +9,33 @@ two- and three-board language inference for ESP32-S3.**
 
 ## Start here: choose the system you want
 
-SSOS now publishes three deliberately different firmware releases. Choose by
-function, not merely by version number:
+SSOS publishes four deliberately different systems. Choose by function, not
+merely by version number:
 
 | Release | What runs on the board | Choose it when | Validation |
 | --- | --- | --- | --- |
 | [V1.0.0](https://github.com/tylorsaling-source/SSOS-ESP32/releases/tag/v1.0.0) | One-board packet controller with persistent compact state and an internal 9-D runtime | You need device-owned records, replay, migration, or the original kernel experiments | Hardware-tested on ESP32-S3-WROOM-1U N16R8 |
 | [V2.0.0](https://github.com/tylorsaling-source/SSOS-ESP32/releases/tag/v2.0.0) | V1 plus one packet-backed fixed 9-input/8-output linear head | You need a replaceable tiny scoring/action head | Compiled and host/artifact-validated; not physically flashed |
 | [V3.0.1](https://github.com/tylorsaling-source/SSOS-ESP32/releases/tag/v3.0.1) | Quark-v2-0.5M split across a pair, with an optional two-lane three-board extension | You want physical boards cooperating on pretrained text inference | Pair: 240/240 at 44.731 tok/s median; trio gate: 96/96 at 87.927 tok/s |
+| V4.0.0 | Custom 549,984-parameter language model split into independently owned master and worker training stages | You want to reproduce the first custom checkpoint, verify split gradients, or continue cumulative training | 100.00023 tokens/parameter; best held-out loss 2.991671; exact one-step split-equivalence gate |
 
 V3 is a dedicated multi-board application with distinct master and worker
 roles. Installing it writes the selected boards' application regions, so
 preserve any existing firmware or learned state first.
+
+## V4: train a custom split language model
+
+V4.0.0 packages the model, tokenizer, deterministic curriculum builders,
+master/worker split, optimizer state, 9-D transaction identity, first
+checkpoint, and numerical equivalence gate for a custom 549,984-parameter
+causal-language model. Master owns 274,944 parameters and worker owns 275,040;
+the detached 96-value split boundary returns an exact activation gradient for
+the master-side backward pass.
+
+The first checkpoint represents 54,998,528 presented tokens, or 100.00023
+tokens per parameter. It is resumable and retains both stages, AdamW, RNG,
+tokenizer/corpus identity, and schedule. Start with the complete
+[V4 training package](benchmarks/ssos-550k-language-training/README.md).
 
 ## V3: two boards run one language model
 
@@ -92,9 +107,10 @@ See [What you can build](docs/USE_CASES.md) for the exact boundaries.
 
 > [!IMPORTANT]
 > SSOS is not a general-purpose operating system, database, secure store,
-> filesystem, on-device training framework, sensor platform, Wi-Fi/BLE mesh,
-> MCP server, or autonomous safety controller. V3 executes only its packaged
-> model shape and firmware; it is not an arbitrary-model LLM runtime.
+> filesystem, sensor platform, Wi-Fi/BLE mesh, MCP server, or autonomous safety
+> controller. V3 executes only its packaged model shape and firmware. V4.0.0
+> publishes the executable split-training reference and first checkpoint for
+> its documented 549,984-parameter shape.
 
 ## First useful V1/V2 session
 
