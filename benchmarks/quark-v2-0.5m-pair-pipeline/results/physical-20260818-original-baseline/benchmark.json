@@ -1,0 +1,48 @@
+{
+  "model": "LH-Tech-AI/Quark-v2-0.5M",
+  "revision": "7a30cd277348416659e94d5937d699d72e34afac",
+  "model_parameters": 465504,
+  "quantization": "Q8_0 group 8",
+  "model_artifact_sha256": "b7ad1a7dfd8ae2d0fecf2c9f7db5546be56ff280fd35f616d16d9c400ae0b9bc",
+  "oracle": {
+    "implementation": "Hugging Face Transformers FP32",
+    "host_trace_agreement": "72/72 tokens"
+  },
+  "standalone": {
+    "hardware": "one ESP32-S3 N16R8",
+    "trials": 1,
+    "tok_s": 18.469438,
+    "prefill_us": 624414,
+    "decode_us": 1299444,
+    "oracle_match": "24/24",
+    "repeat_limit": "the board did not re-enumerate after Windows closed native USB CDC; no repeated standalone statistic is claimed"
+  },
+  "original_sequential_master_worker": {
+    "hardware": "one ESP32-S3 master plus one ESP32-S3 worker",
+    "spi_hz": 40000000,
+    "frame_bytes": 512,
+    "activation": "96 x FP32",
+    "trials": 5,
+    "tok_s": [18.346576, 18.345216, 18.345552, 18.344977, 18.344879],
+    "median_tok_s": 18.345216,
+    "min_tok_s": 18.344879,
+    "max_tok_s": 18.346576,
+    "oracle_match": "120/120",
+    "last_transport_us": 11676
+  },
+  "prechange_pair_health_recheck": {
+    "trials": 5,
+    "min_tok_s": 18.344711,
+    "median_tok_s": 18.344921,
+    "max_tok_s": 18.345931,
+    "oracle_match": "120/120",
+    "prefill_us_range": [628879, 629047],
+    "decode_us_range": [1308192, 1308279],
+    "transport_us_range": [11603, 11674]
+  },
+  "comparison": {
+    "original_pair_over_standalone": 0.993274,
+    "two_times_standalone_target_tok_s": 36.938876,
+    "conclusion": "The original sequential split was exact but did not improve single-stream autoregressive decode throughput."
+  }
+}

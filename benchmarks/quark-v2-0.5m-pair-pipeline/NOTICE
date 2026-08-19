@@ -1,0 +1,8 @@
+SSOS Quark two-board pipeline
+
+This package contains a quantized representation of LH-Tech-AI/Quark-v2-0.5M,
+used under the Apache License 2.0. The upstream model is available at:
+https://huggingface.co/LH-Tech-AI/Quark-v2-0.5M
+
+The firmware builds against Arduino-ESP32 and Espressif ESP-IDF components.
+Their respective licenses and notices remain applicable.

@@ -7,3 +7,9 @@ Those files retain their upstream Apache License 2.0 notice.
 The firmware builds against Arduino-ESP32, TensorFlow Lite Micro components,
 ESP-NN, and other Espressif SDK components supplied by the pinned ESP32 board
 package. Their respective licenses and notices remain applicable.
+
+The benchmark under benchmarks/quark-v2-0.5m-pair-pipeline contains a
+quantized representation of LH-Tech-AI/Quark-v2-0.5M, used under Apache
+License 2.0, and a compact runtime derived from the MIT-licensed llama2.c
+project. Its package-local THIRD_PARTY_NOTICES.md and licenses directory retain
+the detailed attribution and license texts.
