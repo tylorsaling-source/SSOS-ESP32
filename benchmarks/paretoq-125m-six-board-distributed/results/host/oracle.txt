@@ -1,0 +1,31 @@
+[p01] PROMPT
+The old workshop was
+[p01] OUTPUT
+a place where the old workers would meet to discuss their work.
+The old workshop was a place where the old
+
+[p02] PROMPT
+At sunrise, the river
+[p02] OUTPUT
+is still flowing.
+The river is a tributary of the Ganges, which flows through the city of
+
+[p03] PROMPT
+The engineer opened the cabinet and
+[p03] OUTPUT
+the engineers were able to get the engineers to the top of the building.
+The engineers were able to
+
+[p04] PROMPT
+Beyond the last house, a narrow road
+[p04] OUTPUT
+leads to the village of Kulan, where the village is located.
+The village is located in the Kul
+
+[p05] PROMPT
+A careful technician checked the wiring before
+[p05] OUTPUT
+installing the cable.
+The AAC cable.
+The cable was installed in the correct position.
+The cable was

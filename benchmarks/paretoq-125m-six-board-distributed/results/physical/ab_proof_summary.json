@@ -1,0 +1,39 @@
+{
+  "schema": "paretoq125m.ssos.physical-ab-summary.v1",
+  "model_id": "facebook/MobileLLM-ParetoQ-125M-2-bit",
+  "model_revision": "2e367775142fafa944e28a1e8a1fc428e8554fab",
+  "checkpoint_sha256": "4e20ca9dc92366b58293ef010cd7019f241925aa7bf0ad9d50ba909db33de99a",
+  "app_sha256": "115a4ece2764f1b50fb92b45f39622153439504ed09dd09dab75734222cac85b",
+  "physical_proof_sha256": "dcaad598ae2fefbbc5e696be495b40ea299ab73c740e1173a3a0f3daf9f2410e",
+  "decode": {
+    "method": "greedy",
+    "max_new_tokens": 24,
+    "do_sample": false,
+    "use_cache": true,
+    "bos_token_id": 1,
+    "eos_token_id": 2,
+    "pad_token_id": 2
+  },
+  "aggregate": {
+    "fast": {
+      "prompts": 5,
+      "tokens": 120,
+      "exact_tokens": 120,
+      "mean_ttft_ms": 56425.81019999999,
+      "total_prompt_to_finish_ms": 1195151.128,
+      "aggregate_decode_tps": 0.1259553332794164,
+      "spi_errors": 0
+    },
+    "regular": {
+      "prompts": 5,
+      "tokens": 120,
+      "exact_tokens": 120,
+      "mean_ttft_ms": 87587.629,
+      "total_prompt_to_finish_ms": 1787937.172,
+      "aggregate_decode_tps": 0.0851852465816629,
+      "spi_errors": 0
+    }
+  },
+  "fast_over_regular_prompt_to_finish": 1.4959925402839933,
+  "all_exact": true
+}
