@@ -1,0 +1,8 @@
+huggingface-hub>=0.34
+numpy>=2.0
+pyserial>=3.5
+pytest>=8.0
+safetensors>=0.5
+torch>=2.7
+transformers>=4.55
+esptool>=5.0

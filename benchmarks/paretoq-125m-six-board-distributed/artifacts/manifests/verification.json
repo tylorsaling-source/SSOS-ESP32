@@ -1,0 +1,43 @@
+{
+  "schema": "paretoq125m.ssos.export-verification.v1",
+  "checkpoint_sha256": "4e20ca9dc92366b58293ef010cd7019f241925aa7bf0ad9d50ba909db33de99a",
+  "tensor_records_verified": 271,
+  "model_values_verified": 124635456,
+  "transformer_exact": true,
+  "embedding_head_byte_identical": true,
+  "vocabulary_exact": true,
+  "file_hashes_exact": true,
+  "tensor_coverage_exact": true,
+  "nodes": [
+    {
+      "stage": 0,
+      "port": "COM4",
+      "flash_capacity_gate": true,
+      "psram_capacity_gate": true
+    },
+    {
+      "stage": 1,
+      "port": "COM7",
+      "flash_capacity_gate": true,
+      "psram_capacity_gate": true
+    },
+    {
+      "stage": 2,
+      "port": "COM8",
+      "flash_capacity_gate": true,
+      "psram_capacity_gate": true
+    },
+    {
+      "stage": 3,
+      "port": "COM9",
+      "flash_capacity_gate": true,
+      "psram_capacity_gate": true
+    },
+    {
+      "stage": 4,
+      "port": "COM11",
+      "flash_capacity_gate": true,
+      "psram_capacity_gate": true
+    }
+  ]
+}

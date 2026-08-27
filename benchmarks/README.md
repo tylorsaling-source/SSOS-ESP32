@@ -7,6 +7,21 @@ versioned.
 
 ## Reproducible packages
 
+### [ParetoQ 125M six-board distributed inference](paretoq-125m-six-board-distributed/README.md)
+
+**Package version:** 1.0.0
+
+Six ESP32-S3 N16R8 boards form one physical 40 MHz SPI ring: five boards hold
+the 30 compute-layer/vocabulary shards and the sixth board is the transport
+relay. The clean package contains source, exact prebuilt firmware, manifests,
+wiring, fixed prompts, host oracle, full token outputs, physical captures, and
+a fail-closed verifier. The gated Meta checkpoint and reconstructed weight
+shards are deliberately excluded and can be regenerated at the pinned revision.
+
+Accepted five-prompt result: FAST and REGULAR both produced 120/120 exact
+tokens with zero SPI errors. FAST used 1.4959925x less total prompt-to-finish
+time and delivered 1.479x the aggregate decode rate.
+
 ### [SSOS 550k cluster 3–4–5](ssos-550k-language-cluster-345/README.md)
 
 **Official release:** SSOS ESP32 V4.0.1

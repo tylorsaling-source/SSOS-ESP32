@@ -1,0 +1,24 @@
+{
+  "schema": "paretoq125m.ssos.layout.v1",
+  "model_id": "facebook/MobileLLM-ParetoQ-125M-2-bit",
+  "model_revision": "2e367775142fafa944e28a1e8a1fc428e8554fab",
+  "spi_hz": 40000000,
+  "context_tokens": 128,
+  "num_kv_heads": 3,
+  "head_dim": 64,
+  "activation_format": "bfloat16",
+  "kv_format": "bfloat16",
+  "embedding_format": "bfloat16-lossless",
+  "weight_format": "two-bit-four-level-two-bfloat16-row-scales",
+  "model_partition_bytes": 15073280,
+  "model_partition_reserve_bytes": 262144,
+  "psram_bytes": 8388608,
+  "psram_workspace_reserve_bytes": 1048576,
+  "nodes": [
+    {"stage": 0, "port": "COM4", "mac": "E8:F6:0A:A3:6E:98", "layer_first": 0, "layer_last": 5, "vocab_first": 0, "vocab_count": 6400},
+    {"stage": 1, "port": "COM7", "mac": "14:C1:9F:DA:49:C8", "layer_first": 6, "layer_last": 11, "vocab_first": 6400, "vocab_count": 6400},
+    {"stage": 2, "port": "COM8", "mac": "14:C1:9F:DA:31:2C", "layer_first": 12, "layer_last": 17, "vocab_first": 12800, "vocab_count": 6400},
+    {"stage": 3, "port": "COM9", "mac": "14:C1:9F:D9:F7:A8", "layer_first": 18, "layer_last": 23, "vocab_first": 19200, "vocab_count": 6400},
+    {"stage": 4, "port": "COM11", "mac": "14:C1:9F:DB:18:54", "layer_first": 24, "layer_last": 29, "vocab_first": 25600, "vocab_count": 6400}
+  ]
+}
