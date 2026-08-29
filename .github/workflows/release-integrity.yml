@@ -27,3 +27,6 @@ jobs:
                   json.load(stream)
               print(f'valid json: {path}')
           PY
+      - name: Validate V2 hardware fixture and parsers
+        shell: bash
+        run: python3 -m unittest validation/v2-hardware/test_fixture.py

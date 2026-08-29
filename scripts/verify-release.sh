@@ -10,4 +10,5 @@ command -v sha256sum >/dev/null 2>&1 || {
 }
 
 cd "$IMAGE_DIR"
-sha256sum -c SHA256SUMS
+# Accept either LF (CI/POSIX) or CRLF (a Windows ZIP or checkout).
+tr -d '\r' < SHA256SUMS | sha256sum -c -
