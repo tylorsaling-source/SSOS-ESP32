@@ -11,10 +11,47 @@ import sys
 import numpy as np
 
 
+OBSERVATION_FIELDS = (
+    "health", "hunger", "thirst", "temperature", "battery", "injury",
+    "rest_debt", "daylight", "wood", "stone", "has_tool", "raw_water",
+    "purified_water", "food_units", "shelter_progress", "fire_level",
+    "exit_dx", "exit_dz", "wood_dx", "wood_dz", "stone_dx", "stone_dz",
+    "water_dx", "water_dz", "food_dx", "food_dz", "hazard_dx", "hazard_dz",
+    "hazard_distance", "shelter_dx", "shelter_dz", "coverage",
+    "steps_remaining", "x", "z", "proposal_north", "proposal_south",
+    "proposal_west", "proposal_east", "proposal_gather",
+    "proposal_process_water", "proposal_consume", "proposal_craft_tool",
+    "proposal_build_shelter", "proposal_build_fire", "proposal_first_aid",
+    "proposal_rest", "bias",
+)
+
+
+def ordered_observation(document: object) -> np.ndarray:
+    """Accept the canonical array or a safer name-keyed object."""
+    if isinstance(document, dict):
+        missing = [name for name in OBSERVATION_FIELDS if name not in document]
+        unexpected = sorted(set(document) - set(OBSERVATION_FIELDS))
+        if missing or unexpected:
+            details = []
+            if missing:
+                details.append("missing: " + ", ".join(missing))
+            if unexpected:
+                details.append("unexpected: " + ", ".join(unexpected))
+            raise ValueError("invalid named observation (" + "; ".join(details) + ")")
+        document = [document[name] for name in OBSERVATION_FIELDS]
+    observation = np.asarray(document, dtype=np.float32)
+    if observation.shape != (48,) or not np.isfinite(observation).all():
+        raise ValueError("observation must contain exactly 48 finite numbers")
+    return observation
+
+
 def main() -> None:
     root = Path(__file__).resolve().parents[1]
     parser = argparse.ArgumentParser()
-    parser.add_argument("observation", help="JSON file containing exactly 48 ordered floats, or - for stdin")
+    parser.add_argument(
+        "observation",
+        help="JSON file containing the 48-field array or a name-keyed object, or - for stdin",
+    )
     parser.add_argument(
         "--model",
         type=Path,
@@ -25,9 +62,10 @@ def main() -> None:
     args = parser.parse_args()
 
     text = sys.stdin.read() if args.observation == "-" else Path(args.observation).read_text(encoding="utf-8")
-    observation = np.asarray(json.loads(text), dtype=np.float32)
-    if observation.shape != (48,) or not np.isfinite(observation).all():
-        raise SystemExit("observation must be a JSON array of exactly 48 finite numbers")
+    try:
+        observation = ordered_observation(json.loads(text))
+    except (ValueError, TypeError) as exc:
+        raise SystemExit(str(exc)) from exc
 
     artifact = np.load(args.model, allow_pickle=False)
     projection_weight = artifact["projection_weight"].astype(np.float32)

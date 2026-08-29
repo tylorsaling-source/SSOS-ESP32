@@ -24,6 +24,26 @@ merely by version number:
 | [V4.0.0](https://github.com/tylorsaling-source/SSOS-ESP32/releases/tag/v4.0.0) | Original custom 549,984-parameter split-training lineage and its first checkpoint | You want the original custom model, split-gradient gate, or its continuation point | 100.00023 tokens/parameter; best held-out loss 2.991671; exact one-step split-equivalence gate |
 | [V4.0.1](https://github.com/tylorsaling-source/SSOS-ESP32/releases/tag/v4.0.1) | Separate fresh cluster 3–4–5 lineage and its own first checkpoint | You want an independently initialized model without V4.0.0 learned state | 5.12M presented tokens; held-out loss 3.488711; no parent checkpoint |
 
+## V2: user-facing physical proof
+
+V2 now includes a single Windows workflow that flashes one compatible board,
+installs all 72 head weights, checks 8 outputs for 3 deterministic inputs,
+performs a real hard reset, repeats the checks, and saves both readable and raw
+proof. It automatically finds one compatible board and refuses to open or flash
+`COM3`.
+
+From the extracted repository root:
+
+```powershell
+.\scripts\validate-v2-windows.cmd
+```
+
+The last line is a plain-language `PASS` or `FAIL`; detailed JSON evidence and
+the timestamped serial transcript are saved automatically. Read the
+[one-board V2 proof guide](validation/v2-hardware/README.md) before connecting a
+board. Until a real run produces a passing evidence file and that trace is
+committed, the published V2 status remains **not physically validated**.
+
 V3 is a dedicated multi-board application with distinct master and worker
 roles. Installing it writes the selected boards' application regions, so
 preserve any existing firmware or learned state first.
@@ -277,10 +297,11 @@ That script writes eight model packets, calls `MLOAD`, calls `SAVE`, and checks
 one known inference vector. It does not run `esptool` and does not flash.
 
 The bundled [`basic_surv` adapter](models/basic_surv_esp4/README.md) demonstrates
-the host-projection/ESP-head split and preserves its simulation reports. It is
-not a complete survival system, a physical-world validation, or a currently
-reproducible end-user model pipeline because the ordered 48-field observation
-contract used by the external project is not yet included here.
+the host-projection/ESP-head split and preserves its simulation reports. Its
+[48-field input contract](models/basic_surv_esp4/OBSERVATION_CONTRACT.md) now
+defines every name, position, normalization formula, proposal bit, projection,
+and output. It remains an adapter—not a complete survival system or a
+physical-world validation.
 
 ## Console and protocol
 

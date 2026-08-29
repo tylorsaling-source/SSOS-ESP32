@@ -114,6 +114,9 @@ if ($Port) {
         throw "Multiple compatible ports were found: $($ports -join ', '). Pass -Port explicitly."
     }
 }
+if ($Port -eq 'COM3') {
+    throw 'COM3 is protected. This script will never open or flash COM3.'
+}
 
 Write-Host ''
 Write-Host "Target: ESP32-S3 on $Port"

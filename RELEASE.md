@@ -76,6 +76,14 @@ The packet records remain authoritative. The cache is not a second persistent
 model store. V2 is compiled and host/artifact-validated but has not been
 physically flashed in the published validation record.
 
+The repository now provides a user-facing physical-validation package at
+[`validation/v2-hardware`](validation/v2-hardware/README.md). Its one Windows
+command checks the release images, refuses `COM3`, flashes one compatible board,
+installs 72 weights, verifies 48 output values across three inputs, hard-resets
+the board, verifies persistence, and writes JSON evidence plus a raw transcript.
+This package makes the required run reproducible; it does not itself change the
+hardware-validation status above. Only a committed physical `PASS` may do that.
+
 ## V3.0.1: Quark interleaved language pipelines
 
 V3 packages the physically tested Quark-v2-0.5M master/worker implementation

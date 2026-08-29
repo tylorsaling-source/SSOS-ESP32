@@ -4,11 +4,11 @@ This is a compact communication/inference adapter for the separate SSOS model
 head. It does not replace the full `basic_surv` policy and it does not use the
 OS packet-scheduling tensor as survival input.
 
-This directory currently demonstrates the architecture and preserves validated
-artifacts; it is not a complete public training or end-user inference recipe.
-The ordered 48-field observation contract belongs to the external `basic_surv`
-project and is not included in this repository. Without that exact field order,
-new observations cannot be projected reproducibly by this package alone.
+This directory demonstrates the architecture and preserves validated artifacts.
+The exact field order, normalization formulas, proposal order, projection, and
+output meanings are now included in the
+[48-field observation contract](OBSERVATION_CONTRACT.md). The host adapter also
+accepts a name-keyed observation and fails clearly on missing or unknown fields.
 
 The sender computes:
 
@@ -38,7 +38,8 @@ V2 stores the eight head rows as signed Q10 bodies in ordinary
 and the largest row body was 45 bytes against the 63-byte packet-body limit.
 See `q10_validation_report.json`.
 
-Install the head after compatible firmware is already present:
+From the repository root, install the head after compatible firmware is already
+present:
 
 ```powershell
 .\scripts\install-model-windows.ps1 -Port COM4
@@ -58,9 +59,8 @@ python host/basic_surv_9d.py observation.json --port COM4
 ```
 
 NumPy is required for projection. Serial execution additionally requires
-PySerial. Do not invent or reorder the 48 inputs. Publish and verify the external
-observation contract before presenting this example as independently
-reproducible.
+PySerial. Prefer the name-keyed input described in the contract; if an array is
+used, do not invent or reorder its 48 values.
 
 The recorded agreement and rollout values are external simulation results, not
 physical-world survival capability, on-device training, or autonomous behavior.

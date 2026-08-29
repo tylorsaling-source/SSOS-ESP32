@@ -10,6 +10,7 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 $Port = $Port.ToUpperInvariant()
 if ($Port -notmatch '^COM\d+$') { throw "Invalid Windows serial port: $Port" }
+if ($Port -eq 'COM3') { throw 'COM3 is protected. This script will never open COM3.' }
 if (-not (Test-Path -LiteralPath $Model)) { throw "Missing model: $Model" }
 
 $document = Get-Content -LiteralPath $Model -Raw | ConvertFrom-Json
