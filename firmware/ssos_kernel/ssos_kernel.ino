@@ -288,7 +288,7 @@ static void seedController() {
 static void cmdId() {
   uint64_t mac = ESP.getEfuseMac();
   Serial.printf("OK SSOS_ESP32 proto=ssos.packet.v1 model=any replaceable=1 fuse=9to8 "
-                "chip=esp32s3 mac=%04X%08X boots=%lu packets=%u recv=%lu\n",
+                "chip=esp32s3 mac=%04X%08X boots=%lu packets=%u recv=%lu release=2.0.1\n",
                 (unsigned)(mac >> 32), (unsigned)mac,
                 (unsigned long)bootCount, packetCount(), (unsigned long)recvCount);
 }
@@ -527,7 +527,7 @@ static void handleLine(char *line) {
   if (strcmp(line, "SAVE") == 0) {
     bool ok = saveBank();
     tqaShow(ok ? TQA_FLUSH_BREATH : TQA_FAULT);
-    Serial.println(ok ? "OK saved" : "ERR save failed");
+    Serial.println(ok ? "OK saved" : "ERR save failed; run the V2 validate installer to initialize leftover settings (erases saved state)");
     return;
   }
   if (strcmp(line, "LOAD") == 0) {

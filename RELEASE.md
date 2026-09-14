@@ -1,5 +1,25 @@
 # SSOS ESP32 release guide
 
+## V2.0.1: reliable installation on reused storage
+
+V2.0.0 could pass inference while `SAVE` failed on a reused board with
+insufficient free NVS space. V2.0.1 makes initialization of leftover settings
+an announced part of the default Windows physical-proof workflow. Flash-only
+Windows, POSIX and Termux installers expose an explicit initialization option.
+Only NVS at `0x9000`, length `0x5000`, is erased after image verification;
+the selected board's saved settings and model rows are discarded. Use
+`-KeepSettings` to opt out of initialization in the Windows proof.
+
+The firmware identifies `release=2.0.1` and gives a useful recovery hint on
+SAVE failure. Packet storage, the 72 signed-Q10 coefficients, and fixed 9-to-8
+dot-product execution are unchanged. Firmware and companion images are rebuilt
+with Arduino-ESP32 3.3.5 for the same 16 MB target with PSRAM disabled.
+
+See the [V2.0.1 physical run record](validation/v2-hardware/RUN-v2.0.1-20260914.md)
+for the controlled dirty-storage and clean-enough release gates, exact image
+hashes, and raw evidence. This is a focused V2 patch package; the repository's
+V4.0.1 VERSION and other payloads remain on their own release tracks.
+
 ## V4.0.1: independent cluster lineage
 
 V4.0.1 adds `cluster-345-fresh`, a separately initialized training lineage for

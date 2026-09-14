@@ -26,6 +26,36 @@ The release uses this flash map:
 
 All four files must pass `images/flash/SHA256SUMS` before writing starts.
 
+## V2.0.1: initialize leftover settings for a new installation
+
+An older application's saved settings can leave too little usable NVS space
+for V2 to save its packet bank, even when inference works. V2.0.1's Windows
+proof command initializes this region by default, with a notice before the
+confirmation. It verifies the images, flashes and verifies them, then clears
+only the release NVS partition at `0x9000`, length `0x5000` (20 KiB).
+
+```powershell
+.\scripts\validate-v2-windows.cmd -Port COM20
+.\scripts\flash-windows.cmd -Port COM20 -InitializeSettings
+```
+
+```sh
+sh scripts/flash-posix.sh /dev/ttyACM0 --initialize-settings
+sh scripts/flash-termux.sh /dev/bus/usb/001/002 --initialize-settings
+```
+
+Flash-only installers preserve NVS unless this option is supplied. The
+Windows proof command's `-KeepSettings` switch opts out explicitly. Use
+`-ValidateOnly` on Windows or `--validate-only` on POSIX/Termux to inspect the
+plan without opening a device. Python 3.10+, Esptool 5.1+, and PySerial are
+required for the Windows proof; use `SSOS_PYTHON` to select a Python executable
+for POSIX/Termux if it is not named `python3`.
+
+Initialization permanently discards saved settings/model rows. It never reads
+them into a backup, erases the full chip, or runs as an automatic response to
+an ordinary `SAVE`. The helper verifies release image checksums and rejects
+a different/overlapping NVS partition layout before any erase. COM3 is refused.
+
 ## Windows
 
 Run `scripts\flash-windows.cmd`. The launcher uses the signed PowerShell
@@ -63,6 +93,7 @@ Do not hold BOOT. `usb_bl_reset` deliberately pulses into the ROM bootloader;
 Run `scripts/flash-posix.sh <serial-port>`. The script does not guess the port.
 Linux users may need membership in the distribution's serial-device group or a
 udev rule. macOS usually names the device `/dev/cu.usbmodem*`.
+The shell checksum check requires `sha256sum` (GNU coreutils on macOS).
 
 ## Recovery
 
@@ -81,4 +112,6 @@ documentation.
 
 They do not erase the full flash, change fuses, enable flash encryption, alter
 secure boot, or flash any device without an explicit confirmation. They write
-only the four documented ranges and perform a read-back verification.
+the four documented image ranges and perform a digest verification; when
+settings initialization is selected, they also clear only the documented
+20 KiB NVS range after image verification.

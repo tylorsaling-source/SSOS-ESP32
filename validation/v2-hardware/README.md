@@ -1,15 +1,16 @@
 # V2 physical proof — one-board Windows path
 
 This is the user-facing path for proving SSOS-ESP32 V2 on one compatible,
-fresh board. You do not need to enter packet commands, edit JSON, calculate
+fresh or reused board. You do not need to enter packet commands, edit JSON, calculate
 expected values, or manually reconnect the serial port.
 
-## Verified run
+## Historical V2.0.0 run
 
 [2026-09-14: physical PASS](RUN-20260914.md) records 72 loaded coefficients,
 48/48 matching scores, `OK saved`, and the same head after a hardware reset.
 It includes the original `SAVE` failure on a reused board and the NVS recovery
-needed before the passing run. Firmware images are unchanged from V2.0.0.
+needed before the passing run. V2.0.0 did not include settings initialization
+in the stock workflow. V2.0.1 incorporates it as described below.
 
 ## What one command does
 
@@ -17,7 +18,8 @@ needed before the passing run. Firmware images are unchanged from V2.0.0.
 2. Refuses to continue if the selected port is `COM3`.
 3. Checks every release image against its published SHA-256 checksum.
 4. Shows the target and asks for one explicit confirmation before flashing.
-5. Flashes and read-back verifies the V2 release image.
+5. Flashes and digest-verifies the V2 release image, then initializes leftover
+   settings by clearing only the 20 KiB NVS region at `0x9000`.
 6. Installs all eight model rows (72 signed-Q10 weights).
 7. Compares all eight board outputs for three deterministic inputs.
 8. Sends `SAVE`, performs a real non-writing hard reset, reconnects, and runs
@@ -26,6 +28,9 @@ needed before the passing run. Firmware images are unchanged from V2.0.0.
    evidence and the complete timestamped serial transcript.
 
 The command never opens or flashes `COM3`.
+The initialization notice appears before the single flash confirmation. It
+discards the selected board's saved settings/model rows. `-KeepSettings`
+explicitly opts out and may leave the old save failure reproducible.
 
 ## Run it
 
@@ -43,9 +48,15 @@ If more than one compatible board is connected, select the intended board:
 .\scripts\validate-v2-windows.cmd -Port COM17
 ```
 
-The script checks for Python, Esptool, and PySerial before writing. If a package
+The script checks for Python, Esptool, and PySerial before writing. Use Python
+3.10 or later and Esptool 5.1 or later. If a package
 is missing it prints the one installation command to run. It does not silently
 install software.
+
+Use `-ValidateOnly` to check the plan without opening the device. `-SkipFlash`
+still initializes settings unless paired with `-KeepSettings`. `-Yes` accepts
+the displayed flash/initialization action for automation. `-OutputDirectory`
+selects where a run's evidence is saved.
 
 ## Read the result
 
@@ -63,31 +74,33 @@ Proof is written under `validation/v2-hardware/results/`:
   gate result.
 - `v2-physical-<time>.txt` contains the raw timestamped host, Esptool, and
   serial transcript.
+- `v2-flash-<time>.txt` captures native flash, verification, and settings
+  initialization output. Successful clearing emits `SETTINGS_INITIALIZED`.
 
-A failed run also writes both files. Do not describe V2 as physically validated
+Once the physical harness starts, a failed run also writes both files. Earlier
+installer failures stop at the displayed diagnostic and available flash log.
+Do not describe V2 as physically validated
 unless the JSON status is `PASS` and the after-reset checks all pass.
 
 ## If a reused board reports `ERR save failed`
 
-The flash script replaces its four image regions but preserves NVS. An old
+The V2.0.0 flash script replaced its four image regions but preserved NVS. An old
 application's NVS state may therefore affect a new installation. In the
 [recorded run](RUN-20260914.md), inference passed but `SAVE` failed; clearing
 only the release's NVS region resolved it with the same firmware. The exact
 old storage condition was not inspected.
 
-Only when discarding the selected board's saved state is intended, initialize
-NVS with the following commands, replacing `COM20` with the verified target:
+V2.0.1 needs no manual memory-address command. When discarding the selected
+board's saved state is intended, run the stock proof workflow:
 
 ```powershell
-python -m esptool --chip esp32s3 --port COM20 --after hard-reset erase-region 0x9000 0x5000
-.\scripts\validate-v2-windows.cmd -Port COM20 -SkipFlash
+.\scripts\validate-v2-windows.cmd -Port COM20
 ```
 
-This permanently erases the 20 KiB NVS partition. These offsets apply only to
-the supplied V2 partition table; do not reuse them with another layout or use
-`COM3`. This is an explicit recovery step, never an automatic fallback after
-a failed save. The second command verifies the already flashed image's model
-behavior; retain the preceding flash log to establish firmware identity.
+This explicitly initializes the release's NVS partition after flashing and
+verification. If `SAVE` still fails, the workflow stops and preserves the
+failed trace. There is no silent repeated erase/retry loop. The firmware's
+error message points to this installer; ordinary `SAVE` never erases NVS.
 
 ## Safety and scope
 

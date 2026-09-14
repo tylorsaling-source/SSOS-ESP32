@@ -13,6 +13,10 @@ Other boards require a source build and validation.
   [2026-09-14 hardware run](validation/v2-hardware/RUN-20260914.md) passed all
   48 output checks and saved-head persistence across a hard reset. A reused
   board required explicit NVS initialization after an initial `SAVE` failure.
+  V2.0.1 incorporates announced settings initialization into the default
+  Windows proof. Run `.\scripts\validate-v2-windows.cmd` after extraction;
+  it discards saved NVS settings/model rows before installing the fixture.
+  See the [V2.0.1 run record](validation/v2-hardware/RUN-v2.0.1-20260914.md).
 - V3.0.1 is the physically tested Quark language pipeline. It supports the
   accepted two-board pair and an optional one-master/two-worker topology. It
   does not expose the V1/V2 packet console while running.

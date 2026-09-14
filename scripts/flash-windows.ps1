@@ -5,7 +5,9 @@ param(
     [int]$Baud = 460800,
     [switch]$Yes,
     [switch]$ValidateOnly,
-    [switch]$SkipReadBackVerify
+    [switch]$SkipReadBackVerify,
+    [switch]$InitializeSettings,
+    [string]$LogPath
 )
 
 Set-StrictMode -Version Latest
@@ -33,7 +35,11 @@ function Invoke-Python {
     param([string[]]$Arguments)
     $exe = $script:python.Exe
     $prefix = @($script:python.Prefix)
-    & $exe @prefix @Arguments
+    & $exe @prefix @Arguments 2>&1 | ForEach-Object {
+        $line = "$_"
+        if ($LogPath) { Add-Content -LiteralPath $LogPath -Value $line -Encoding UTF8 }
+        Write-Host $line
+    }
     if ($LASTEXITCODE -ne 0) {
         throw "Python command failed with exit code $LASTEXITCODE."
     }
@@ -89,12 +95,18 @@ function Release-ControlLines {
     }
 }
 
+if ($Port -and $Port.ToUpperInvariant() -eq 'COM3') {
+    throw 'COM3 is protected. This script will never open or flash COM3.'
+}
 Confirm-Images
+$script:python = Find-Python
+if ($InitializeSettings) {
+    Invoke-Python @((Join-Path $PSScriptRoot 'initialize-settings.py'), '--validate-only')
+}
 if ($ValidateOnly) {
     Write-Host 'Release validation completed; no device was opened and nothing was written.'
     return
 }
-$script:python = Find-Python
 try {
     Invoke-Python @('-m', 'esptool', 'version')
 } catch {
@@ -121,6 +133,11 @@ if ($Port -eq 'COM3') {
 Write-Host ''
 Write-Host "Target: ESP32-S3 on $Port"
 Write-Host "Baud:   $Baud"
+if ($InitializeSettings) {
+    Write-Host 'Initialize leftover settings: ON. Saved settings/model rows in NVS (20 KiB) will be erased.' -ForegroundColor Yellow
+} else {
+    Write-Host 'Initialize leftover settings: OFF. Existing NVS is preserved; use -InitializeSettings for a new/reused-board install.'
+}
 foreach ($entry in $flashMap) { Write-Host ("{0,8}  {1}" -f $entry.Offset, $entry.Name) }
 Write-Host ''
 
@@ -149,6 +166,9 @@ try {
             '--baud', "$Baud", '--before', 'default_reset', '--after', 'hard_reset',
             'verify_flash'
         ) + $pairs)
+    }
+    if ($InitializeSettings) {
+        Invoke-Python @((Join-Path $PSScriptRoot 'initialize-settings.py'), '--port', $Port, '--baud', "$Baud", '--yes')
     }
 } finally {
     Release-ControlLines -SelectedPort $Port

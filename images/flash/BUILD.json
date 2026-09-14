@@ -1,0 +1,31 @@
+{
+  "schema": "ssos.v2.firmware-build.v1",
+  "release": "2.0.1",
+  "recorded_utc": "2026-09-14T23:58:13.928513+00:00",
+  "arduino_cli": "1.5.1",
+  "arduino_esp32": "3.3.5",
+  "fqbn": "esp32:esp32:esp32s3:USBMode=hwcdc,CDCOnBoot=cdc,UploadMode=default,FlashMode=qio,FlashSize=16M,PSRAM=disabled,PartitionScheme=app3M_fat9M_16MB",
+  "warnings": "default",
+  "source_hash_normalization": "CRLF to LF only",
+  "source_sha256": {
+    "firmware/ssos_kernel/g_fc9f.cpp": "00f1708cb5b6c6e6ed1d891b5d60ba7fa99afa6338a1ddf62d3771e0210bca9d",
+    "firmware/ssos_kernel/g_fc9f.h": "07c392a39cc9fb50908db18d73a0dd9abca3da063c5c6ea4efe2495833bc06d7",
+    "firmware/ssos_kernel/g_fc9s8.cpp": "99be0b2dabbf91d232fbe62a0a6b48475c405f4c08545d473bbcd8b9a4bfe640",
+    "firmware/ssos_kernel/g_fc9s8.h": "f4fb26ff01ecc2fdbd15ad4d3256e6396de9a69cafb30e18e6a6662c5b8870c1",
+    "firmware/ssos_kernel/model.cpp": "b6623d952c6bcfc0655781d59eac04947cdddb6b8488687f302704d97cbbe893",
+    "firmware/ssos_kernel/model.h": "19d78a6e16d841fe36564618af88c9b3eec6177aebafec06876336fe1f817815",
+    "firmware/ssos_kernel/ssos_kernel.ino": "46d49074d321b9454fc1f6979a37d91f79cf76043298fbd03113d215ea565106",
+    "firmware/ssos_kernel/tqa_bench.cpp": "94fb5a04998989a8b23671ebc5fb4cf623dd50d62395a1319e9423e1a5605182",
+    "firmware/ssos_kernel/tqa_bench.h": "f88307e80c4c389668c85697fcb74f35d1d932b67382f5e15f61d968d6e98c99",
+    "firmware/ssos_kernel/tqa_runtime.cpp": "b4205e89133912306064867caeaf5277ee7503d60a3783605963ad41f1bd4471",
+    "firmware/ssos_kernel/tqa_runtime.h": "2cd4cf976e9ceb5df4c4372d919d8134d0f5ccb178463f5024a6fc1d6517c875"
+  },
+  "image_sha256": {
+    "ssos_kernel.ino.bin": "6ab6fa74130ee02f82377f137465a039c11a3874f50ec899709b8f8b43229f94",
+    "ssos_kernel.ino.bootloader.bin": "d9263d09dd8c95efe3761bd53613848f3a7f05824720f71c8a44b8cdfec788e3",
+    "ssos_kernel.ino.partitions.bin": "ace02503447d0f470692e65fa76002f2d77a92dc81cd3813d8aa66718d716da9",
+    "boot_app0.bin": "f94c5d786a7a8fab06ac5d10e33bf37711a6697636dc037559ea19cc410a17f0"
+  },
+  "application_size_bytes": 380704,
+  "build_log": "validation/v2-hardware/results/v2.0.1-20260914/build.txt"
+}

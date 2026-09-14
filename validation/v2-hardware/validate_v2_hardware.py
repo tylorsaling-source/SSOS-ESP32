@@ -8,6 +8,7 @@ from datetime import datetime, timezone
 import hashlib
 from importlib.metadata import PackageNotFoundError, version as package_version
 import json
+import math
 from pathlib import Path
 import re
 import subprocess
@@ -59,8 +60,8 @@ def parse_inference(line: str) -> tuple[list[float], int]:
     if not match:
         raise ValueError(f"unexpected inference response: {line!r}")
     values = [float(value) for value in match.group(1).split(",")]
-    if len(values) != 8:
-        raise ValueError(f"device returned {len(values)} outputs instead of 8")
+    if len(values) != 8 or not all(math.isfinite(value) for value in values):
+        raise ValueError("device must return exactly 8 finite outputs")
     return values, int(match.group(2))
 
 
@@ -212,9 +213,15 @@ def hard_reset_with_esptool(port: str, transcript: Transcript) -> str:
 
 
 def git_commit(repo_root: Path) -> str | None:
-    completed = subprocess.run(
-        ["git", "-C", str(repo_root), "rev-parse", "HEAD"], capture_output=True, text=True
-    )
+    package = repo_root / "PACKAGE.json"
+    if package.is_file():
+        return json.loads(package.read_text(encoding="utf-8"))["source_commit"]
+    try:
+        completed = subprocess.run(
+            ["git", "-C", str(repo_root), "rev-parse", "HEAD"], capture_output=True, text=True
+        )
+    except FileNotFoundError:
+        return None
     return completed.stdout.strip() if completed.returncode == 0 else None
 
 
@@ -233,6 +240,8 @@ def main() -> int:
     parser.add_argument("--fixture", type=Path, default=script_dir / "fixture.json")
     parser.add_argument("--output-dir", type=Path, default=script_dir / "results")
     parser.add_argument("--tolerance", type=float, default=0.00002)
+    parser.add_argument("--settings-initialized", action="store_true")
+    parser.add_argument("--flash-log", type=Path)
     parser.add_argument(
         "--flash-status",
         choices=("performed-this-run", "preexisting"),
@@ -248,7 +257,7 @@ def main() -> int:
     if port == "COM3":
         print("FAIL: COM3 is protected and this package will never open or flash it.", file=sys.stderr)
         return 2
-    if args.tolerance <= 0:
+    if not math.isfinite(args.tolerance) or args.tolerance <= 0:
         print("FAIL: tolerance must be positive", file=sys.stderr)
         return 2
 
@@ -264,7 +273,7 @@ def main() -> int:
         "started_utc": started.isoformat(),
         "port": port,
         "tolerance": args.tolerance,
-        "release": "V2.0.0",
+        "release": "V" + (repo_root / "images/flash/RELEASE_VERSION").read_text().strip(),
         "target": "ESP32-S3-WROOM-1U N16R8; native USB Serial/JTAG 303A:1001",
         "flash": {
             "status": args.flash_status,
@@ -290,6 +299,19 @@ def main() -> int:
             "sha256": sha256(repo_root / "images" / "flash" / "ssos_kernel.ino.bin"),
         },
         "git_commit": git_commit(repo_root),
+        "validation_source_sha256": {
+            name: sha256(repo_root / name) for name in (
+                "scripts/flash-windows.ps1", "scripts/validate-v2-windows.ps1",
+                "scripts/initialize-settings.py", "validation/v2-hardware/validate_v2_hardware.py"
+            )
+        },
+        "settings_initialization": {
+            "performed": args.settings_initialized,
+            "offset": "0x9000",
+            "length": "0x5000",
+            "reason": "release-install-default" if args.settings_initialized else "preserved-by-request",
+        },
+        "flash_log": {"path": str(args.flash_log), "sha256": sha256(args.flash_log)} if args.flash_log else None,
         "checks": [],
         "error": None,
     }
@@ -299,6 +321,9 @@ def main() -> int:
         print("   1/5 Confirming the board and V2 firmware...", flush=True)
         device.open()
         evidence["identity_before"] = identify(device)
+        expected_release = "release=" + evidence["release"].removeprefix("V")
+        if expected_release not in evidence["identity_before"].split():
+            raise RuntimeError("device firmware release does not match the validation package")
 
         print("   2/5 Installing all 8 rows (72 signed-Q10 weights)...", flush=True)
         install_rows(device, fixture)
@@ -324,6 +349,12 @@ def main() -> int:
         if last_error is not None:
             raise RuntimeError(f"board did not reconnect after reset: {last_error}")
         evidence["identity_after"] = identify(device)
+        before_id = dict(field.split("=", 1) for field in evidence["identity_before"].split() if "=" in field)
+        after_id = dict(field.split("=", 1) for field in evidence["identity_after"].split() if "=" in field)
+        if before_id["mac"] != after_id["mac"] or after_id.get("release") != before_id.get("release"):
+            raise RuntimeError("board/firmware identity changed during reset")
+        if int(after_id["boots"]) <= int(before_id["boots"]):
+            raise RuntimeError("boot count did not increase after hardware reset")
         require_model(device)
 
         print("   5/5 Proving saved rows and outputs survived reset...", flush=True)

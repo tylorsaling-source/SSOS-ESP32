@@ -26,6 +26,13 @@ merely by version number:
 
 ## V2: user-facing physical proof
 
+V2.0.1 adds an announced settings-initialization step to the Windows proof
+workflow. It clears only the release's 20 KiB NVS region after image verification
+so leftover settings do not prevent saving the head. `-KeepSettings` explicitly
+preserves that region. Flash-only installers expose `-InitializeSettings`
+(Windows) or `--initialize-settings` (POSIX/Termux). See the
+[V2.0.1 release validation record](validation/v2-hardware/RUN-v2.0.1-20260914.md).
+
 V2 now includes a single Windows workflow that flashes one compatible board,
 installs all 72 head weights, checks 8 outputs for 3 deterministic inputs,
 performs a real hard reset, repeats the checks, and saves both readable and raw

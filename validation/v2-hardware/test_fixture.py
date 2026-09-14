@@ -31,6 +31,11 @@ class HardwareFixtureTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             MODULE.parse_inference("OK model y8=1,2 argmax=1")
 
+    def test_inference_parser_rejects_nonfinite_outputs(self):
+        for value in ('nan', 'inf', '-inf'):
+            with self.assertRaises(ValueError):
+                MODULE.parse_inference(f"OK model y8=1,2,3,4,5,6,7,{value} argmax=0")
+
 
 if __name__ == "__main__":
     unittest.main()
