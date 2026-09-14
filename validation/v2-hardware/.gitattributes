@@ -1,0 +1,2 @@
+# Preserve the published SHA-256 values across Windows and POSIX checkouts.
+results/* text eol=lf

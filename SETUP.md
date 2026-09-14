@@ -9,8 +9,10 @@ Other boards require a source build and validation.
 ## 2. Choose a release
 
 - V1 is the hardware-tested packet-controller baseline.
-- V2 adds a fixed packet-backed 9-input/8-output linear head but has not been
-  physically flashed in the published validation record.
+- V2 adds a fixed packet-backed 9-input/8-output linear head. The
+  [2026-09-14 hardware run](validation/v2-hardware/RUN-20260914.md) passed all
+  48 output checks and saved-head persistence across a hard reset. A reused
+  board required explicit NVS initialization after an initial `SAVE` failure.
 - V3.0.1 is the physically tested Quark language pipeline. It supports the
   accepted two-board pair and an optional one-master/two-worker topology. It
   does not expose the V1/V2 packet console while running.

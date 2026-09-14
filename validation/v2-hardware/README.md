@@ -4,6 +4,13 @@ This is the user-facing path for proving SSOS-ESP32 V2 on one compatible,
 fresh board. You do not need to enter packet commands, edit JSON, calculate
 expected values, or manually reconnect the serial port.
 
+## Verified run
+
+[2026-09-14: physical PASS](RUN-20260914.md) records 72 loaded coefficients,
+48/48 matching scores, `OK saved`, and the same head after a hardware reset.
+It includes the original `SAVE` failure on a reused board and the NVS recovery
+needed before the passing run. Firmware images are unchanged from V2.0.0.
+
 ## What one command does
 
 1. Finds exactly one compatible ESP32-S3 USB Serial/JTAG board.
@@ -59,6 +66,28 @@ Proof is written under `validation/v2-hardware/results/`:
 
 A failed run also writes both files. Do not describe V2 as physically validated
 unless the JSON status is `PASS` and the after-reset checks all pass.
+
+## If a reused board reports `ERR save failed`
+
+The flash script replaces its four image regions but preserves NVS. An old
+application's NVS state may therefore affect a new installation. In the
+[recorded run](RUN-20260914.md), inference passed but `SAVE` failed; clearing
+only the release's NVS region resolved it with the same firmware. The exact
+old storage condition was not inspected.
+
+Only when discarding the selected board's saved state is intended, initialize
+NVS with the following commands, replacing `COM20` with the verified target:
+
+```powershell
+python -m esptool --chip esp32s3 --port COM20 --after hard-reset erase-region 0x9000 0x5000
+.\scripts\validate-v2-windows.cmd -Port COM20 -SkipFlash
+```
+
+This permanently erases the 20 KiB NVS partition. These offsets apply only to
+the supplied V2 partition table; do not reuse them with another layout or use
+`COM3`. This is an explicit recovery step, never an automatic fallback after
+a failed save. The second command verifies the already flashed image's model
+behavior; retain the preceding flash log to establish firmware identity.
 
 ## Safety and scope
 

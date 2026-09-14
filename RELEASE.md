@@ -73,16 +73,24 @@ execution head:
 4. `SAVE` persists the weight packets; reboot or `LOAD` reconstructs the cache.
 
 The packet records remain authoritative. The cache is not a second persistent
-model store. V2 is compiled and host/artifact-validated but has not been
-physically flashed in the published validation record.
+model store. The unchanged V2.0.0 release images were physically flashed and
+digest-verified on 2026-09-14 on an ESP32-S3 revision v0.2 with 16 MB flash and
+8 MB PSRAM. All 72 weights loaded, `SAVE` returned `OK saved`, and all 48 output
+checks passed across three inputs before and after a hardware reset. Maximum
+absolute error was 0.000000468750000149 against a 0.00002 tolerance. See the
+[complete run and recovery record](validation/v2-hardware/RUN-20260914.md):
+the reused board initially returned `ERR save failed` and required explicit
+initialization of the NVS partition. This is a hard-reset test, not a claim of
+USB power removal or universal migration from arbitrary existing NVS data.
 
 The repository now provides a user-facing physical-validation package at
 [`validation/v2-hardware`](validation/v2-hardware/README.md). Its one Windows
 command checks the release images, refuses `COM3`, flashes one compatible board,
 installs 72 weights, verifies 48 output values across three inputs, hard-resets
 the board, verifies persistence, and writes JSON evidence plus a raw transcript.
-This package makes the required run reproducible; it does not itself change the
-hardware-validation status above. Only a committed physical `PASS` may do that.
+The committed run contains both the initial failure and the subsequent physical
+`PASS`; the latter used `-SkipFlash` after NVS initialization and is tied to the
+preceding successful flash/verification transcript. No release binary changed.
 
 ## V3.0.1: Quark interleaved language pipelines
 
