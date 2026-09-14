@@ -1,0 +1,25 @@
+{
+  "schema": "ssos.v2.published-evidence-manifest.v1",
+  "source_commit": "2f88cd4989f4b6e684e6ab120f19eefdcf335b3c",
+  "original_logs_sha256": {
+    "v2-physical-20260914T223441Z.json": "0df6501aaae01b792dc0ef8c5c83d5e62bd4c24e209b3d22c7a79436345a8eba",
+    "v2-physical-20260914T223441Z.txt": "c5827ad95a1c20def382d0d5412f0f91c427b9e61e9ede5e2f557d5a3991084b",
+    "v2-physical-20260914T223534Z.json": "00c7437ef4301bfdb92ae559ca11a7e893669e4c99e6d841a8f0576641256edd",
+    "v2-physical-20260914T223534Z.txt": "006eca7b25f91352493d437d7145ac6c41648f3842f92c1fe526c99e0b0a0707",
+    "issue15-windows-workflow-20260914.txt": "a749f09e040553e0c78462772706056e1dce4bf0863e001f3d1fd457cae9fc77",
+    "issue15-nvs-initialization-20260914.txt": "54adf7c1bda32225d995a00f8ef484422803564be577fc205a024b2d71808953",
+    "issue15-native-tool-output-20260914.txt": "162e5c2671781e60157c46bfb8d2d13d2871bf8b29a885d08c6ebec34832c325"
+  },
+  "published_files_sha256": {
+    "issue15-nvs-initialization-20260914.txt": "9414cbc328da6e5b8f1fbf3cdfe936c722b67b8771951dbf10c892ed9eae912c",
+    "issue15-windows-workflow-20260914.txt": "b3be79066176590b998a436df4e3bec2728338a100b9eec8facb847e0a695f96",
+    "v2-physical-20260914T223441Z.json": "1214cdaacb5ecbe3018c442b047bc93edf4070936c78c622239890b6614de5cf",
+    "v2-physical-20260914T223441Z.txt": "bebb30acccc41d2afb814d5475435a6d2ac9dd3fb672acf8b06688d3057d5f95",
+    "v2-physical-20260914T223534Z.json": "6b0fc73906bbf3cc175ba8bcaaec26016ae24cc6b938541ffa1edd8cc7ba4c0d",
+    "v2-physical-20260914T223534Z.txt": "2c108d134ec58385e3f4d2a4fd3d301b6bb30513979c8dbb6b337f8fa9187bc3",
+    "issue15-native-tool-output-20260914.txt": "7aaaa12e356e0c02a60a118fce3075db884332a8cf519da561bd1bf4c86aa28b"
+  },
+  "fixture_windows_sha256": "723a5d6eb2289bb5233eadf3fc0024cd7df62e6e4b48cbce125da1c43d94c924",
+  "fixture_lf_sha256": "3014a17b72bff5004b628b1f75aae319109e63d082f4759d7c293b7a81bfc560",
+  "publication_format": "UTF-8 LF; terminal carriage returns and trailing whitespace normalized; identifiers/host paths redacted"
+}

@@ -1,0 +1,3 @@
+Publication copy: PowerShell metadata header and full device IDs/host paths redacted.
+
+Transcript started, output file is ../../outputs/issue15-nvs-initialization-20260914.txt

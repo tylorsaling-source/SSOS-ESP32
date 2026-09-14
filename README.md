@@ -19,7 +19,7 @@ merely by version number:
 | Release | System payload | Choose it when | Validation |
 | --- | --- | --- | --- |
 | [V1.0.0](https://github.com/tylorsaling-source/SSOS-ESP32/releases/tag/v1.0.0) | One-board packet controller with persistent compact state and an internal 9-D runtime | You need device-owned records, replay, migration, or the original kernel experiments | Hardware-tested on ESP32-S3-WROOM-1U N16R8 |
-| [V2.0.0](https://github.com/tylorsaling-source/SSOS-ESP32/releases/tag/v2.0.0) | V1 plus one packet-backed fixed 9-input/8-output linear head | You need a replaceable tiny scoring/action head | Compiled and host/artifact-validated; not physically flashed |
+| [V2.0.0](https://github.com/tylorsaling-source/SSOS-ESP32/releases/tag/v2.0.0) | V1 plus one packet-backed fixed 9-input/8-output linear head | You need a replaceable tiny scoring/action head | [Hardware PASS, 2026-09-14](validation/v2-hardware/RUN-20260914.md): 72 weights, 48/48 outputs, saved head survives hard reset; NVS initialization required on the reused board |
 | [V3.0.1](https://github.com/tylorsaling-source/SSOS-ESP32/releases/tag/v3.0.1) | Quark-v2-0.5M split across a pair, with an optional two-lane three-board extension | You want physical boards cooperating on pretrained text inference | Pair: 240/240 at 44.731 tok/s median; trio gate: 96/96 at 87.927 tok/s |
 | [V4.0.0](https://github.com/tylorsaling-source/SSOS-ESP32/releases/tag/v4.0.0) | Original custom 549,984-parameter split-training lineage and its first checkpoint | You want the original custom model, split-gradient gate, or its continuation point | 100.00023 tokens/parameter; best held-out loss 2.991671; exact one-step split-equivalence gate |
 | [V4.0.1](https://github.com/tylorsaling-source/SSOS-ESP32/releases/tag/v4.0.1) | Separate fresh cluster 3–4–5 lineage and its own first checkpoint | You want an independently initialized model without V4.0.0 learned state | 5.12M presented tokens; held-out loss 3.488711; no parent checkpoint |
@@ -41,8 +41,11 @@ From the extracted repository root:
 The last line is a plain-language `PASS` or `FAIL`; detailed JSON evidence and
 the timestamped serial transcript are saved automatically. Read the
 [one-board V2 proof guide](validation/v2-hardware/README.md) before connecting a
-board. Until a real run produces a passing evidence file and that trace is
-committed, the published V2 status remains **not physically validated**.
+board. The [2026-09-14 physical run](validation/v2-hardware/RUN-20260914.md)
+passed on an ESP32-S3 with 16 MB flash and 8 MB PSRAM using the unchanged V2.0.0
+release images. All 48 outputs matched within 0.00002, including after `SAVE`
+and a hardware reset. The report preserves an initial `SAVE` failure on reused
+NVS and the explicit NVS initialization that resolved it.
 
 V3 is a dedicated multi-board application with distinct master and worker
 roles. Installing it writes the selected boards' application regions, so
