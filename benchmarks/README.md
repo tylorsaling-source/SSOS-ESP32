@@ -3,7 +3,9 @@
 Benchmarks are isolated implementations with release-specific firmware and
 validation records. The Quark package below is the authoritative implementation
 payload for V3.0.1; the core SSOS V1/V2 packet firmware remains independently
-versioned.
+versioned. The ParetoQ 125M six-board package is also listed in the top-level
+README choose-by-function table for discoverability; it does not change
+`ssos.packet.v1`.
 
 ## Reproducible packages
 
