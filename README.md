@@ -23,6 +23,9 @@ merely by version number:
 | [V3.0.1](https://github.com/tylorsaling-source/SSOS-ESP32/releases/tag/v3.0.1) | Quark-v2-0.5M split across a pair, with an optional two-lane three-board extension | You want physical boards cooperating on pretrained text inference | Pair: 240/240 at 44.731 tok/s median; trio gate: 96/96 at 87.927 tok/s |
 | [V4.0.0](https://github.com/tylorsaling-source/SSOS-ESP32/releases/tag/v4.0.0) | Original custom 549,984-parameter split-training lineage and its first checkpoint | You want the original custom model, split-gradient gate, or its continuation point | 100.00023 tokens/parameter; best held-out loss 2.991671; exact one-step split-equivalence gate |
 | [V4.0.1](https://github.com/tylorsaling-source/SSOS-ESP32/releases/tag/v4.0.1) | Separate fresh cluster 3–4–5 lineage and its own first checkpoint | You want an independently initialized model without V4.0.0 learned state | 5.12M presented tokens; held-out loss 3.488711; no parent checkpoint |
+| [ParetoQ 125M](benchmarks/paretoq-125m-six-board-distributed/README.md) | Six-board 40 MHz SPI ring: five compute shards + one relay for `MobileLLM-ParetoQ-125M-2-bit` | You want larger pretrained distributed inference than Quark V3 on ESP32-S3 | Physical A/B proof: FAST and REGULAR 120/120 exact host-oracle tokens, 0 SPI errors; FAST ~1.48× aggregate decode vs REGULAR |
+
+ParetoQ is an **isolated benchmark package** (package 1.0.0), not a change to `ssos.packet.v1` or the V1–V4 core release line. Start with the [ParetoQ package README](benchmarks/paretoq-125m-six-board-distributed/README.md) and the [accepted physical proof](benchmarks/paretoq-125m-six-board-distributed/results/physical/AB_PROOF_REPORT.md). The gated Meta checkpoint is not redistributed; reconstruct shards per that package after accepting upstream terms.
 
 ## V2: user-facing physical proof
 
