@@ -15,6 +15,11 @@ unchanged. Images are rebuilt with Arduino-ESP32 3.3.5 and PSRAM disabled.
 
 Physical validation and its exact limits are recorded in
 [the V2.0.1 run report](validation/v2-hardware/RUN-v2.0.1-20260914.md).
+The extracted ZIP's stock Windows command passed on controlled dirty storage
+and on a clean-enough repeat: 72 coefficients, 48/48 matching scores per run,
+`OK saved`, and boot count 1 to 2 without resending rows. Maximum absolute
+error was 0.000000468750000149 against a 0.00002 tolerance. All four image
+regions passed digest verification in each run.
 The [V2.0.0 run](validation/v2-hardware/RUN-20260914.md) remains historical:
 it needed a manual NVS initialization, which this release incorporates into
 the standard workflow.

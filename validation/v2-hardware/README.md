@@ -4,6 +4,14 @@ This is the user-facing path for proving SSOS-ESP32 V2 on one compatible,
 fresh or reused board. You do not need to enter packet commands, edit JSON, calculate
 expected values, or manually reconnect the serial port.
 
+## V2.0.1 release proof
+
+[Two physical PASS runs](RUN-v2.0.1-20260914.md) cover controlled dirty storage
+and a clean-enough repeat using the extracted ZIP's default Windows command.
+Each records 72 weights, 48/48 scores, successful SAVE, and boot count 1 to 2
+without resending model rows. The report includes preserved failures, flash
+logs, independent numeric audits, and source/image hashes.
+
 ## Historical V2.0.0 run
 
 [2026-09-14: physical PASS](RUN-20260914.md) records 72 loaded coefficients,

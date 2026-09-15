@@ -1,0 +1,108 @@
+
+CASE unit-tests
+COMMAND ["C:\\Python314\\python.exe", "-m", "unittest", "discover", "-s", "validation/v2-hardware", "-p", "test_*.py"]
+...........
+----------------------------------------------------------------------
+Ran 11 tests in 0.181s
+
+OK
+
+EXIT_CODE 0; EXPECTED 0
+
+CASE windows-proof-dry-run
+COMMAND ["powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "scripts/validate-v2-windows.ps1", "-ValidateOnly"]
+SSOS-ESP32 V2 physical proof
+This workflow will flash one compatible board, install 72 weights, reset it, and prove the outputs.
+Initialize leftover settings: ON. The selected board's saved settings/model rows in NVS (20 KiB) will be erased.
+
+verified  ssos_kernel.ino.bootloader.bin
+verified  ssos_kernel.ino.partitions.bin
+verified  boot_app0.bin
+verified  ssos_kernel.ino.bin
+Initialize leftover settings: clear only NVS at 0x9000, length 0x5000 (20 KiB).
+This discards saved settings/model rows so the new V2 install can save reliably.
+Validated release images and bounded NVS layout; no device opened or changed.
+Planned command: C:\Python314\python.exe -m esptool --chip esp32s3 --port <selected-port> --baud 460800 --before default-reset --after hard-reset erase-region 0x9000 0x5000
+Release validation completed; no device was opened and nothing was written.
+Proof plan validated; no device opened, no firmware written, no settings erased.
+
+EXIT_CODE 0; EXPECTED 0
+
+CASE windows-flash-com3-refusal
+COMMAND ["powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "scripts/flash-windows.ps1", "-Port", "COM3", "-ValidateOnly"]
+COM3 is protected. This script will never open or flash COM3.
+At <WORKSPACE>\work\ssos-v2.0.1\scripts\flash-windows.ps1:99 char:5
++     throw 'COM3 is protected. This script will never open or flash CO ...
++     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (COM3 is protect... or flash COM3.:String) [], RuntimeException
+    + FullyQualifiedErrorId : COM3 is protected. This script will never open or flash COM3.
+
+
+EXIT_CODE 1; EXPECTED 1
+
+CASE windows-proof-com3-refusal
+COMMAND ["powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "scripts/validate-v2-windows.ps1", "-Port", "COM3", "-ValidateOnly"]
+SSOS-ESP32 V2 physical proof
+This workflow will flash one compatible board, install 72 weights, reset it, and prove the outputs.
+Initialize leftover settings: ON. The selected board's saved settings/model rows in NVS (20 KiB) will be erased.
+
+
+FAIL: COM3 is protected.
+Nothing else will be attempted. Correct the displayed problem and rerun the same command.
+
+EXIT_CODE 1; EXPECTED 1
+
+CASE posix-shell-syntax
+COMMAND ["C:/Program Files/Git/bin/bash.exe", "-n", "scripts/flash-posix.sh"]
+
+EXIT_CODE 0; EXPECTED 0
+
+CASE termux-shell-syntax
+COMMAND ["C:/Program Files/Git/bin/bash.exe", "-n", "scripts/flash-termux.sh"]
+
+EXIT_CODE 0; EXPECTED 0
+
+CASE posix-dry-run
+COMMAND ["C:/Program Files/Git/bin/bash.exe", "scripts/flash-posix.sh", "--initialize-settings", "--validate-only"]
+ssos_kernel.ino.bin: OK
+ssos_kernel.ino.bootloader.bin: OK
+ssos_kernel.ino.partitions.bin: OK
+boot_app0.bin: OK
+Initialize leftover settings: clear only NVS at 0x9000, length 0x5000 (20 KiB).
+This discards saved settings/model rows so the new V2 install can save reliably.
+Validated release images and bounded NVS layout; no device opened or changed.
+Planned command: C:\Python314\python.exe -m esptool --chip esp32s3 --port <selected-port> --baud 460800 --before default-reset --after hard-reset erase-region 0x9000 0x5000
+Release plan validated; no device opened, no firmware written, no settings erased.
+
+EXIT_CODE 0; EXPECTED 0
+
+CASE termux-dry-run
+COMMAND ["C:/Program Files/Git/bin/bash.exe", "scripts/flash-termux.sh", "--initialize-settings", "--validate-only"]
+ssos_kernel.ino.bin: OK
+ssos_kernel.ino.bootloader.bin: OK
+ssos_kernel.ino.partitions.bin: OK
+boot_app0.bin: OK
+Initialize leftover settings: clear only NVS at 0x9000, length 0x5000 (20 KiB).
+This discards saved settings/model rows so the new V2 install can save reliably.
+Validated release images and bounded NVS layout; no device opened or changed.
+Planned command: C:\Python314\python.exe -m esptool --chip esp32s3 --port <selected-port> --baud 460800 --before default-reset --after hard-reset erase-region 0x9000 0x5000
+Release plan validated; no USB device opened, no firmware written, no settings erased.
+
+EXIT_CODE 0; EXPECTED 0
+
+CASE posix-com3-refusal
+COMMAND ["C:/Program Files/Git/bin/bash.exe", "scripts/flash-posix.sh", "COM3", "--validate-only"]
+COM3 is protected.
+
+EXIT_CODE 2; EXPECTED 2
+
+CASE termux-com3-refusal
+COMMAND ["C:/Program Files/Git/bin/bash.exe", "scripts/flash-termux.sh", "COM3", "--validate-only"]
+COM3 is protected.
+
+EXIT_CODE 2; EXPECTED 2
+
+CASE diff-whitespace
+COMMAND ["git", "diff", "--check"]
+
+EXIT_CODE 0; EXPECTED 0

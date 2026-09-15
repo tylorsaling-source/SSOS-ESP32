@@ -1,0 +1,22 @@
+
+CASE unit-tests
+COMMAND ["C:\\Python314\\python.exe", "-m", "unittest", "discover", "-s", "validation/v2-hardware", "-p", "test_*.py"]
+...........
+----------------------------------------------------------------------
+Ran 11 tests in 0.362s
+
+OK
+
+EXIT_CODE 0; EXPECTED 0
+
+CASE windows-proof-dry-run
+COMMAND ["powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "scripts/validate-v2-windows.ps1", "-ValidateOnly"]
+SSOS-ESP32 V2 physical proof
+This workflow will flash one compatible board, install 72 weights, reset it, and prove the outputs.
+Initialize leftover settings: ON. The selected board's saved settings/model rows in NVS (20 KiB) will be erased.
+
+
+FAIL: The term 'Get-FileHash' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+Nothing else will be attempted. Correct the displayed problem and rerun the same command.
+
+EXIT_CODE 1; EXPECTED 0

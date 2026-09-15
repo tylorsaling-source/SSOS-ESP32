@@ -1,0 +1,32 @@
+{
+  "status": "PASS",
+  "run_started_utc": "2026-09-15T00:02:18.638181+00:00",
+  "source_commit": "8f3cf47453ba2f6c72e0d7d3cdbd92b52fab6861",
+  "evidence_file": "v2-physical-20260915T000218Z.json",
+  "output_values_independently_recomputed": 48,
+  "flash_digest_matches": 4,
+  "settings_initialization_count": 1,
+  "settings_region": [
+    "0x9000",
+    "0x5000"
+  ],
+  "boots_before_after": [
+    1,
+    2
+  ],
+  "save_response": "OK saved",
+  "max_abs_error": 4.6875000014878765e-07,
+  "tolerance": 2e-05,
+  "no_model_rows_resent_after_reset": true,
+  "firmware_sha256": "6ab6fa74130ee02f82377f137465a039c11a3874f50ec899709b8f8b43229f94",
+  "fixture_sha256": "3014a17b72bff5004b628b1f75aae319109e63d082f4759d7c293b7a81bfc560",
+  "validation_script_hashes_match_package": true,
+  "_publication": {
+    "original_sha256": "4370598f6585ba9abb43463a8ab23d099514c584716c7e6825be248d99e30d68",
+    "redactions": [
+      "full device identifiers",
+      "absolute host paths"
+    ],
+    "target_field_is_harness_configuration": true
+  }
+}

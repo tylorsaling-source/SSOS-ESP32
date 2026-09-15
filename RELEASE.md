@@ -20,6 +20,11 @@ for the controlled dirty-storage and clean-enough release gates, exact image
 hashes, and raw evidence. This is a focused V2 patch package; the repository's
 V4.0.1 VERSION and other payloads remain on their own release tracks.
 
+Both physical gates passed through the extracted ZIP's stock Windows command:
+72 coefficients and 48/48 scores per run, `OK saved`, boot count 1 to 2, and no
+rows resent after reset. Maximum absolute error was 0.000000468750000149 against
+0.00002 tolerance. The controlled preserved-settings failure is retained too.
+
 ## V4.0.1: independent cluster lineage
 
 V4.0.1 adds `cluster-345-fresh`, a separately initialized training lineage for
