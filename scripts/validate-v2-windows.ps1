@@ -60,7 +60,7 @@ try {
     $script:python = Find-Python
     try { Invoke-Python @('-m', 'esptool', 'version') }
     catch { throw 'Esptool is missing. Run: py -3 -m pip install --upgrade esptool' }
-    try { Invoke-Python @('-c', 'import serial; print("PySerial ready")') }
+    try { Invoke-Python @('-c', 'import serial'); Write-Host 'PySerial ready' }
     catch { throw 'PySerial is missing. Run: py -3 -m pip install pyserial' }
 
     Write-Host '[2/6] Finding the board...' -ForegroundColor Cyan
