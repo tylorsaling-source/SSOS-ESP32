@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "zip": "SSOS_ESP32-v2.0.1-packet-model-bridge-release.zip",
+  "zip_sha256": "cea71c134ce54d1c23ecc3fd7a11f9d0fa7d43df48bd0c814b3704bccb39c817",
+  "source_commit": "0a4ee7dcba19bca40b92927de290c1a73fa76004",
+  "files": 88,
+  "internal_hashes_verified": 87,
+  "firmware_hashes_verified": 4,
+  "focused_v2_payload": true,
+  "_publication": {
+    "original_sha256": "2d605a4b80a1a00c494b0d6fb70849893941bf95f73b913aa9b305c15408a239",
+    "redactions": [
+      "full device identifiers",
+      "absolute host paths"
+    ],
+    "target_field_is_harness_configuration": true
+  }
+}

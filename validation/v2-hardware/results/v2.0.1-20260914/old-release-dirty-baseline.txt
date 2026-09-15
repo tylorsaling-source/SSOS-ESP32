@@ -1,0 +1,14 @@
+START_UTC 2026-09-14T23:41:02.336869+00:00
+COMMAND ["python", "validation/v2-hardware/validate_v2_hardware.py", "--port", "COM20", "--output-dir", "../../outputs/v201-raw/old-release-dirty-baseline"]
+   1/5 Confirming the board and V2 firmware...
+   2/5 Installing all 8 rows (72 signed-Q10 weights)...
+   3/5 Comparing all 8 outputs for three known inputs...
+      PASS mixed: 8/8 outputs, max error 4.69e-07
+      PASS first-axis-and-bias: 8/8 outputs, max error 3.75e-07
+      PASS second-mixed: 8/8 outputs, max error 3.52e-07
+
+FAIL: board rejected 'SAVE': ERR save failed
+      Evidence: ..\..\outputs\v201-raw\old-release-dirty-baseline\v2-physical-20260914T234102Z.json
+      Transcript: ..\..\outputs\v201-raw\old-release-dirty-baseline\v2-physical-20260914T234102Z.txt
+EXIT_CODE 1
+END_UTC 2026-09-14T23:41:03.658729+00:00

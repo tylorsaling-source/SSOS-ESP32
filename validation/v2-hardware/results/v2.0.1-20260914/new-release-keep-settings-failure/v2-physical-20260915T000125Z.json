@@ -1,0 +1,182 @@
+{
+  "schema": "ssos.v2.physical-evidence.v1",
+  "status": "FAIL",
+  "started_utc": "2026-09-15T00:01:25.179163+00:00",
+  "port": "COM20",
+  "tolerance": 2e-05,
+  "release": "V2.0.1",
+  "target": "ESP32-S3-WROOM-1U N16R8; native USB Serial/JTAG 303A:1001",
+  "flash": {
+    "status": "performed-this-run",
+    "mode": "dio",
+    "frequency": "80m",
+    "size": "16MB",
+    "offsets": {
+      "0x0000": "ssos_kernel.ino.bootloader.bin",
+      "0x8000": "ssos_kernel.ino.partitions.bin",
+      "0xe000": "boot_app0.bin",
+      "0x10000": "ssos_kernel.ino.bin"
+    },
+    "read_back_verify": true
+  },
+  "tools": {
+    "python": "3.14.4",
+    "esptool": "5.3.1",
+    "pyserial": "3.5"
+  },
+  "fixture": {
+    "path": "<WORKSPACE>\\outputs\\v201-staging2-extracted\\validation\\v2-hardware\\fixture.json",
+    "sha256": "3014a17b72bff5004b628b1f75aae319109e63d082f4759d7c293b7a81bfc560"
+  },
+  "firmware_image": {
+    "path": "images/flash/ssos_kernel.ino.bin",
+    "sha256": "6ab6fa74130ee02f82377f137465a039c11a3874f50ec899709b8f8b43229f94"
+  },
+  "git_commit": "8f3cf47453ba2f6c72e0d7d3cdbd92b52fab6861",
+  "validation_source_sha256": {
+    "scripts/flash-windows.ps1": "e3a0d270fe4b82f965decfa0a286823e4407031aee9e18f607993ae885fd10b9",
+    "scripts/validate-v2-windows.ps1": "df8e3cf321e595ce1e850f8185b5289e84bb26b1afb0030639801457dc3e9aa0",
+    "scripts/initialize-settings.py": "9f746157c4e83cf3ae760ff80641753ea03eabd60ea60169071fc5a354e2b0df",
+    "validation/v2-hardware/validate_v2_hardware.py": "0860fc59e0468b6eae9e1430b406ea79a186399503fa9990e7fee399012fe1f8"
+  },
+  "settings_initialization": {
+    "performed": false,
+    "offset": "0x9000",
+    "length": "0x5000",
+    "reason": "preserved-by-request"
+  },
+  "flash_log": {
+    "path": "<WORKSPACE>\\outputs\\v201-raw\\new-release-keep-settings-failure\\v2-flash-20260915T000115028Z.txt",
+    "sha256": "460202968d632e38fa9e74d87ac8abd030058a6199e072f471c6fb87b35d2259"
+  },
+  "checks": [
+    {
+      "phase": "before-reset",
+      "name": "mixed",
+      "input9": [
+        0.125,
+        -0.25,
+        0.375,
+        -0.5,
+        0.625,
+        -0.75,
+        0.875,
+        -1.0,
+        1.0
+      ],
+      "expected_y8": [
+        -2.86376953125,
+        -1.822998046875,
+        -1.6416015625,
+        -1.3392333984375,
+        3.41015625,
+        0.0845947265625,
+        2.7811279296875,
+        -1.4879150390625
+      ],
+      "observed_y8": [
+        -2.86377,
+        -1.822998,
+        -1.641602,
+        -1.339233,
+        3.410156,
+        0.084595,
+        2.781128,
+        -1.487915
+      ],
+      "expected_argmax": 4,
+      "observed_argmax": 4,
+      "max_abs_error": 4.6875000014878765e-07,
+      "pass": true
+    },
+    {
+      "phase": "before-reset",
+      "name": "first-axis-and-bias",
+      "input9": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "expected_y8": [
+        0.4814453125,
+        -1.5341796875,
+        1.580078125,
+        1.40234375,
+        -0.880859375,
+        -1.3994140625,
+        -0.6669921875,
+        -1.337890625
+      ],
+      "observed_y8": [
+        0.481445,
+        -1.53418,
+        1.580078,
+        1.402344,
+        -0.880859,
+        -1.399414,
+        -0.666992,
+        -1.337891
+      ],
+      "expected_argmax": 2,
+      "observed_argmax": 2,
+      "max_abs_error": 3.7500000005241674e-07,
+      "pass": true
+    },
+    {
+      "phase": "before-reset",
+      "name": "second-mixed",
+      "input9": [
+        -0.5,
+        0.25,
+        -0.125,
+        0.75,
+        -1.0,
+        0.5,
+        -0.25,
+        1.0,
+        1.0
+      ],
+      "expected_y8": [
+        1.9212646484375,
+        0.5955810546875,
+        0.4918212890625,
+        0.5802001953125,
+        -1.3555908203125,
+        -1.232421875,
+        -1.744384765625,
+        -0.5869140625
+      ],
+      "observed_y8": [
+        1.921265,
+        0.595581,
+        0.491821,
+        0.5802,
+        -1.355591,
+        -1.232422,
+        -1.744385,
+        -0.586914
+      ],
+      "expected_argmax": 0,
+      "observed_argmax": 0,
+      "max_abs_error": 3.5156250000056843e-07,
+      "pass": true
+    }
+  ],
+  "error": "board rejected 'SAVE': ERR save failed; run the V2 validate installer to initialize leftover settings (erases saved state)",
+  "identity_before": "OK SSOS_ESP32 proto=ssos.packet.v1 model=any replaceable=1 fuse=9to8 chip=esp32s3 mac=[DEVICE-ID-REDACTED] boots=2 packets=2 recv=2 release=2.0.1",
+  "finished_utc": "2026-09-15T00:01:26.164165+00:00",
+  "_publication": {
+    "original_sha256": "8f1e828f7172e8bcee9126b016612f49f6b9473df6c0590b9510dadc8101bc1b",
+    "redactions": [
+      "full device identifiers",
+      "absolute host paths"
+    ],
+    "target_field_is_harness_configuration": true
+  }
+}

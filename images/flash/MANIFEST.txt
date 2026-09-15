@@ -1,30 +1,29 @@
-SSOS ESP32-S3 release image
+SSOS ESP32-S3 V2.0.1 release images
 
-Target: ESP32-S3-WROOM-1U N16R8
-Flash size: 16 MB
+Target configuration: ESP32-S3-WROOM-1U N16R8; 16 MB flash
 USB: native Serial/JTAG 303A:1001
+PSRAM: disabled
+Arduino CLI: 1.5.1
 Arduino-ESP32: 3.3.5
-Application size: 372544 bytes
-Application SHA-256: 1930d580579328563b3b66e73e02a60246331472249f2d897e85af742bb11af0
+Application size: 380704 bytes
+Application SHA-256: 6ab6fa74130ee02f82377f137465a039c11a3874f50ec899709b8f8b43229f94
 
 Flash map:
   0x0000  ssos_kernel.ino.bootloader.bin
   0x8000  ssos_kernel.ino.partitions.bin
   0xe000  boot_app0.bin
   0x10000 ssos_kernel.ino.bin
+Explicit settings initialization: NVS at 0x9000, length 0x5000.
 
 Use SHA256SUMS to verify all four images before flashing. The guided scripts
-perform this check automatically. The full benchmark output for this build is
-traces/ESP32-S3-SSOS-9to8-trace-20260815.txt.
+perform this check automatically. BUILD.json records source and image hashes.
+Physical V2 proof: validation/v2-hardware/RUN-v2.0.1-20260914.md.
+The August benchmark trace describes an earlier build, not this image.
 
-Build settings:
-  USBMode=hwcdc
-  CDCOnBoot=cdc
-  UploadMode=default
-  FlashMode=qio
-  FlashSize=16M
-  PSRAM=disabled
-  PartitionScheme=app3M_fat9M_16MB
+Build command (paths chosen by the builder):
+  arduino-cli compile --config-file <isolated-config.yaml> --fqbn esp32:esp32:esp32s3:USBMode=hwcdc,CDCOnBoot=cdc,UploadMode=default,FlashMode=qio,FlashSize=16M,PSRAM=disabled,PartitionScheme=app3M_fat9M_16MB --build-path <build-directory> --warnings default firmware/ssos_kernel
+Install the pinned platform first with:
+  arduino-cli core install esp32:esp32@3.3.5 --config-file <isolated-config.yaml>
 
-The tested write command uses esptool flash_mode=dio, flash_freq=80m, and
-flash_size=16MB, matching images/flash/flash_args.
+The write command uses flash_mode=dio, flash_freq=80m, and flash_size=16MB,
+matching flash_args. Partition format and fixed 9-to-8 head math are unchanged.

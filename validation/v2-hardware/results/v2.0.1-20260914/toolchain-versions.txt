@@ -1,0 +1,8 @@
+COMMAND ["C:/Program Files/Arduino CLI/arduino-cli.exe", "version"]
+arduino-cli  Version: 1.5.1 Commit: 01f3d4f2b Date: 2026-06-05T10:22:12Z
+EXIT_CODE 0
+COMMAND ["C:/Program Files/Arduino CLI/arduino-cli.exe", "core", "list", "--config-file", "outputs/arduino-v201.yaml"]
+ID          Installed Latest Name
+esp32:esp32 3.3.5     3.3.11 esp32
+
+EXIT_CODE 0

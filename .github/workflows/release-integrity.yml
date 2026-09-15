@@ -29,4 +29,4 @@ jobs:
           PY
       - name: Validate V2 hardware fixture and parsers
         shell: bash
-        run: python3 -m unittest validation/v2-hardware/test_fixture.py
+        run: python3 -m unittest discover -s validation/v2-hardware -p 'test_*.py'

@@ -4,7 +4,10 @@ param(
     [ValidateRange(115200, 921600)]
     [int]$Baud = 460800,
     [switch]$Yes,
-    [switch]$SkipFlash
+    [switch]$SkipFlash,
+    [switch]$KeepSettings,
+    [switch]$ValidateOnly,
+    [string]$OutputDirectory
 )
 
 Set-StrictMode -Version Latest
@@ -39,13 +42,25 @@ function Find-CompatiblePorts {
 try {
     Write-Host 'SSOS-ESP32 V2 physical proof' -ForegroundColor Cyan
     Write-Host 'This workflow will flash one compatible board, install 72 weights, reset it, and prove the outputs.'
+    if ($KeepSettings) {
+        Write-Host 'Initialize leftover settings: OFF by request. Existing NVS may prevent SAVE.' -ForegroundColor Yellow
+    } else {
+        Write-Host 'Initialize leftover settings: ON. The selected board''s saved settings/model rows in NVS (20 KiB) will be erased.' -ForegroundColor Yellow
+    }
     Write-Host ''
+
+    if ($Port -and $Port.ToUpperInvariant() -eq 'COM3') { throw 'COM3 is protected.' }
+    if ($ValidateOnly) {
+        & (Join-Path $PSScriptRoot 'flash-windows.ps1') -ValidateOnly -InitializeSettings:(-not $KeepSettings)
+        Write-Host 'Proof plan validated; no device opened, no firmware written, no settings erased.'
+        exit 0
+    }
 
     Write-Host '[1/6] Checking the computer...' -ForegroundColor Cyan
     $script:python = Find-Python
     try { Invoke-Python @('-m', 'esptool', 'version') }
     catch { throw 'Esptool is missing. Run: py -3 -m pip install --upgrade esptool' }
-    try { Invoke-Python @('-c', 'import serial; print("PySerial ready")') }
+    try { Invoke-Python @('-c', 'import serial'); Write-Host 'PySerial ready' }
     catch { throw 'PySerial is missing. Run: py -3 -m pip install pyserial' }
 
     Write-Host '[2/6] Finding the board...' -ForegroundColor Cyan
@@ -68,10 +83,18 @@ try {
 
     if ($SkipFlash) {
         Write-Host '[4/6] Flash skipped by request; validating the firmware already on the board.' -ForegroundColor Yellow
+        if (-not $KeepSettings) {
+            $initArgs = @((Join-Path $PSScriptRoot 'initialize-settings.py'), '--port', $Port, '--baud', "$Baud")
+            if ($Yes) { $initArgs += '--yes' }
+            Invoke-Python $initArgs
+        }
         $flashStatus = 'preexisting'
     } else {
         Write-Host '[4/6] Flashing and read-back verifying V2...' -ForegroundColor Cyan
-        $flashArguments = @{ Port = $Port; Baud = $Baud }
+        if (-not $OutputDirectory) { $OutputDirectory = Join-Path $repoRoot 'validation\v2-hardware\results' }
+        New-Item -ItemType Directory -Force -Path $OutputDirectory | Out-Null
+        $flashLog = Join-Path $OutputDirectory ("v2-flash-" + (Get-Date).ToUniversalTime().ToString('yyyyMMddTHHmmssfffZ') + '.txt')
+        $flashArguments = @{ Port = $Port; Baud = $Baud; InitializeSettings = (-not $KeepSettings); LogPath = $flashLog }
         if ($Yes) { $flashArguments.Yes = $true }
         & (Join-Path $PSScriptRoot 'flash-windows.ps1') @flashArguments
         if ($LASTEXITCODE -ne 0) { throw 'Firmware flash failed.' }
@@ -80,7 +103,11 @@ try {
     }
 
     Write-Host '[5/6] Installing and checking the packet-backed model...' -ForegroundColor Cyan
-    Invoke-Python @($harness, '--port', $Port, '--flash-status', $flashStatus)
+    $proofArgs = @($harness, '--port', $Port, '--flash-status', $flashStatus)
+    if (-not $KeepSettings) { $proofArgs += '--settings-initialized' }
+    if ($OutputDirectory) { $proofArgs += @('--output-dir', $OutputDirectory) }
+    if (-not $SkipFlash) { $proofArgs += @('--flash-log', $flashLog) }
+    Invoke-Python $proofArgs
 
     Write-Host '[6/6] Finished.' -ForegroundColor Cyan
     Write-Host 'PASS: the complete V2 physical proof passed. The evidence paths are printed above.' -ForegroundColor Green

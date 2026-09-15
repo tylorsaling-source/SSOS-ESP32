@@ -1,0 +1,18 @@
+START_UTC 2026-09-15T00:00:14.359738+00:00
+COMMAND ["cmd.exe", "/d", "/c", "scripts\\validate-v2-windows.cmd", "-Port", "COM20", "-Yes", "-KeepSettings", "-OutputDirectory", "<WORKSPACE>/outputs/v201-raw/new-release-keep-settings-failure"]
+SSOS-ESP32 V2 physical proof
+This workflow will flash one compatible board, install 72 weights, reset it, and prove the outputs.
+Initialize leftover settings: OFF by request. Existing NVS may prevent SAVE.
+
+[1/6] Checking the computer...
+esptool v5.3.1
+5.3.1
+  File "<string>", line 1
+    import serial; print(PySerial
+                        ^
+SyntaxError: '(' was never closed
+
+FAIL: PySerial is missing. Run: py -3 -m pip install pyserial
+Nothing else will be attempted. Correct the displayed problem and rerun the same command.
+EXIT_CODE 1
+END_UTC 2026-09-15T00:00:16.084824+00:00

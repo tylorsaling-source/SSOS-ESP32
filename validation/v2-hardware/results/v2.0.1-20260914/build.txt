@@ -1,0 +1,6 @@
+START_UTC 2026-09-14T23:55:43.955284+00:00
+COMMAND ["C:/Program Files/Arduino CLI/arduino-cli.exe", "compile", "--config-file", "../../outputs/arduino-v201.yaml", "--fqbn", "esp32:esp32:esp32s3:USBMode=hwcdc,CDCOnBoot=cdc,UploadMode=default,FlashMode=qio,FlashSize=16M,PSRAM=disabled,PartitionScheme=app3M_fat9M_16MB", "--build-path", "../../outputs/v201-build", "--warnings", "default", "firmware/ssos_kernel"]
+Sketch uses 380563 bytes (12%) of program storage space. Maximum is 3145728 bytes.
+Global variables use 40392 bytes (12%) of dynamic memory, leaving 287288 bytes for local variables. Maximum is 327680 bytes.
+EXIT_CODE 0
+END_UTC 2026-09-14T23:58:00.696725+00:00
