@@ -33,6 +33,7 @@ jobs:
     if: github.event_name == 'pull_request_target'
     runs-on: ubuntu-latest
     permissions:
+      contents: read
       pull-requests: write
       issues: write
     steps:
@@ -48,9 +49,50 @@ jobs:
               '## Compatibility and risk',
               '## Checklist'
             ];
-            const body = pr.body || '';
-            const missing = required.filter(section => !body.includes(section));
+            let body = pr.body || '';
+            let missing = required.filter(section => !body.includes(section));
             const trustedAutomation = pr.user.login === 'dependabot[bot]';
+
+            // PRs opened through the GitHub API, connectors, or automation do not
+            // automatically receive .github/PULL_REQUEST_TEMPLATE.md. Seed the
+            // repository template when required sections are missing so automated
+            // and browser-created PRs start from the same structure.
+            if (missing.length && !trustedAutomation) {
+              const templateResponse = await github.rest.repos.getContent({
+                ...context.repo,
+                path: '.github/PULL_REQUEST_TEMPLATE.md',
+                ref: pr.base.sha
+              });
+              const templateData = templateResponse.data;
+              if (Array.isArray(templateData) || !templateData.content) {
+                core.setFailed('Could not load .github/PULL_REQUEST_TEMPLATE.md from the base revision.');
+                return;
+              }
+
+              const template = Buffer.from(templateData.content, templateData.encoding || 'base64').toString('utf8');
+              const templateMissing = required.filter(section => !template.includes(section));
+              if (templateMissing.length) {
+                core.setFailed(`Repository PR template is missing required sections: ${templateMissing.join(', ')}`);
+                return;
+              }
+
+              const existing = body.trim();
+              body = existing ? `${existing}\n\n---\n\n${template}` : template;
+              await github.rest.pulls.update({
+                ...context.repo,
+                pull_number: pr.number,
+                body
+              });
+
+              await github.rest.issues.createComment({
+                ...context.repo,
+                issue_number: pr.number,
+                body: 'This pull request was created without the repository PR template, so the moderator added it automatically. Please fill in the added sections before review.'
+              });
+
+              missing = required.filter(section => !body.includes(section));
+            }
+
             const files = await github.paginate(github.rest.pulls.listFiles, {
               ...context.repo,
               pull_number: pr.number,
