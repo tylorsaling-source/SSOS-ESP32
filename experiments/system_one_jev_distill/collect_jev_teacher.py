@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 from pathlib import Path
 
 from typesafe_sdk import Noul, TypeSafeClient
@@ -26,25 +27,38 @@ def main() -> None:
     ap.add_argument("output", type=Path, help="JSONL teacher dataset")
     args = ap.parse_args()
 
-    client = TypeSafeClient()
-    typed_questions = {k: Noul(instructions=v) for k, v in QUESTIONS.items()}
+    typed_questions = {name: Noul(instructions=text) for name, text in QUESTIONS.items()}
+    rows = args.input.read_text(encoding="utf-8").splitlines()
+    args.output.parent.mkdir(parents=True, exist_ok=True)
 
-    with args.output.open("w", encoding="utf-8") as out:
-        for lineno, line in enumerate(args.input.read_text(encoding="utf-8").splitlines(), 1):
+    with TypeSafeClient() as client, args.output.open("w", encoding="utf-8") as out:
+        for lineno, line in enumerate(rows, 1):
             if not line.strip():
                 continue
             row = json.loads(line)
             x8 = row.get("x8")
             if not isinstance(x8, list) or len(x8) != 8:
                 raise SystemExit(f"line {lineno}: x8 must contain exactly 8 values")
+            try:
+                x8 = [float(value) for value in x8]
+            except (TypeError, ValueError) as exc:
+                raise SystemExit(f"line {lineno}: x8 contains a non-numeric value") from exc
+            if not all(math.isfinite(value) and -1.0 <= value <= 1.0 for value in x8):
+                raise SystemExit(f"line {lineno}: x8 values must be finite and in [-1,1]")
+
             state = row.get("state")
-            if state is None:
-                raise SystemExit(f"line {lineno}: missing state")
-            state_text = state if isinstance(state, str) else json.dumps(state, sort_keys=True, separators=(",", ":"))
-            response = client.system_one(state=state_text, questions=typed_questions)
-            targets = [float(response.answers[name].noul) for name in QUESTIONS]
-            record = {"x8": [float(v) for v in x8], "targets": targets}
-            out.write(json.dumps(record, separators=(",", ":")) + "\n")
+            if not isinstance(state, (str, dict, list)):
+                raise SystemExit(f"line {lineno}: state must be text, an object, or an array")
+
+            response = client.system_one(state=state, questions=typed_questions)
+            missing = [name for name in QUESTIONS if name not in response.nouls]
+            if missing:
+                raise SystemExit(f"line {lineno}: Jev response missing Noul answers: {', '.join(missing)}")
+            targets = [float(response.nouls[name].noul) for name in QUESTIONS]
+            if not all(math.isfinite(value) and 0.0 <= value <= 1.0 for value in targets):
+                raise SystemExit(f"line {lineno}: Jev returned an invalid probability")
+
+            out.write(json.dumps({"x8": x8, "targets": targets}, separators=(",", ":")) + "\n")
             print(f"{lineno}: " + " ".join(f"{name}={targets[i]:.3f}" for i, name in enumerate(QUESTIONS)))
 
 
