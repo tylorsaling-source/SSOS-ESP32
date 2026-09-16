@@ -1,0 +1,2357 @@
+{
+  "status": "BLOCKED",
+  "created": "2026-09-16T14:29:41.993451+00:00",
+  "model_sha256": "dfb6a8abb8c47141fe3550f158b68953d1d3a63ede064f4becd9cbc15545bda7",
+  "firmware_written": false,
+  "profiles": [
+    {
+      "id": "r1-worker",
+      "performance": 0.25,
+      "energy_cost": 0.1,
+      "wake_cost": 0.1
+    },
+    {
+      "id": "gpu-worker",
+      "performance": 1.0,
+      "energy_cost": 0.9,
+      "wake_cost": 0.3
+    }
+  ],
+  "gate": "18/18 physical correct decisions/executions including actual wake",
+  "head_names": [
+    "use_candidate",
+    "wake_candidate",
+    "candidate_busy",
+    "candidate_capable",
+    "candidate_reliable",
+    "query_again",
+    "fallback_local",
+    "reject_candidate"
+  ],
+  "source_sha256": {
+    "contract.py": "5d497c8d33b0770ad8320b09acdcd36bcf56f8f46f71cede74e366f702d41753",
+    "run.py": "450aa0368dd9c5ce468bbf42e11cac39dc382498abf9d281279642c585f8334c",
+    "test_dispatcher.py": "538393ef998538c95b542ec6a2cbda7a1d703cdc0902d7e17cd8c35d174d9883",
+    "train.py": "c92b72fdbc1bf5b7824b6736f71f7a6c9e8dc9b5858d6cd2a6fc74a22488143b",
+    "worker.py": "3e614af1898abb6239876ff633f4278a10453a5a6eb285cc2c97b38cc5ee0de9"
+  },
+  "serial_retries": 0,
+  "original_head_restored": true,
+  "distinct_machine_fingerprints_verified": true,
+  "physical_scoring_started": true,
+  "privacy": "Network addresses, worker IDs, machine fingerprints, process IDs, and raw serial/packet data omitted.",
+  "initial_probes": {
+    "r1-worker": {
+      "ok": true,
+      "machine": "aarch64",
+      "os": "Linux",
+      "capabilities": [
+        "cpu"
+      ],
+      "free_capacity": 1.0,
+      "rpc_ms": 953.0000000086147
+    },
+    "gpu-worker": {
+      "ok": true,
+      "machine": "AMD64",
+      "os": "Windows",
+      "capabilities": [
+        "cpu",
+        "cuda"
+      ],
+      "free_capacity": 1.0,
+      "rpc_ms": 233.99999999674037
+    }
+  },
+  "scenarios": [
+    {
+      "scenario": 1,
+      "repetition": 1,
+      "status": "PASS",
+      "task": {
+        "kernel": "cpu",
+        "count": 4096,
+        "demand": 0.05
+      },
+      "completed_on": "r1-worker",
+      "expected": "r1-worker",
+      "elapsed_ms": 2233.9999999967404,
+      "rounds": [
+        {
+          "selected": "r1-worker",
+          "candidates": [
+            {
+              "id": "r1-worker",
+              "state": {
+                "capable": 1,
+                "readiness": 1,
+                "free_capacity": 1.0,
+                "reliability": 1,
+                "work_value": 0.0125,
+                "energy_cost": 0.1,
+                "wake_cost": 0,
+                "freshness": 0.9885333333329375
+              },
+              "x9": [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                -0.975,
+                -0.8,
+                -1.0,
+                0.9770666666658749,
+                1.0
+              ],
+              "y8": [
+                0.893355,
+                -1.281298,
+                -3.146957,
+                3.439476,
+                3.667745,
+                -3.411808,
+                -1.786046,
+                -2.781842
+              ],
+              "outputs": {
+                "use_candidate": 0.893355,
+                "wake_candidate": -1.281298,
+                "candidate_busy": -3.146957,
+                "candidate_capable": 3.439476,
+                "candidate_reliable": 3.667745,
+                "query_again": -3.411808,
+                "fallback_local": -1.786046,
+                "reject_candidate": -2.781842
+              },
+              "source": "physical_esp32_minfer",
+              "max_abs_error": 5.781268765936431e-07,
+              "score_ms": 30.999999988125637,
+              "probe": {
+                "ok": true,
+                "machine": "aarch64",
+                "os": "Linux",
+                "capabilities": [
+                  "cpu"
+                ],
+                "free_capacity": 1.0,
+                "rpc_ms": 750.0
+              }
+            },
+            {
+              "id": "gpu-worker",
+              "state": {
+                "capable": 1,
+                "readiness": 1,
+                "free_capacity": 1.0,
+                "reliability": 1,
+                "work_value": 0.05,
+                "energy_cost": 0.9,
+                "wake_cost": 0,
+                "freshness": 0.9989666666670625
+              },
+              "x9": [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                -0.9,
+                0.8,
+                -1.0,
+                0.9979333333341249,
+                1.0
+              ],
+              "y8": [
+                0.675932,
+                -1.46172,
+                -3.10336,
+                3.503908,
+                3.848368,
+                -3.398813,
+                -1.794423,
+                -2.81972
+              ],
+              "outputs": {
+                "use_candidate": 0.675932,
+                "wake_candidate": -1.46172,
+                "candidate_busy": -3.10336,
+                "candidate_capable": 3.503908,
+                "candidate_reliable": 3.848368,
+                "query_again": -3.398813,
+                "fallback_local": -1.794423,
+                "reject_candidate": -2.81972
+              },
+              "source": "physical_esp32_minfer",
+              "max_abs_error": 7.031253015377104e-07,
+              "score_ms": 16.00000000325963,
+              "probe": {
+                "ok": true,
+                "machine": "AMD64",
+                "os": "Windows",
+                "capabilities": [
+                  "cpu",
+                  "cuda"
+                ],
+                "free_capacity": 1.0,
+                "rpc_ms": 344.00000001187436
+              }
+            }
+          ]
+        }
+      ],
+      "dispatches": [
+        {
+          "id": "r1-worker",
+          "correct": true,
+          "reply": {
+            "ok": true,
+            "kernel": "cpu",
+            "count": 4096,
+            "sha256": "4706d6ff50fdf06adc5acdeacb0de0d6a7517bfea428127aa0d2898d9b9f41ce",
+            "elapsed_ms": 1.3985210098326206,
+            "rpc_ms": 1092.9999999934807
+          }
+        }
+      ],
+      "wakes": []
+    },
+    {
+      "scenario": 1,
+      "repetition": 2,
+      "status": "PASS",
+      "task": {
+        "kernel": "cpu",
+        "count": 4096,
+        "demand": 0.05
+      },
+      "completed_on": "r1-worker",
+      "expected": "r1-worker",
+      "elapsed_ms": 1766.0000000032596,
+      "rounds": [
+        {
+          "selected": "r1-worker",
+          "candidates": [
+            {
+              "id": "r1-worker",
+              "state": {
+                "capable": 1,
+                "readiness": 1,
+                "free_capacity": 1.0,
+                "reliability": 1,
+                "work_value": 0.0125,
+                "energy_cost": 0.1,
+                "wake_cost": 0,
+                "freshness": 0.9942666666669538
+              },
+              "x9": [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                -0.975,
+                -0.8,
+                -1.0,
+                0.9885333333339077,
+                1.0
+              ],
+              "y8": [
+                0.895225,
+                -1.280749,
+                -3.14782,
+                3.439464,
+                3.659459,
+                -3.438985,
+                -1.788275,
+                -2.786209
+              ],
+              "outputs": {
+                "use_candidate": 0.895225,
+                "wake_candidate": -1.280749,
+                "candidate_busy": -3.14782,
+                "candidate_capable": 3.439464,
+                "candidate_reliable": 3.659459,
+                "query_again": -3.438985,
+                "fallback_local": -1.788275,
+                "reject_candidate": -2.786209
+              },
+              "source": "physical_esp32_minfer",
+              "max_abs_error": 6.66667081539174e-07,
+              "score_ms": 30.999999988125637,
+              "probe": {
+                "ok": true,
+                "machine": "aarch64",
+                "os": "Linux",
+                "capabilities": [
+                  "cpu"
+                ],
+                "free_capacity": 1.0,
+                "rpc_ms": 828.0000000086147
+              }
+            },
+            {
+              "id": "gpu-worker",
+              "state": {
+                "capable": 1,
+                "readiness": 1,
+                "free_capacity": 1.0,
+                "reliability": 1,
+                "work_value": 0.05,
+                "energy_cost": 0.9,
+                "wake_cost": 0,
+                "freshness": 0.9989666666670625
+              },
+              "x9": [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                -0.9,
+                0.8,
+                -1.0,
+                0.9979333333341249,
+                1.0
+              ],
+              "y8": [
+                0.675932,
+                -1.46172,
+                -3.10336,
+                3.503908,
+                3.848368,
+                -3.398813,
+                -1.794423,
+                -2.81972
+              ],
+              "outputs": {
+                "use_candidate": 0.675932,
+                "wake_candidate": -1.46172,
+                "candidate_busy": -3.10336,
+                "candidate_capable": 3.503908,
+                "candidate_reliable": 3.848368,
+                "query_again": -3.398813,
+                "fallback_local": -1.794423,
+                "reject_candidate": -2.81972
+              },
+              "source": "physical_esp32_minfer",
+              "max_abs_error": 7.031253015377104e-07,
+              "score_ms": 16.00000000325963,
+              "probe": {
+                "ok": true,
+                "machine": "AMD64",
+                "os": "Windows",
+                "capabilities": [
+                  "cpu",
+                  "cuda"
+                ],
+                "free_capacity": 1.0,
+                "rpc_ms": 171.99999999138527
+              }
+            }
+          ]
+        }
+      ],
+      "dispatches": [
+        {
+          "id": "r1-worker",
+          "correct": true,
+          "reply": {
+            "ok": true,
+            "kernel": "cpu",
+            "count": 4096,
+            "sha256": "4706d6ff50fdf06adc5acdeacb0de0d6a7517bfea428127aa0d2898d9b9f41ce",
+            "elapsed_ms": 1.4536459930241108,
+            "rpc_ms": 719.0000000118744
+          }
+        }
+      ],
+      "wakes": []
+    },
+    {
+      "scenario": 1,
+      "repetition": 3,
+      "status": "PASS",
+      "task": {
+        "kernel": "cpu",
+        "count": 4096,
+        "demand": 0.05
+      },
+      "completed_on": "r1-worker",
+      "expected": "r1-worker",
+      "elapsed_ms": 1859.9999999860302,
+      "rounds": [
+        {
+          "selected": "r1-worker",
+          "candidates": [
+            {
+              "id": "r1-worker",
+              "state": {
+                "capable": 1,
+                "readiness": 1,
+                "free_capacity": 1.0,
+                "reliability": 1,
+                "work_value": 0.0125,
+                "energy_cost": 0.1,
+                "wake_cost": 0,
+                "freshness": 0.9942666666659837
+              },
+              "x9": [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                -0.975,
+                -0.8,
+                -1.0,
+                0.9885333333319675,
+                1.0
+              ],
+              "y8": [
+                0.895225,
+                -1.280749,
+                -3.14782,
+                3.439464,
+                3.659459,
+                -3.438985,
+                -1.788275,
+                -2.786209
+              ],
+              "outputs": {
+                "use_candidate": 0.895225,
+                "wake_candidate": -1.280749,
+                "candidate_busy": -3.14782,
+                "candidate_capable": 3.439464,
+                "candidate_reliable": 3.659459,
+                "query_again": -3.438985,
+                "fallback_local": -1.788275,
+                "reject_candidate": -2.786209
+              },
+              "source": "physical_esp32_minfer",
+              "max_abs_error": 6.666656795495385e-07,
+              "score_ms": 14.999999984866008,
+              "probe": {
+                "ok": true,
+                "machine": "aarch64",
+                "os": "Linux",
+                "capabilities": [
+                  "cpu"
+                ],
+                "free_capacity": 1.0,
+                "rpc_ms": 734.9999999860302
+              }
+            },
+            {
+              "id": "gpu-worker",
+              "state": {
+                "capable": 1,
+                "readiness": 1,
+                "free_capacity": 1.0,
+                "reliability": 1,
+                "work_value": 0.05,
+                "energy_cost": 0.9,
+                "wake_cost": 0,
+                "freshness": 0.9995000000005044
+              },
+              "x9": [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                -0.9,
+                0.8,
+                -1.0,
+                0.9990000000010089,
+                1.0
+              ],
+              "y8": [
+                0.676106,
+                -1.461669,
+                -3.103441,
+                3.503907,
+                3.847598,
+                -3.401341,
+                -1.79463,
+                -2.820127
+              ],
+              "outputs": {
+                "use_candidate": 0.676106,
+                "wake_candidate": -1.461669,
+                "candidate_busy": -3.103441,
+                "candidate_capable": 3.503907,
+                "candidate_reliable": 3.847598,
+                "query_again": -3.401341,
+                "fallback_local": -1.79463,
+                "reject_candidate": -2.820127
+              },
+              "source": "physical_esp32_minfer",
+              "max_abs_error": 5.703124243972013e-07,
+              "score_ms": 32.00000000651926,
+              "probe": {
+                "ok": true,
+                "machine": "AMD64",
+                "os": "Windows",
+                "capabilities": [
+                  "cpu",
+                  "cuda"
+                ],
+                "free_capacity": 1.0,
+                "rpc_ms": 172.0000000204891
+              }
+            }
+          ]
+        }
+      ],
+      "dispatches": [
+        {
+          "id": "r1-worker",
+          "correct": true,
+          "reply": {
+            "ok": true,
+            "kernel": "cpu",
+            "count": 4096,
+            "sha256": "4706d6ff50fdf06adc5acdeacb0de0d6a7517bfea428127aa0d2898d9b9f41ce",
+            "elapsed_ms": 1.4288550009950995,
+            "rpc_ms": 890.0000000139698
+          }
+        }
+      ],
+      "wakes": []
+    },
+    {
+      "scenario": 2,
+      "repetition": 1,
+      "status": "PASS",
+      "task": {
+        "kernel": "cuda",
+        "count": 262144,
+        "demand": 1.0
+      },
+      "completed_on": "gpu-worker",
+      "expected": "gpu-worker",
+      "elapsed_ms": 1280.9999999881256,
+      "rounds": [
+        {
+          "selected": "gpu-worker",
+          "candidates": [
+            {
+              "id": "r1-worker",
+              "state": {
+                "capable": 0,
+                "readiness": 1,
+                "free_capacity": 1.0,
+                "reliability": 1,
+                "work_value": 0.25,
+                "energy_cost": 0.1,
+                "wake_cost": 0,
+                "freshness": 0.9937666666664882
+              },
+              "x9": [
+                -1.0,
+                1.0,
+                1.0,
+                1.0,
+                -0.5,
+                -0.8,
+                -1.0,
+                0.9875333333329763,
+                1.0
+              ],
+              "y8": [
+                -0.382014,
+                -1.65089,
+                -3.142422,
+                -2.809363,
+                4.228931,
+                -3.20307,
+                1.151349,
+                1.381115
+              ],
+              "outputs": {
+                "use_candidate": -0.382014,
+                "wake_candidate": -1.65089,
+                "candidate_busy": -3.142422,
+                "candidate_capable": -2.809363,
+                "candidate_reliable": 4.228931,
+                "query_again": -3.20307,
+                "fallback_local": 1.151349,
+                "reject_candidate": 1.381115
+              },
+              "source": "physical_esp32_minfer",
+              "max_abs_error": 4.973957639098359e-07,
+              "score_ms": 16.00000000325963,
+              "probe": {
+                "ok": true,
+                "machine": "aarch64",
+                "os": "Linux",
+                "capabilities": [
+                  "cpu"
+                ],
+                "free_capacity": 1.0,
+                "rpc_ms": 750.0
+              }
+            },
+            {
+              "id": "gpu-worker",
+              "state": {
+                "capable": 1,
+                "readiness": 1,
+                "free_capacity": 1.0,
+                "reliability": 1,
+                "work_value": 1.0,
+                "energy_cost": 0.9,
+                "wake_cost": 0,
+                "freshness": 0.999466666666558
+              },
+              "x9": [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                0.8,
+                -1.0,
+                0.9989333333331161,
+                1.0
+              ],
+              "y8": [
+                1.138107,
+                -0.238918,
+                -2.988396,
+                3.71172,
+                3.817958,
+                -3.560753,
+                -1.904089,
+                -2.667953
+              ],
+              "outputs": {
+                "use_candidate": 1.138107,
+                "wake_candidate": -0.238918,
+                "candidate_busy": -2.988396,
+                "candidate_capable": 3.71172,
+                "candidate_reliable": 3.817958,
+                "query_again": -3.560753,
+                "fallback_local": -1.904089,
+                "reject_candidate": -2.667953
+              },
+              "source": "physical_esp32_minfer",
+              "max_abs_error": 5.833332912263955e-07,
+              "score_ms": 30.999999988125637,
+              "probe": {
+                "ok": true,
+                "machine": "AMD64",
+                "os": "Windows",
+                "capabilities": [
+                  "cpu",
+                  "cuda"
+                ],
+                "free_capacity": 1.0,
+                "rpc_ms": 187.0000000053551
+              }
+            }
+          ]
+        }
+      ],
+      "dispatches": [
+        {
+          "id": "gpu-worker",
+          "correct": true,
+          "reply": {
+            "ok": true,
+            "kernel": "cuda",
+            "count": 262144,
+            "sha256": "a600f216387b02b5644a92423b4f82d041ad53b37d590c405be015f096e287aa",
+            "elapsed_ms": 92.99999999348074,
+            "rpc_ms": 219.00000001187436
+          }
+        }
+      ],
+      "wakes": []
+    },
+    {
+      "scenario": 2,
+      "repetition": 2,
+      "status": "PASS",
+      "task": {
+        "kernel": "cuda",
+        "count": 262144,
+        "demand": 1.0
+      },
+      "completed_on": "gpu-worker",
+      "expected": "gpu-worker",
+      "elapsed_ms": 2891.0000000032596,
+      "rounds": [
+        {
+          "selected": "gpu-worker",
+          "candidates": [
+            {
+              "id": "r1-worker",
+              "state": {
+                "capable": 0,
+                "readiness": 1,
+                "free_capacity": 1.0,
+                "reliability": 1,
+                "work_value": 0.25,
+                "energy_cost": 0.1,
+                "wake_cost": 0,
+                "freshness": 0.9937333333335119
+              },
+              "x9": [
+                -1.0,
+                1.0,
+                1.0,
+                1.0,
+                -0.5,
+                -0.8,
+                -1.0,
+                0.9874666666670238,
+                1.0
+              ],
+              "y8": [
+                -0.382024,
+                -1.650893,
+                -3.142417,
+                -2.809363,
+                4.228979,
+                -3.202912,
+                1.151361,
+                1.381141
+              ],
+              "outputs": {
+                "use_candidate": -0.382024,
+                "wake_candidate": -1.650893,
+                "candidate_busy": -3.142417,
+                "candidate_capable": -2.809363,
+                "candidate_reliable": 4.228979,
+                "query_again": -3.202912,
+                "fallback_local": 1.151361,
+                "reject_candidate": 1.381141
+              },
+              "source": "physical_esp32_minfer",
+              "max_abs_error": 4.791666084469348e-07,
+              "score_ms": 15.000000013969839,
+              "probe": {
+                "ok": true,
+                "machine": "aarch64",
+                "os": "Linux",
+                "capabilities": [
+                  "cpu"
+                ],
+                "free_capacity": 1.0,
+                "rpc_ms": 875.0
+              }
+            },
+            {
+              "id": "gpu-worker",
+              "state": {
+                "capable": 1,
+                "readiness": 1,
+                "free_capacity": 1.0,
+                "reliability": 1,
+                "work_value": 1.0,
+                "energy_cost": 0.9,
+                "wake_cost": 0,
+                "freshness": 0.9994999999995343
+              },
+              "x9": [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                0.8,
+                -1.0,
+                0.9989999999990686,
+                1.0
+              ],
+              "y8": [
+                1.138118,
+                -0.238915,
+                -2.988401,
+                3.71172,
+                3.81791,
+                -3.560911,
+                -1.904102,
+                -2.667978
+              ],
+              "outputs": {
+                "use_candidate": 1.138118,
+                "wake_candidate": -0.238915,
+                "candidate_busy": -2.988401,
+                "candidate_capable": 3.71172,
+                "candidate_reliable": 3.81791,
+                "query_again": -3.560911,
+                "fallback_local": -1.904102,
+                "reject_candidate": -2.667978
+              },
+              "source": "physical_esp32_minfer",
+              "max_abs_error": 5.390623190049126e-07,
+              "score_ms": 30.999999988125637,
+              "probe": {
+                "ok": true,
+                "machine": "AMD64",
+                "os": "Windows",
+                "capabilities": [
+                  "cpu",
+                  "cuda"
+                ],
+                "free_capacity": 1.0,
+                "rpc_ms": 187.9999999946449
+              }
+            }
+          ]
+        }
+      ],
+      "dispatches": [
+        {
+          "id": "gpu-worker",
+          "correct": true,
+          "reply": {
+            "ok": true,
+            "kernel": "cuda",
+            "count": 262144,
+            "sha256": "a600f216387b02b5644a92423b4f82d041ad53b37d590c405be015f096e287aa",
+            "elapsed_ms": 1608.9999999967404,
+            "rpc_ms": 1703.9999999979045
+          }
+        }
+      ],
+      "wakes": []
+    },
+    {
+      "scenario": 2,
+      "repetition": 3,
+      "status": "PASS",
+      "task": {
+        "kernel": "cuda",
+        "count": 262144,
+        "demand": 1.0
+      },
+      "completed_on": "gpu-worker",
+      "expected": "gpu-worker",
+      "elapsed_ms": 1250.0,
+      "rounds": [
+        {
+          "selected": "gpu-worker",
+          "candidates": [
+            {
+              "id": "r1-worker",
+              "state": {
+                "capable": 0,
+                "readiness": 1,
+                "free_capacity": 1.0,
+                "reliability": 1,
+                "work_value": 0.25,
+                "energy_cost": 0.1,
+                "wake_cost": 0,
+                "freshness": 0.9942666666659837
+              },
+              "x9": [
+                -1.0,
+                1.0,
+                1.0,
+                1.0,
+                -0.5,
+                -0.8,
+                -1.0,
+                0.9885333333319675,
+                1.0
+              ],
+              "y8": [
+                -0.38185,
+                -1.650842,
+                -3.142497,
+                -2.809364,
+                4.228209,
+                -3.20544,
+                1.151154,
+                1.380734
+              ],
+              "outputs": {
+                "use_candidate": -0.38185,
+                "wake_candidate": -1.650842,
+                "candidate_busy": -3.142497,
+                "candidate_capable": -2.809364,
+                "candidate_reliable": 4.228209,
+                "query_again": -3.20544,
+                "fallback_local": 1.151154,
+                "reject_candidate": 1.380734
+              },
+              "source": "physical_esp32_minfer",
+              "max_abs_error": 6.666656791054493e-07,
+              "score_ms": 30.999999988125637,
+              "probe": {
+                "ok": true,
+                "machine": "aarch64",
+                "os": "Linux",
+                "capabilities": [
+                  "cpu"
+                ],
+                "free_capacity": 1.0,
+                "rpc_ms": 734.9999999860302
+              }
+            },
+            {
+              "id": "gpu-worker",
+              "state": {
+                "capable": 1,
+                "readiness": 1,
+                "free_capacity": 1.0,
+                "reliability": 1,
+                "work_value": 1.0,
+                "energy_cost": 0.9,
+                "wake_cost": 0,
+                "freshness": 0.9989666666670625
+              },
+              "x9": [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                0.8,
+                -1.0,
+                0.9979333333341249,
+                1.0
+              ],
+              "y8": [
+                1.137944,
+                -0.238966,
+                -2.988321,
+                3.711721,
+                3.818681,
+                -3.558383,
+                -1.903895,
+                -2.667572
+              ],
+              "outputs": {
+                "use_candidate": 1.137944,
+                "wake_candidate": -0.238966,
+                "candidate_busy": -2.988321,
+                "candidate_capable": 3.711721,
+                "candidate_reliable": 3.818681,
+                "query_again": -3.558383,
+                "fallback_local": -1.903895,
+                "reject_candidate": -2.667572
+              },
+              "source": "physical_esp32_minfer",
+              "max_abs_error": 2.6562530175411325e-07,
+              "score_ms": 16.00000000325963,
+              "probe": {
+                "ok": true,
+                "machine": "AMD64",
+                "os": "Windows",
+                "capabilities": [
+                  "cpu",
+                  "cuda"
+                ],
+                "free_capacity": 1.0,
+                "rpc_ms": 172.0000000204891
+              }
+            }
+          ]
+        }
+      ],
+      "dispatches": [
+        {
+          "id": "gpu-worker",
+          "correct": true,
+          "reply": {
+            "ok": true,
+            "kernel": "cuda",
+            "count": 262144,
+            "sha256": "a600f216387b02b5644a92423b4f82d041ad53b37d590c405be015f096e287aa",
+            "elapsed_ms": 94.00000001187436,
+            "rpc_ms": 217.99999999348074
+          }
+        }
+      ],
+      "wakes": []
+    },
+    {
+      "scenario": 3,
+      "repetition": 1,
+      "status": "PASS",
+      "task": {
+        "kernel": "cpu",
+        "count": 4096,
+        "demand": 0.05
+      },
+      "completed_on": "gpu-worker",
+      "expected": "gpu-worker",
+      "elapsed_ms": 1140.0000000139698,
+      "busy": {
+        "ok": true,
+        "fault": "busy",
+        "seconds": 300,
+        "rpc_ms": 765.9999999741558
+      },
+      "rounds": [
+        {
+          "selected": "gpu-worker",
+          "candidates": [
+            {
+              "id": "r1-worker",
+              "state": {
+                "capable": 1,
+                "readiness": 1,
+                "free_capacity": 0.0,
+                "reliability": 1,
+                "work_value": 0.0125,
+                "energy_cost": 0.1,
+                "wake_cost": 0,
+                "freshness": 0.9942666666659837
+              },
+              "x9": [
+                1.0,
+                1.0,
+                -1.0,
+                1.0,
+                -0.975,
+                -0.8,
+                -1.0,
+                0.9885333333319675,
+                1.0
+              ],
+              "y8": [
+                -0.600869,
+                -1.569811,
+                2.379524,
+                3.314464,
+                3.792271,
+                -3.358907,
+                0.241022,
+                -0.670975
+              ],
+              "outputs": {
+                "use_candidate": -0.600869,
+                "wake_candidate": -1.569811,
+                "candidate_busy": 2.379524,
+                "candidate_capable": 3.314464,
+                "candidate_reliable": 3.792271,
+                "query_again": -3.358907,
+                "fallback_local": 0.241022,
+                "reject_candidate": -0.670975
+              },
+              "source": "physical_esp32_minfer",
+              "max_abs_error": 3.9322923184315073e-07,
+              "score_ms": 30.999999988125637,
+              "probe": {
+                "ok": true,
+                "machine": "aarch64",
+                "os": "Linux",
+                "capabilities": [
+                  "cpu"
+                ],
+                "free_capacity": 0.0,
+                "rpc_ms": 812.0000000053551
+              }
+            },
+            {
+              "id": "gpu-worker",
+              "state": {
+                "capable": 1,
+                "readiness": 1,
+                "free_capacity": 1.0,
+                "reliability": 1,
+                "work_value": 0.05,
+                "energy_cost": 0.9,
+                "wake_cost": 0,
+                "freshness": 0.9989666666670625
+              },
+              "x9": [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                -0.9,
+                0.8,
+                -1.0,
+                0.9979333333341249,
+                1.0
+              ],
+              "y8": [
+                0.675932,
+                -1.46172,
+                -3.10336,
+                3.503908,
+                3.848368,
+                -3.398813,
+                -1.794423,
+                -2.81972
+              ],
+              "outputs": {
+                "use_candidate": 0.675932,
+                "wake_candidate": -1.46172,
+                "candidate_busy": -3.10336,
+                "candidate_capable": 3.503908,
+                "candidate_reliable": 3.848368,
+                "query_again": -3.398813,
+                "fallback_local": -1.794423,
+                "reject_candidate": -2.81972
+              },
+              "source": "physical_esp32_minfer",
+              "max_abs_error": 7.031253015377104e-07,
+              "score_ms": 16.00000000325963,
+              "probe": {
+                "ok": true,
+                "machine": "AMD64",
+                "os": "Windows",
+                "capabilities": [
+                  "cpu",
+                  "cuda"
+                ],
+                "free_capacity": 1.0,
+                "rpc_ms": 172.0000000204891
+              }
+            }
+          ]
+        }
+      ],
+      "dispatches": [
+        {
+          "id": "gpu-worker",
+          "correct": true,
+          "reply": {
+            "ok": true,
+            "kernel": "cpu",
+            "count": 4096,
+            "sha256": "4706d6ff50fdf06adc5acdeacb0de0d6a7517bfea428127aa0d2898d9b9f41ce",
+            "elapsed_ms": 0.0,
+            "rpc_ms": 108.99999999674037
+          }
+        }
+      ],
+      "wakes": []
+    },
+    {
+      "scenario": 3,
+      "repetition": 2,
+      "status": "PASS",
+      "task": {
+        "kernel": "cpu",
+        "count": 4096,
+        "demand": 0.05
+      },
+      "completed_on": "gpu-worker",
+      "expected": "gpu-worker",
+      "elapsed_ms": 1187.999999994645,
+      "busy": {
+        "ok": true,
+        "fault": "busy",
+        "seconds": 300,
+        "rpc_ms": 750.0
+      },
+      "rounds": [
+        {
+          "selected": "gpu-worker",
+          "candidates": [
+            {
+              "id": "r1-worker",
+              "state": {
+                "capable": 1,
+                "readiness": 1,
+                "free_capacity": 0.0,
+                "reliability": 1,
+                "work_value": 0.0125,
+                "energy_cost": 0.1,
+                "wake_cost": 0,
+                "freshness": 0.9942666666669538
+              },
+              "x9": [
+                1.0,
+                1.0,
+                -1.0,
+                1.0,
+                -0.975,
+                -0.8,
+                -1.0,
+                0.9885333333339077,
+                1.0
+              ],
+              "y8": [
+                -0.600869,
+                -1.569811,
+                2.379524,
+                3.314464,
+                3.792271,
+                -3.358907,
+                0.241022,
+                -0.670975
+              ],
+              "outputs": {
+                "use_candidate": -0.600869,
+                "wake_candidate": -1.569811,
+                "candidate_busy": 2.379524,
+                "candidate_capable": 3.314464,
+                "candidate_reliable": 3.792271,
+                "query_again": -3.358907,
+                "fallback_local": 0.241022,
+                "reject_candidate": -0.670975
+              },
+              "source": "physical_esp32_minfer",
+              "max_abs_error": 3.9322913902850587e-07,
+              "score_ms": 16.00000000325963,
+              "probe": {
+                "ok": true,
+                "machine": "aarch64",
+                "os": "Linux",
+                "capabilities": [
+                  "cpu"
+                ],
+                "free_capacity": 0.0,
+                "rpc_ms": 875.0
+              }
+            },
+            {
+              "id": "gpu-worker",
+              "state": {
+                "capable": 1,
+                "readiness": 1,
+                "free_capacity": 1.0,
+                "reliability": 1,
+                "work_value": 0.05,
+                "energy_cost": 0.9,
+                "wake_cost": 0,
+                "freshness": 0.999466666666558
+              },
+              "x9": [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                -0.9,
+                0.8,
+                -1.0,
+                0.9989333333331161,
+                1.0
+              ],
+              "y8": [
+                0.676095,
+                -1.461672,
+                -3.103436,
+                3.503907,
+                3.847646,
+                -3.401183,
+                -1.794617,
+                -2.820101
+              ],
+              "outputs": {
+                "use_candidate": 0.676095,
+                "wake_candidate": -1.461672,
+                "candidate_busy": -3.103436,
+                "candidate_capable": 3.503907,
+                "candidate_reliable": 3.847646,
+                "query_again": -3.401183,
+                "fallback_local": -1.794617,
+                "reject_candidate": -2.820101
+              },
+              "source": "physical_esp32_minfer",
+              "max_abs_error": 5.833333496241266e-07,
+              "score_ms": 31.000000017229468,
+              "probe": {
+                "ok": true,
+                "machine": "AMD64",
+                "os": "Windows",
+                "capabilities": [
+                  "cpu",
+                  "cuda"
+                ],
+                "free_capacity": 1.0,
+                "rpc_ms": 171.99999999138527
+              }
+            }
+          ]
+        }
+      ],
+      "dispatches": [
+        {
+          "id": "gpu-worker",
+          "correct": true,
+          "reply": {
+            "ok": true,
+            "kernel": "cpu",
+            "count": 4096,
+            "sha256": "4706d6ff50fdf06adc5acdeacb0de0d6a7517bfea428127aa0d2898d9b9f41ce",
+            "elapsed_ms": 0.0,
+            "rpc_ms": 93.99999998277053
+          }
+        }
+      ],
+      "wakes": []
+    },
+    {
+      "scenario": 3,
+      "repetition": 3,
+      "status": "PASS",
+      "task": {
+        "kernel": "cpu",
+        "count": 4096,
+        "demand": 0.05
+      },
+      "completed_on": "gpu-worker",
+      "expected": "gpu-worker",
+      "elapsed_ms": 1250.0,
+      "busy": {
+        "ok": true,
+        "fault": "busy",
+        "seconds": 300,
+        "rpc_ms": 890.0000000139698
+      },
+      "rounds": [
+        {
+          "selected": "gpu-worker",
+          "candidates": [
+            {
+              "id": "r1-worker",
+              "state": {
+                "capable": 1,
+                "readiness": 1,
+                "free_capacity": 0.0,
+                "reliability": 1,
+                "work_value": 0.0125,
+                "energy_cost": 0.1,
+                "wake_cost": 0,
+                "freshness": 0.9942666666659837
+              },
+              "x9": [
+                1.0,
+                1.0,
+                -1.0,
+                1.0,
+                -0.975,
+                -0.8,
+                -1.0,
+                0.9885333333319675,
+                1.0
+              ],
+              "y8": [
+                -0.600869,
+                -1.569811,
+                2.379524,
+                3.314464,
+                3.792271,
+                -3.358907,
+                0.241022,
+                -0.670975
+              ],
+              "outputs": {
+                "use_candidate": -0.600869,
+                "wake_candidate": -1.569811,
+                "candidate_busy": 2.379524,
+                "candidate_capable": 3.314464,
+                "candidate_reliable": 3.792271,
+                "query_again": -3.358907,
+                "fallback_local": 0.241022,
+                "reject_candidate": -0.670975
+              },
+              "source": "physical_esp32_minfer",
+              "max_abs_error": 3.9322923184315073e-07,
+              "score_ms": 30.999999988125637,
+              "probe": {
+                "ok": true,
+                "machine": "aarch64",
+                "os": "Linux",
+                "capabilities": [
+                  "cpu"
+                ],
+                "free_capacity": 0.0,
+                "rpc_ms": 921.9999999913853
+              }
+            },
+            {
+              "id": "gpu-worker",
+              "state": {
+                "capable": 1,
+                "readiness": 1,
+                "free_capacity": 1.0,
+                "reliability": 1,
+                "work_value": 0.05,
+                "energy_cost": 0.9,
+                "wake_cost": 0,
+                "freshness": 0.9989666666670625
+              },
+              "x9": [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                -0.9,
+                0.8,
+                -1.0,
+                0.9979333333341249,
+                1.0
+              ],
+              "y8": [
+                0.675932,
+                -1.46172,
+                -3.10336,
+                3.503908,
+                3.848368,
+                -3.398813,
+                -1.794423,
+                -2.81972
+              ],
+              "outputs": {
+                "use_candidate": 0.675932,
+                "wake_candidate": -1.46172,
+                "candidate_busy": -3.10336,
+                "candidate_capable": 3.503908,
+                "candidate_reliable": 3.848368,
+                "query_again": -3.398813,
+                "fallback_local": -1.794423,
+                "reject_candidate": -2.81972
+              },
+              "source": "physical_esp32_minfer",
+              "max_abs_error": 7.031253015377104e-07,
+              "score_ms": 16.00000000325963,
+              "probe": {
+                "ok": true,
+                "machine": "AMD64",
+                "os": "Windows",
+                "capabilities": [
+                  "cpu",
+                  "cuda"
+                ],
+                "free_capacity": 1.0,
+                "rpc_ms": 172.0000000204891
+              }
+            }
+          ]
+        }
+      ],
+      "dispatches": [
+        {
+          "id": "gpu-worker",
+          "correct": true,
+          "reply": {
+            "ok": true,
+            "kernel": "cpu",
+            "count": 4096,
+            "sha256": "4706d6ff50fdf06adc5acdeacb0de0d6a7517bfea428127aa0d2898d9b9f41ce",
+            "elapsed_ms": 0.0,
+            "rpc_ms": 108.99999999674037
+          }
+        }
+      ],
+      "wakes": []
+    },
+    {
+      "scenario": 4,
+      "repetition": 1,
+      "status": "BLOCKED",
+      "reason": "real_sleep_wake_adapter_missing",
+      "sleep": {
+        "ok": false,
+        "error": "real_sleep_wake_adapter_missing"
+      },
+      "rounds": [],
+      "dispatches": [],
+      "wakes": []
+    },
+    {
+      "scenario": 4,
+      "repetition": 2,
+      "status": "BLOCKED",
+      "reason": "real_sleep_wake_adapter_missing",
+      "sleep": {
+        "ok": false,
+        "error": "real_sleep_wake_adapter_missing"
+      },
+      "rounds": [],
+      "dispatches": [],
+      "wakes": []
+    },
+    {
+      "scenario": 4,
+      "repetition": 3,
+      "status": "BLOCKED",
+      "reason": "real_sleep_wake_adapter_missing",
+      "sleep": {
+        "ok": false,
+        "error": "real_sleep_wake_adapter_missing"
+      },
+      "rounds": [],
+      "dispatches": [],
+      "wakes": []
+    },
+    {
+      "scenario": 5,
+      "repetition": 1,
+      "status": "BLOCKED",
+      "reason": "real_sleep_wake_adapter_missing",
+      "sleep": {
+        "ok": false,
+        "error": "real_sleep_wake_adapter_missing"
+      },
+      "rounds": [],
+      "dispatches": [],
+      "wakes": []
+    },
+    {
+      "scenario": 5,
+      "repetition": 2,
+      "status": "BLOCKED",
+      "reason": "real_sleep_wake_adapter_missing",
+      "sleep": {
+        "ok": false,
+        "error": "real_sleep_wake_adapter_missing"
+      },
+      "rounds": [],
+      "dispatches": [],
+      "wakes": []
+    },
+    {
+      "scenario": 5,
+      "repetition": 3,
+      "status": "BLOCKED",
+      "reason": "real_sleep_wake_adapter_missing",
+      "sleep": {
+        "ok": false,
+        "error": "real_sleep_wake_adapter_missing"
+      },
+      "rounds": [],
+      "dispatches": [],
+      "wakes": []
+    },
+    {
+      "scenario": 6,
+      "repetition": 1,
+      "status": "PASS",
+      "task": {
+        "kernel": "cpu",
+        "count": 4096,
+        "demand": 0.05
+      },
+      "completed_on": "gpu-worker",
+      "expected": "gpu-worker",
+      "elapsed_ms": 4921.999999991385,
+      "fault_injection": {
+        "id": "r1-worker",
+        "ok": true,
+        "fault": "unavailable",
+        "seconds": 300,
+        "rpc_ms": 1078.0000000086147
+      },
+      "rounds": [
+        {
+          "selected": "r1-worker",
+          "candidates": [
+            {
+              "id": "r1-worker",
+              "state": {
+                "capable": 1,
+                "readiness": 1,
+                "free_capacity": 1.0,
+                "reliability": 1,
+                "work_value": 0.0125,
+                "energy_cost": 0.1,
+                "wake_cost": 0,
+                "freshness": 0.9937333333335119
+              },
+              "x9": [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                -0.975,
+                -0.8,
+                -1.0,
+                0.9874666666670238,
+                1.0
+              ],
+              "y8": [
+                0.895051,
+                -1.2808,
+                -3.147739,
+                3.439465,
+                3.660229,
+                -3.436457,
+                -1.788067,
+                -2.785803
+              ],
+              "outputs": {
+                "use_candidate": 0.895051,
+                "wake_candidate": -1.2808,
+                "candidate_busy": -3.147739,
+                "candidate_capable": 3.439465,
+                "candidate_reliable": 3.660229,
+                "query_again": -3.436457,
+                "fallback_local": -1.788067,
+                "reject_candidate": -2.785803
+              },
+              "source": "physical_esp32_minfer",
+              "max_abs_error": 3.645833328569381e-07,
+              "score_ms": 14.999999984866008,
+              "probe": {
+                "ok": true,
+                "machine": "aarch64",
+                "os": "Linux",
+                "capabilities": [
+                  "cpu"
+                ],
+                "free_capacity": 1.0,
+                "rpc_ms": 828.0000000086147
+              }
+            },
+            {
+              "id": "gpu-worker",
+              "state": {
+                "capable": 1,
+                "readiness": 1,
+                "free_capacity": 1.0,
+                "reliability": 1,
+                "work_value": 0.05,
+                "energy_cost": 0.9,
+                "wake_cost": 0,
+                "freshness": 0.9995000000005044
+              },
+              "x9": [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                -0.9,
+                0.8,
+                -1.0,
+                0.9990000000010089,
+                1.0
+              ],
+              "y8": [
+                0.676106,
+                -1.461669,
+                -3.103441,
+                3.503907,
+                3.847598,
+                -3.401341,
+                -1.79463,
+                -2.820127
+              ],
+              "outputs": {
+                "use_candidate": 0.676106,
+                "wake_candidate": -1.461669,
+                "candidate_busy": -3.103441,
+                "candidate_capable": 3.503907,
+                "candidate_reliable": 3.847598,
+                "query_again": -3.401341,
+                "fallback_local": -1.79463,
+                "reject_candidate": -2.820127
+              },
+              "source": "physical_esp32_minfer",
+              "max_abs_error": 5.703124243972013e-07,
+              "score_ms": 32.00000000651926,
+              "probe": {
+                "ok": true,
+                "machine": "AMD64",
+                "os": "Windows",
+                "capabilities": [
+                  "cpu",
+                  "cuda"
+                ],
+                "free_capacity": 1.0,
+                "rpc_ms": 187.9999999946449
+              }
+            }
+          ]
+        },
+        {
+          "selected": "gpu-worker",
+          "candidates": [
+            {
+              "id": "r1-worker",
+              "state": {
+                "capable": 1,
+                "readiness": -1,
+                "free_capacity": 0,
+                "reliability": 0,
+                "work_value": 0.0125,
+                "energy_cost": 0.1,
+                "wake_cost": 0,
+                "freshness": 0.0
+              },
+              "x9": [
+                1.0,
+                -1.0,
+                -1.0,
+                -1.0,
+                -0.975,
+                -0.8,
+                -1.0,
+                -1.0,
+                1.0
+              ],
+              "y8": [
+                -3.563843,
+                -2.174731,
+                2.562256,
+                2.121094,
+                -6.841015,
+                1.662744,
+                6.311059,
+                5.449658
+              ],
+              "outputs": {
+                "use_candidate": -3.563843,
+                "wake_candidate": -2.174731,
+                "candidate_busy": 2.562256,
+                "candidate_capable": 2.121094,
+                "candidate_reliable": -6.841015,
+                "query_again": 1.662744,
+                "fallback_local": 6.311059,
+                "reject_candidate": 5.449658
+              },
+              "source": "physical_esp32_minfer",
+              "max_abs_error": 6.250000001983835e-07,
+              "score_ms": 30.999999988125637,
+              "probe": {
+                "ok": false,
+                "error": "experiment_worker_unavailable",
+                "rpc_ms": 827.9999999795109
+              }
+            },
+            {
+              "id": "gpu-worker",
+              "state": {
+                "capable": 1,
+                "readiness": 1,
+                "free_capacity": 1.0,
+                "reliability": 1,
+                "work_value": 0.05,
+                "energy_cost": 0.9,
+                "wake_cost": 0,
+                "freshness": 0.9989666666670625
+              },
+              "x9": [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                -0.9,
+                0.8,
+                -1.0,
+                0.9979333333341249,
+                1.0
+              ],
+              "y8": [
+                0.675932,
+                -1.46172,
+                -3.10336,
+                3.503908,
+                3.848368,
+                -3.398813,
+                -1.794423,
+                -2.81972
+              ],
+              "outputs": {
+                "use_candidate": 0.675932,
+                "wake_candidate": -1.46172,
+                "candidate_busy": -3.10336,
+                "candidate_capable": 3.503908,
+                "candidate_reliable": 3.848368,
+                "query_again": -3.398813,
+                "fallback_local": -1.794423,
+                "reject_candidate": -2.81972
+              },
+              "source": "physical_esp32_minfer",
+              "max_abs_error": 7.031253015377104e-07,
+              "score_ms": 16.00000000325963,
+              "probe": {
+                "ok": true,
+                "machine": "AMD64",
+                "os": "Windows",
+                "capabilities": [
+                  "cpu",
+                  "cuda"
+                ],
+                "free_capacity": 1.0,
+                "rpc_ms": 172.0000000204891
+              }
+            }
+          ]
+        }
+      ],
+      "dispatches": [
+        {
+          "id": "r1-worker",
+          "correct": false,
+          "reply": {
+            "ok": false,
+            "error": "experiment_worker_unavailable",
+            "rpc_ms": 764.999999984866
+          }
+        },
+        {
+          "id": "gpu-worker",
+          "correct": true,
+          "reply": {
+            "ok": true,
+            "kernel": "cpu",
+            "count": 4096,
+            "sha256": "4706d6ff50fdf06adc5acdeacb0de0d6a7517bfea428127aa0d2898d9b9f41ce",
+            "elapsed_ms": 0.0,
+            "rpc_ms": 108.99999999674037
+          }
+        }
+      ],
+      "wakes": []
+    },
+    {
+      "scenario": 6,
+      "repetition": 2,
+      "status": "PASS",
+      "task": {
+        "kernel": "cpu",
+        "count": 4096,
+        "demand": 0.05
+      },
+      "completed_on": "gpu-worker",
+      "expected": "gpu-worker",
+      "elapsed_ms": 4733.99999999674,
+      "fault_injection": {
+        "id": "r1-worker",
+        "ok": true,
+        "fault": "unavailable",
+        "seconds": 300,
+        "rpc_ms": 859.9999999860302
+      },
+      "rounds": [
+        {
+          "selected": "r1-worker",
+          "candidates": [
+            {
+              "id": "r1-worker",
+              "state": {
+                "capable": 1,
+                "readiness": 1,
+                "free_capacity": 1.0,
+                "reliability": 1,
+                "work_value": 0.0125,
+                "energy_cost": 0.1,
+                "wake_cost": 0,
+                "freshness": 0.9942666666669538
+              },
+              "x9": [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                -0.975,
+                -0.8,
+                -1.0,
+                0.9885333333339077,
+                1.0
+              ],
+              "y8": [
+                0.895225,
+                -1.280749,
+                -3.14782,
+                3.439464,
+                3.659459,
+                -3.438985,
+                -1.788275,
+                -2.786209
+              ],
+              "outputs": {
+                "use_candidate": 0.895225,
+                "wake_candidate": -1.280749,
+                "candidate_busy": -3.14782,
+                "candidate_capable": 3.439464,
+                "candidate_reliable": 3.659459,
+                "query_again": -3.438985,
+                "fallback_local": -1.788275,
+                "reject_candidate": -2.786209
+              },
+              "source": "physical_esp32_minfer",
+              "max_abs_error": 6.66667081539174e-07,
+              "score_ms": 32.00000000651926,
+              "probe": {
+                "ok": true,
+                "machine": "aarch64",
+                "os": "Linux",
+                "capabilities": [
+                  "cpu"
+                ],
+                "free_capacity": 1.0,
+                "rpc_ms": 812.0000000053551
+              }
+            },
+            {
+              "id": "gpu-worker",
+              "state": {
+                "capable": 1,
+                "readiness": 1,
+                "free_capacity": 1.0,
+                "reliability": 1,
+                "work_value": 0.05,
+                "energy_cost": 0.9,
+                "wake_cost": 0,
+                "freshness": 0.9989333333331161
+              },
+              "x9": [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                -0.9,
+                0.8,
+                -1.0,
+                0.9978666666662321,
+                1.0
+              ],
+              "y8": [
+                0.675922,
+                -1.461723,
+                -3.103355,
+                3.503908,
+                3.848416,
+                -3.398655,
+                -1.79441,
+                -2.819695
+              ],
+              "outputs": {
+                "use_candidate": 0.675922,
+                "wake_candidate": -1.461723,
+                "candidate_busy": -3.103355,
+                "candidate_capable": 3.503908,
+                "candidate_reliable": 3.848416,
+                "query_again": -3.398655,
+                "fallback_local": -1.79441,
+                "reject_candidate": -2.819695
+              },
+              "source": "physical_esp32_minfer",
+              "max_abs_error": 6.666669807309233e-07,
+              "score_ms": 15.000000013969839,
+              "probe": {
+                "ok": true,
+                "machine": "AMD64",
+                "os": "Windows",
+                "capabilities": [
+                  "cpu",
+                  "cuda"
+                ],
+                "free_capacity": 1.0,
+                "rpc_ms": 171.99999999138527
+              }
+            }
+          ]
+        },
+        {
+          "selected": "gpu-worker",
+          "candidates": [
+            {
+              "id": "r1-worker",
+              "state": {
+                "capable": 1,
+                "readiness": -1,
+                "free_capacity": 0,
+                "reliability": 0,
+                "work_value": 0.0125,
+                "energy_cost": 0.1,
+                "wake_cost": 0,
+                "freshness": 0.0
+              },
+              "x9": [
+                1.0,
+                -1.0,
+                -1.0,
+                -1.0,
+                -0.975,
+                -0.8,
+                -1.0,
+                -1.0,
+                1.0
+              ],
+              "y8": [
+                -3.563843,
+                -2.174731,
+                2.562256,
+                2.121094,
+                -6.841015,
+                1.662744,
+                6.311059,
+                5.449658
+              ],
+              "outputs": {
+                "use_candidate": -3.563843,
+                "wake_candidate": -2.174731,
+                "candidate_busy": 2.562256,
+                "candidate_capable": 2.121094,
+                "candidate_reliable": -6.841015,
+                "query_again": 1.662744,
+                "fallback_local": 6.311059,
+                "reject_candidate": 5.449658
+              },
+              "source": "physical_esp32_minfer",
+              "max_abs_error": 6.250000001983835e-07,
+              "score_ms": 30.999999988125637,
+              "probe": {
+                "ok": false,
+                "error": "experiment_worker_unavailable",
+                "rpc_ms": 844.0000000118744
+              }
+            },
+            {
+              "id": "gpu-worker",
+              "state": {
+                "capable": 1,
+                "readiness": 1,
+                "free_capacity": 1.0,
+                "reliability": 1,
+                "work_value": 0.05,
+                "energy_cost": 0.9,
+                "wake_cost": 0,
+                "freshness": 0.9989666666670625
+              },
+              "x9": [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                -0.9,
+                0.8,
+                -1.0,
+                0.9979333333341249,
+                1.0
+              ],
+              "y8": [
+                0.675932,
+                -1.46172,
+                -3.10336,
+                3.503908,
+                3.848368,
+                -3.398813,
+                -1.794423,
+                -2.81972
+              ],
+              "outputs": {
+                "use_candidate": 0.675932,
+                "wake_candidate": -1.46172,
+                "candidate_busy": -3.10336,
+                "candidate_capable": 3.503908,
+                "candidate_reliable": 3.848368,
+                "query_again": -3.398813,
+                "fallback_local": -1.794423,
+                "reject_candidate": -2.81972
+              },
+              "source": "physical_esp32_minfer",
+              "max_abs_error": 7.031253015377104e-07,
+              "score_ms": 16.00000000325963,
+              "probe": {
+                "ok": true,
+                "machine": "AMD64",
+                "os": "Windows",
+                "capabilities": [
+                  "cpu",
+                  "cuda"
+                ],
+                "free_capacity": 1.0,
+                "rpc_ms": 171.99999999138527
+              }
+            }
+          ]
+        }
+      ],
+      "dispatches": [
+        {
+          "id": "r1-worker",
+          "correct": false,
+          "reply": {
+            "ok": false,
+            "error": "experiment_worker_unavailable",
+            "rpc_ms": 905.9999999881256
+          }
+        },
+        {
+          "id": "gpu-worker",
+          "correct": true,
+          "reply": {
+            "ok": true,
+            "kernel": "cpu",
+            "count": 4096,
+            "sha256": "4706d6ff50fdf06adc5acdeacb0de0d6a7517bfea428127aa0d2898d9b9f41ce",
+            "elapsed_ms": 0.0,
+            "rpc_ms": 108.99999999674037
+          }
+        }
+      ],
+      "wakes": []
+    },
+    {
+      "scenario": 6,
+      "repetition": 3,
+      "status": "PASS",
+      "task": {
+        "kernel": "cpu",
+        "count": 4096,
+        "demand": 0.05
+      },
+      "completed_on": "gpu-worker",
+      "expected": "gpu-worker",
+      "elapsed_ms": 4967.999999993481,
+      "fault_injection": {
+        "id": "r1-worker",
+        "ok": true,
+        "fault": "unavailable",
+        "seconds": 300,
+        "rpc_ms": 937.0000000053551
+      },
+      "rounds": [
+        {
+          "selected": "r1-worker",
+          "candidates": [
+            {
+              "id": "r1-worker",
+              "state": {
+                "capable": 1,
+                "readiness": 1,
+                "free_capacity": 1.0,
+                "reliability": 1,
+                "work_value": 0.0125,
+                "energy_cost": 0.1,
+                "wake_cost": 0,
+                "freshness": 0.9942666666659837
+              },
+              "x9": [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                -0.975,
+                -0.8,
+                -1.0,
+                0.9885333333319675,
+                1.0
+              ],
+              "y8": [
+                0.895225,
+                -1.280749,
+                -3.14782,
+                3.439464,
+                3.659459,
+                -3.438985,
+                -1.788275,
+                -2.786209
+              ],
+              "outputs": {
+                "use_candidate": 0.895225,
+                "wake_candidate": -1.280749,
+                "candidate_busy": -3.14782,
+                "candidate_capable": 3.439464,
+                "candidate_reliable": 3.659459,
+                "query_again": -3.438985,
+                "fallback_local": -1.788275,
+                "reject_candidate": -2.786209
+              },
+              "source": "physical_esp32_minfer",
+              "max_abs_error": 6.666656795495385e-07,
+              "score_ms": 375.0,
+              "probe": {
+                "ok": true,
+                "machine": "aarch64",
+                "os": "Linux",
+                "capabilities": [
+                  "cpu"
+                ],
+                "free_capacity": 1.0,
+                "rpc_ms": 702.9999999795109
+              }
+            },
+            {
+              "id": "gpu-worker",
+              "state": {
+                "capable": 1,
+                "readiness": 1,
+                "free_capacity": 1.0,
+                "reliability": 1,
+                "work_value": 0.05,
+                "energy_cost": 0.9,
+                "wake_cost": 0,
+                "freshness": 0.9875
+              },
+              "x9": [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                -0.9,
+                0.8,
+                -1.0,
+                0.9750000000000001,
+                1.0
+              ],
+              "y8": [
+                0.672192,
+                -1.462817,
+                -3.101636,
+                3.503931,
+                3.864941,
+                -3.344458,
+                -1.789966,
+                -2.810986
+              ],
+              "outputs": {
+                "use_candidate": 0.672192,
+                "wake_candidate": -1.462817,
+                "candidate_busy": -3.101636,
+                "candidate_capable": 3.503931,
+                "candidate_reliable": 3.864941,
+                "query_again": -3.344458,
+                "fallback_local": -1.789966,
+                "reject_candidate": -2.810986
+              },
+              "source": "physical_esp32_minfer",
+              "max_abs_error": 4.0624999986249577e-07,
+              "score_ms": 30.999999988125637,
+              "probe": {
+                "ok": true,
+                "machine": "AMD64",
+                "os": "Windows",
+                "capabilities": [
+                  "cpu",
+                  "cuda"
+                ],
+                "free_capacity": 1.0,
+                "rpc_ms": 172.0000000204891
+              }
+            }
+          ]
+        },
+        {
+          "selected": "gpu-worker",
+          "candidates": [
+            {
+              "id": "r1-worker",
+              "state": {
+                "capable": 1,
+                "readiness": -1,
+                "free_capacity": 0,
+                "reliability": 0,
+                "work_value": 0.0125,
+                "energy_cost": 0.1,
+                "wake_cost": 0,
+                "freshness": 0.0
+              },
+              "x9": [
+                1.0,
+                -1.0,
+                -1.0,
+                -1.0,
+                -0.975,
+                -0.8,
+                -1.0,
+                -1.0,
+                1.0
+              ],
+              "y8": [
+                -3.563843,
+                -2.174731,
+                2.562256,
+                2.121094,
+                -6.841015,
+                1.662744,
+                6.311059,
+                5.449658
+              ],
+              "outputs": {
+                "use_candidate": -3.563843,
+                "wake_candidate": -2.174731,
+                "candidate_busy": 2.562256,
+                "candidate_capable": 2.121094,
+                "candidate_reliable": -6.841015,
+                "query_again": 1.662744,
+                "fallback_local": 6.311059,
+                "reject_candidate": 5.449658
+              },
+              "source": "physical_esp32_minfer",
+              "max_abs_error": 6.250000001983835e-07,
+              "score_ms": 30.999999988125637,
+              "probe": {
+                "ok": false,
+                "error": "experiment_worker_unavailable",
+                "rpc_ms": 797.0000000204891
+              }
+            },
+            {
+              "id": "gpu-worker",
+              "state": {
+                "capable": 1,
+                "readiness": 1,
+                "free_capacity": 1.0,
+                "reliability": 1,
+                "work_value": 0.05,
+                "energy_cost": 0.9,
+                "wake_cost": 0,
+                "freshness": 0.9989666666670625
+              },
+              "x9": [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                -0.9,
+                0.8,
+                -1.0,
+                0.9979333333341249,
+                1.0
+              ],
+              "y8": [
+                0.675932,
+                -1.46172,
+                -3.10336,
+                3.503908,
+                3.848368,
+                -3.398813,
+                -1.794423,
+                -2.81972
+              ],
+              "outputs": {
+                "use_candidate": 0.675932,
+                "wake_candidate": -1.46172,
+                "candidate_busy": -3.10336,
+                "candidate_capable": 3.503908,
+                "candidate_reliable": 3.848368,
+                "query_again": -3.398813,
+                "fallback_local": -1.794423,
+                "reject_candidate": -2.81972
+              },
+              "source": "physical_esp32_minfer",
+              "max_abs_error": 7.031253015377104e-07,
+              "score_ms": 16.00000000325963,
+              "probe": {
+                "ok": true,
+                "machine": "AMD64",
+                "os": "Windows",
+                "capabilities": [
+                  "cpu",
+                  "cuda"
+                ],
+                "free_capacity": 1.0,
+                "rpc_ms": 187.0000000053551
+              }
+            }
+          ]
+        }
+      ],
+      "dispatches": [
+        {
+          "id": "r1-worker",
+          "correct": false,
+          "reply": {
+            "ok": false,
+            "error": "experiment_worker_unavailable",
+            "rpc_ms": 750.0
+          }
+        },
+        {
+          "id": "gpu-worker",
+          "correct": true,
+          "reply": {
+            "ok": true,
+            "kernel": "cpu",
+            "count": 4096,
+            "sha256": "4706d6ff50fdf06adc5acdeacb0de0d6a7517bfea428127aa0d2898d9b9f41ce",
+            "elapsed_ms": 0.0,
+            "rpc_ms": 108.99999999674037
+          }
+        }
+      ],
+      "wakes": []
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "low_power": "low-power",
+  "powerful": "gpu-worker",
+  "nodes": [
+    {
+      "id": "low-power",
+      "argv": ["ssh", "-o", "BatchMode=yes", "-o", "StrictHostKeyChecking=yes", "-o", "ConnectTimeout=8", "YOUR_LOW_POWER_SSH_ALIAS", "python3 /YOUR/PRIVATE/EXPERIMENT/worker.py --directory /YOUR/PRIVATE/EXPERIMENT/state"],
+      "performance": 0.25,
+      "energy_cost": 0.1,
+      "wake_cost": 0.1,
+      "is_controller": false,
+      "safe_to_suspend": false
+    },
+    {
+      "id": "gpu-worker",
+      "argv": ["ssh", "-o", "BatchMode=yes", "-o", "StrictHostKeyChecking=yes", "-o", "ConnectTimeout=8", "YOUR_GPU_SSH_ALIAS", "python3 /YOUR/PRIVATE/EXPERIMENT/worker.py --directory /YOUR/PRIVATE/EXPERIMENT/state"],
+      "performance": 1.0,
+      "energy_cost": 0.9,
+      "wake_cost": 0.3,
+      "is_controller": false,
+      "safe_to_suspend": false
+    }
+  ]
+}

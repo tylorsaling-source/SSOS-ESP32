@@ -2,6 +2,16 @@
 
 Status: **experimental**. This does not modify or invalidate the V2.0.1 hardware proof.
 
+## Second experiment — learned compute dispatcher
+
+The [dispatcher experiment](dispatcher/README.md) follows the owner's PR #21
+request to route work across physical computers using ESP32 candidate scores.
+Its [first physical results](dispatcher/results/2026-09-16/README.md) passed
+12 routing/busy/failover runs across the R1 and RTX 3050 computers, while six
+real sleep/wake runs remain blocked. The overall dispatcher gate is **BLOCKED**,
+not merge acceptance. The original first experiment and its FAIL result below
+are preserved unchanged.
+
 ## First live result — 2026-09-16
 
 The [first real Jev run](results/2026-09-16/README.md) collected all 1,024 states

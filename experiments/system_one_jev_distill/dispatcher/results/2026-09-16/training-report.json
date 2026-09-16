@@ -1,0 +1,75 @@
+{
+  "examples": 512,
+  "train_examples": 409,
+  "test_examples": 103,
+  "weights": 72,
+  "encoding": "signed-q10",
+  "mean_brier_q10": 0.006422741557413448,
+  "mean_mae_q10": 0.04642675831279141,
+  "mean_threshold_agreement_q10": 0.9526699029126213,
+  "max_probability_delta_float_vs_q10": 0.0004460434934849822,
+  "per_head": [
+    {
+      "name": "use_candidate",
+      "brier_q10": 0.008026246252126001,
+      "mae_q10": 0.07477248258199919,
+      "threshold_agreement_q10": 0.912621359223301,
+      "majority_baseline_agreement": 0.6019417475728155
+    },
+    {
+      "name": "wake_candidate",
+      "brier_q10": 0.006245209287437543,
+      "mae_q10": 0.05880739476781272,
+      "threshold_agreement_q10": 0.9514563106796117,
+      "majority_baseline_agreement": 0.9514563106796117
+    },
+    {
+      "name": "candidate_busy",
+      "brier_q10": 0.00022558754966711504,
+      "mae_q10": 0.01188408932241565,
+      "threshold_agreement_q10": 1.0,
+      "majority_baseline_agreement": 0.8252427184466019
+    },
+    {
+      "name": "candidate_capable",
+      "brier_q10": 4.702579309016799e-05,
+      "mae_q10": 0.005205166612366251,
+      "threshold_agreement_q10": 1.0,
+      "majority_baseline_agreement": 0.7864077669902912
+    },
+    {
+      "name": "candidate_reliable",
+      "brier_q10": 0.0005141872588482104,
+      "mae_q10": 0.014225425278756176,
+      "threshold_agreement_q10": 1.0,
+      "majority_baseline_agreement": 0.8349514563106796
+    },
+    {
+      "name": "query_again",
+      "brier_q10": 0.0017645622240066957,
+      "mae_q10": 0.015291822231867343,
+      "threshold_agreement_q10": 0.9514563106796117,
+      "majority_baseline_agreement": 0.9320388349514563
+    },
+    {
+      "name": "fallback_local",
+      "brier_q10": 0.011152565167640694,
+      "mae_q10": 0.09317740166726433,
+      "threshold_agreement_q10": 0.9902912621359223,
+      "majority_baseline_agreement": 0.6310679611650486
+    },
+    {
+      "name": "reject_candidate",
+      "brier_q10": 0.02340654892649116,
+      "mae_q10": 0.09805028403984954,
+      "threshold_agreement_q10": 0.8155339805825242,
+      "majority_baseline_agreement": 0.6116504854368932
+    }
+  ],
+  "seed": 2102,
+  "status": "DESCRIPTIVE_ONLY_NOT_PHYSICAL_ACCEPTANCE",
+  "teacher_sha256": "b8085f344b2701a41ac6d40f316e38f4d3050a9e483e192db99a430c032a40bd",
+  "teacher_models": [
+    "jev-1.13.0"
+  ]
+}

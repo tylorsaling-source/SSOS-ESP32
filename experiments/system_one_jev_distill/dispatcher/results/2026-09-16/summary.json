@@ -1,0 +1,49 @@
+{
+  "status": "BLOCKED",
+  "passed": 12,
+  "blocked": 6,
+  "total_required": 18,
+  "physical_candidate_evaluations": 30,
+  "physical_candidate_outputs": 240,
+  "max_abs_score_error": 7.031253015377104e-07,
+  "serial_retries": 0,
+  "all_task_outputs_verified": true,
+  "original_head_restored": true,
+  "per_scenario": {
+    "1": {
+      "count": 3,
+      "median_elapsed_ms": 1859.9999999860302
+    },
+    "2": {
+      "count": 3,
+      "median_elapsed_ms": 1280.9999999881256
+    },
+    "3": {
+      "count": 3,
+      "median_elapsed_ms": 1187.999999994645
+    },
+    "6": {
+      "count": 3,
+      "median_elapsed_ms": 4921.999999991385
+    }
+  },
+  "provenance": {
+    "prior_pr_head": "d360ab87322b59f913a2a44e32a16668673fc8ae",
+    "raw_evidence_sha256": "a9f2c74d5731d3812ca9bad5cbb5785d7359ec98c37778a0b29b976970e5abc4",
+    "raw_serial_sha256": "fe412be25ffd04f100293463119b04597575040fbb6f25fab92b40f551ef36ce",
+    "states_sha256": "0269619cde4e54881ba6c017d5c9929cffe9fc67e0cf9e81a8fa13b8d3fd8979",
+    "teacher_sha256": "b8085f344b2701a41ac6d40f316e38f4d3050a9e483e192db99a430c032a40bd",
+    "source_sha256": {
+      "contract.py": "5d497c8d33b0770ad8320b09acdcd36bcf56f8f46f71cede74e366f702d41753",
+      "run.py": "450aa0368dd9c5ce468bbf42e11cac39dc382498abf9d281279642c585f8334c",
+      "test_dispatcher.py": "538393ef998538c95b542ec6a2cbda7a1d703cdc0902d7e17cd8c35d174d9883",
+      "train.py": "c92b72fdbc1bf5b7824b6736f71f7a6c9e8dc9b5858d6cd2a6fc74a22488143b",
+      "worker.py": "3e614af1898abb6239876ff633f4278a10453a5a6eb285cc2c97b38cc5ee0de9"
+    },
+    "seed": 2102,
+    "worker_types": [
+      "aarch64 Linux physical R1",
+      "x86_64 Windows physical RTX 3050 controller"
+    ]
+  }
+}
