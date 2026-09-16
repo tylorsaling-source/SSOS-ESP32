@@ -50,7 +50,23 @@ Seed 42, 50,000 examples, 40,000 train / 10,000 test:
 
 That is strong enough to continue to a real Jev-labelled dataset without changing the V2 model shape first.
 
-## Real Jev path
+## One-command real Jev run on Windows
+
+From the repository root, with branch `experiment/system-one-distill` checked out:
+
+```powershell
+.\experiments\system_one_jev_distill\run_real_jev_windows.ps1
+```
+
+If `TYPESAFE_API_KEY` is not already set, the script prompts for it with hidden input, keeps it only in the current PowerShell process, and removes it after the run. Generated states, teacher labels, distilled weights, and reports are written under `_local/`, which is gitignored.
+
+The default run generates 1,024 deterministic SSOS-like states, asks Jev all eight Noul questions for each state, distills the returned probabilities into the fixed 72-weight Q10 head, and prints a final PASS/FAIL against the gate below. Use `-Count` or `-Seed` to change the experiment, for example:
+
+```powershell
+.\experiments\system_one_jev_distill\run_real_jev_windows.ps1 -Count 2048 -Seed 2026
+```
+
+## Manual real Jev path
 
 TypeSafe's public API accepts one state plus multiple independent typed questions in one call. `collect_jev_teacher.py` sends the eight questions above as Noul questions and records the returned probabilities beside the eight normalized SSOS features.
 
