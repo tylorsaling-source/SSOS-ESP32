@@ -8,6 +8,7 @@ host/ssos_dump
 host/ssos_model
 host/pty.path
 host/__pycache__/
+experiments/system_one_jev_distill/_local/
 *.pyc
 *.log
 .DS_Store
