@@ -1,0 +1,16 @@
+{
+  "api_base_url": "https://api.typesafe.ai",
+  "requested_model": "jev-latest",
+  "typesafe_sdk_version": "0.6.0",
+  "input_sha256": "618919d0a66a67596ecbf40e146ebb90dead176792af0f3c321970bc0ab3938b",
+  "questions": {
+    "route_fast_path": "Given the state, should this work be routed through the fast path now?",
+    "persist_state": "Given the state, should current state be persisted now to avoid meaningful loss?",
+    "prefetch_context": "Given the state, would prefetching the likely next context be useful now?",
+    "wake_worker": "Given the state, should an additional worker be woken or activated now?",
+    "retry_transport": "Given the state, should the most recent transport operation be retried?",
+    "request_more_state": "Is the available state insufficient for a reliable automatic decision?",
+    "state_anomalous": "Does the current state appear anomalous relative to normal operation?",
+    "fallback_deterministic": "Should the system fall back to its deterministic safe/default path now?"
+  }
+}

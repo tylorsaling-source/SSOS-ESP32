@@ -1,0 +1,74 @@
+{
+  "examples": 1024,
+  "train_examples": 819,
+  "test_examples": 205,
+  "weights": 72,
+  "encoding": "signed-q10",
+  "mean_brier_q10": 0.003706171339837205,
+  "mean_mae_q10": 0.04070097974674577,
+  "mean_threshold_agreement_q10": 0.9530487804878048,
+  "max_probability_delta_float_vs_q10": 0.00042474462246921973,
+  "per_head": [
+    {
+      "name": "route_fast_path",
+      "brier_q10": 0.0012478395133551587,
+      "mae_q10": 0.028936901811153232,
+      "threshold_agreement_q10": 1.0
+    },
+    {
+      "name": "persist_state",
+      "brier_q10": 0.007360225624498616,
+      "mae_q10": 0.03857205128306527,
+      "threshold_agreement_q10": 0.9658536585365853
+    },
+    {
+      "name": "prefetch_context",
+      "brier_q10": 0.0006465300103190593,
+      "mae_q10": 0.020458884823996132,
+      "threshold_agreement_q10": 0.9463414634146341
+    },
+    {
+      "name": "wake_worker",
+      "brier_q10": 0.012092681306320413,
+      "mae_q10": 0.09700087446704811,
+      "threshold_agreement_q10": 0.7902439024390244
+    },
+    {
+      "name": "retry_transport",
+      "brier_q10": 0.002199317746131792,
+      "mae_q10": 0.0371891091548522,
+      "threshold_agreement_q10": 0.9658536585365853
+    },
+    {
+      "name": "request_more_state",
+      "brier_q10": 0.0017369010360167882,
+      "mae_q10": 0.03213990462031803,
+      "threshold_agreement_q10": 0.9658536585365853
+    },
+    {
+      "name": "state_anomalous",
+      "brier_q10": 0.0019326146905463254,
+      "mae_q10": 0.03272992811714413,
+      "threshold_agreement_q10": 1.0
+    },
+    {
+      "name": "fallback_deterministic",
+      "brier_q10": 0.002433260791509486,
+      "mae_q10": 0.03858018369638905,
+      "threshold_agreement_q10": 0.9902439024390244
+    }
+  ],
+  "teacher_source": "local preserved Jev collection; SHA-256 in provenance.json",
+  "question_names": [
+    "route_fast_path",
+    "persist_state",
+    "prefetch_context",
+    "wake_worker",
+    "retry_transport",
+    "request_more_state",
+    "state_anomalous",
+    "fallback_deterministic"
+  ],
+  "gate": "FAIL",
+  "gate_failure": "wake_worker threshold agreement 0.7902439024390244 < 0.80"
+}

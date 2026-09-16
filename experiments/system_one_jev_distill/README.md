@@ -2,6 +2,16 @@
 
 Status: **experimental**. This does not modify or invalidate the V2.0.1 hardware proof.
 
+## First live result — 2026-09-16
+
+The [first real Jev run](results/2026-09-16/README.md) collected all 1,024 states
+from `jev-1.13.0`. The fixed head achieved 95.30% held-out agreement and 0.04070
+probability MAE, but **failed the original gate** because `wake_worker` reached
+79.02%, below 80%. A constant majority baseline already achieved 94.09% overall.
+The actual distilled head passed 3,424 ESP32 numerical comparisons and reset
+persistence, with three read-only serial retries. These are separate results:
+successful execution does not turn the teacher-agreement failure into a pass.
+
 ## Goal
 
 Test whether Jev-style atomic probabilistic judgments can be distilled into the existing SSOS V2 fixed **9-input / 8-output / 72-weight signed-Q10 head**.

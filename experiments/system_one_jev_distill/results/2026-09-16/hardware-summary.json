@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "firmware_written": false,
+  "settings_erased": false,
+  "reset_method": "esptool watchdog-reset",
+  "fixture_sha256": "bacc01cca7fb4ba2abe8f6c8a37245cb7c3fe4a42528ed6a6be76c43ae28de7a",
+  "model_sha256": "a589fed971121dbeb474f63adf4c4444a062032f266883ab039d130189ad8518",
+  "values_compared": 3424,
+  "max_abs_error": 5.555226449960315e-07,
+  "readonly_inference_retries": 3,
+  "vectors_per_phase": 214,
+  "basis_vectors": 9,
+  "heldout_vectors": 205,
+  "boot_count_before": 3,
+  "boot_count_after": 4,
+  "tolerance": 2e-05,
+  "raw_evidence_sha256": "d4acd0259da8c094da055590a6128804e7fff6e3d79a079d7d5eb9d312c323ff",
+  "raw_transcript_sha256": "0ed39a5018ae1d57d06953c892e9dc49fca0b265dbc90a43e37e735418b8ab27",
+  "executed_validator_sha256": "859296ad11bb6dfe31eb26379a95a2866199265ae1f30efd3e70aad43d03b2e3",
+  "earlier_attempts": "Two failed serial captures preserved locally; one truncated line, one incomplete-line timeout. No numerical disagreement observed in those completed checks."
+}
