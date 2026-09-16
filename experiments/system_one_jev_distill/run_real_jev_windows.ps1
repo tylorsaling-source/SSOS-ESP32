@@ -1,15 +1,19 @@
 [CmdletBinding()]
 param(
-    [int]$Count = 1024,
+    [ValidateRange(32, 1000000)][int]$Count = 1024,
     [int]$Seed = 1337,
-    [string]$Python = 'py -3'
+    [string]$Python = 'python',
+    [string[]]$PythonArgs = @(),
+    [string]$KeyFile = (Join-Path $env:LOCALAPPDATA 'SSOS-ESP32\typesafe-api-key.dpapi'),
+    [switch]$SkipDependencyInstall
 )
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
 $Here = Split-Path -Parent $MyInvocation.MyCommand.Path
-$Local = Join-Path $Here '_local'
+$runId = (Get-Date).ToUniversalTime().ToString('yyyyMMddTHHmmssfffZ') + '-' + [guid]::NewGuid().ToString('N').Substring(0, 8)
+$Local = Join-Path (Join-Path $Here '_local') $runId
 $States = Join-Path $Local 'states.jsonl'
 $Teacher = Join-Path $Local 'jev_teacher.jsonl'
 $OutDir = Join-Path $Local 'distilled'
@@ -17,43 +21,43 @@ $PromptedForKey = $false
 
 New-Item -ItemType Directory -Force -Path $Local | Out-Null
 
-if (-not $env:TYPESAFE_API_KEY) {
-    Write-Host 'TYPESAFE_API_KEY is not set for this process.'
-    $secure = Read-Host 'Paste your TypeSafe API key (input hidden)' -AsSecureString
-    $ptr = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($secure)
-    try {
-        $env:TYPESAFE_API_KEY = [Runtime.InteropServices.Marshal]::PtrToStringBSTR($ptr)
-        $PromptedForKey = $true
-    } finally {
-        [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($ptr)
-    }
-}
-
-if (-not $env:TYPESAFE_API_KEY) { throw 'No TypeSafe API key supplied.' }
-
-$parts = $Python -split ' '
-$exe = $parts[0]
-$prefix = @()
-if ($parts.Count -gt 1) { $prefix = @($parts[1..($parts.Count - 1)]) }
-
 function Invoke-Python {
     param([Parameter(ValueFromRemainingArguments=$true)][string[]]$PyArgs)
-    & $exe @prefix @PyArgs
+    & $Python @PythonArgs @PyArgs
     if ($LASTEXITCODE -ne 0) { throw "Python command failed with exit code $LASTEXITCODE" }
 }
 
 try {
-    Write-Host 'Installing/updating experiment dependencies...'
-    Invoke-Python -m pip install --upgrade numpy typesafe-sdk
+    if (-not $SkipDependencyInstall) {
+        Write-Host 'Installing experiment dependencies...'
+        Invoke-Python -m pip install numpy typesafe-sdk
+    }
 
     Write-Host "Generating $Count deterministic SSOS-like states..."
     Invoke-Python (Join-Path $Here 'generate_states.py') $States --count $Count --seed $Seed
 
-    if (Test-Path $Teacher) { Remove-Item -Force $Teacher }
+    if (-not $env:TYPESAFE_API_KEY) {
+        if (Test-Path -LiteralPath $KeyFile) {
+            $secure = Get-Content -Raw -LiteralPath $KeyFile | ConvertTo-SecureString
+        } else {
+            $secure = Read-Host 'Paste your TypeSafe API key (input hidden)' -AsSecureString
+        }
+        $ptr = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($secure)
+        try {
+            $env:TYPESAFE_API_KEY = [Runtime.InteropServices.Marshal]::PtrToStringBSTR($ptr)
+            $PromptedForKey = $true
+        } finally {
+            [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($ptr)
+            $secure.Dispose()
+        }
+    }
+    if ([string]::IsNullOrWhiteSpace($env:TYPESAFE_API_KEY)) { throw 'No TypeSafe API key supplied.' }
     Write-Host 'Calling Jev for eight atomic judgments per state...'
     Invoke-Python (Join-Path $Here 'collect_jev_teacher.py') $States $Teacher
+    if ($PromptedForKey) {
+        Remove-Item Env:TYPESAFE_API_KEY -ErrorAction SilentlyContinue
+    }
 
-    if (Test-Path $OutDir) { Remove-Item -Recurse -Force $OutDir }
     Write-Host 'Distilling Jev probabilities into the fixed SSOS V2 9->8 / 72-weight Q10 head...'
     Invoke-Python (Join-Path $Here 'distill_system_one.py') --teacher-jsonl $Teacher --seed $Seed --out $OutDir
 

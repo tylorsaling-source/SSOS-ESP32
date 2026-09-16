@@ -17,7 +17,7 @@ The first mapping uses eight independent Noul-like questions rather than text ge
 7. `state_anomalous`
 8. `fallback_deterministic`
 
-The ESP32 computes eight logits with the existing V2 `MINFER` path. A deterministic caller can interpret `logit > 0` as probability > 0.5, or apply `sigmoid(logit)` when a calibrated probability is useful. Nothing requires autoregressive text generation.
+The ESP32 computes eight logits with the existing V2 `MINFER` path. A deterministic caller can interpret `logit >= 0` as probability >= 0.5, or apply `sigmoid(logit)` for an estimated teacher probability. Distillation agreement does not establish calibration or real-world decision correctness. Nothing requires autoregressive text generation.
 
 ## 9-D state contract
 
@@ -58,7 +58,23 @@ From the repository root, with branch `experiment/system-one-distill` checked ou
 .\experiments\system_one_jev_distill\run_real_jev_windows.ps1
 ```
 
-If `TYPESAFE_API_KEY` is not already set, the script prompts for it with hidden input, keeps it only in the current PowerShell process, and removes it after the run. Generated states, teacher labels, distilled weights, and reports are written under `_local/`, which is gitignored.
+The runner uses `python` by default. Use `-Python 'C:\path with spaces\python.exe'` to select a virtual environment, or `-Python py -PythonArgs '-3'` for the Windows launcher. `-SkipDependencyInstall` uses an already prepared environment.
+
+### Enter the API key locally
+
+Open a masked password window with Windows PowerShell:
+
+```powershell
+powershell.exe -NoProfile -STA -File .\experiments\system_one_jev_distill\set_typesafe_key_windows.ps1 -Dialog
+```
+
+Paste the key there, not into chat, a command argument, or a source file. The helper stores it at `%LOCALAPPDATA%\SSOS-ESP32\typesafe-api-key.dpapi`, outside the repository, encrypted with Windows DPAPI for the current Windows account. The dedicated credential directory grants access only to that account. To remove it, delete that file. Re-run the helper to replace it.
+
+The runner uses an existing `TYPESAFE_API_KEY` first, then this encrypted file, then hidden console input. A key loaded by the runner is temporarily available to the collector process and removed from the runner environment immediately after collection, or on failure. Dependency installation and state generation happen before loading a stored key. No key is passed on a command line or included in experiment artifacts.
+
+Generated states, teacher labels, distilled weights, and reports are written under a unique `_local/<UTC-time>-<random-id>/` directory, which is gitignored. Earlier runs are preserved. Completed teacher rows are flushed after each response; API failures stop collection with a sanitized error instead of printing SDK exception contents.
+
+The collector explicitly uses `https://api.typesafe.ai` and the `jev-latest` alias. It records the resolved teacher model on every row and writes a metadata sidecar containing the input file SHA-256, SDK version, and exact questions. It refuses to overwrite an existing teacher dataset. These artifacts support auditing which live teacher produced the labels; they contain no API key.
 
 The default run generates 1,024 deterministic SSOS-like states, asks Jev all eight Noul questions for each state, distills the returned probabilities into the fixed 72-weight Q10 head, and prints a final PASS/FAIL against the gate below. Use `-Count` or `-Seed` to change the experiment, for example:
 
@@ -114,6 +130,8 @@ Do not move the goalposts after seeing results. Initial gate:
 - no single question below 80% threshold agreement without being explicitly investigated.
 
 If the head misses this gate, preserve the result. The next comparison should be a small nonlinear head (for example 9 -> 16 -> 8), not an immediate jump back to a language model.
+
+One additional limitation must be investigated before changing the head: Jev sees richer state, including retry count, state age, and unsaved updates, that the eight-feature student projection omits. A disagreement can therefore reflect missing input information as well as insufficient model capacity. The first run keeps the PR's questions, projection, split, and acceptance thresholds unchanged.
 
 ## Why this fits SSOS
 

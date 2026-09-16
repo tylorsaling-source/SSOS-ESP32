@@ -21,6 +21,8 @@ jobs:
         run: python3 -m pip install --upgrade numpy typesafe-sdk
       - name: Compile Python files
         run: python3 -m py_compile experiments/system_one_jev_distill/*.py
+      - name: Validate collector failure handling offline
+        run: python3 -m unittest discover -s experiments/system_one_jev_distill -p 'test_*.py'
       - name: Verify TypeSafe SDK surface used by collector
         run: |
           python3 - <<'PY'
@@ -94,13 +96,16 @@ jobs:
         run: |
           $tokens = $null
           $errors = $null
-          [System.Management.Automation.Language.Parser]::ParseFile(
-            (Resolve-Path 'experiments/system_one_jev_distill/run_real_jev_windows.ps1'),
-            [ref]$tokens,
-            [ref]$errors
-          ) | Out-Null
-          if ($errors.Count -ne 0) {
-            $errors | ForEach-Object { Write-Error $_.Message }
-            exit 1
+          foreach ($script in Get-ChildItem 'experiments/system_one_jev_distill/*.ps1') {
+            [System.Management.Automation.Language.Parser]::ParseFile(
+              $script.FullName, [ref]$tokens, [ref]$errors
+            ) | Out-Null
+            if ($errors.Count -ne 0) {
+              $errors | ForEach-Object { Write-Error $_.Message }
+              exit 1
+            }
           }
           Write-Host 'PowerShell parse: PASS'
+      - name: Verify encrypted credential handling without a real key
+        shell: pwsh
+        run: ./experiments/system_one_jev_distill/test_credentials_windows.ps1
