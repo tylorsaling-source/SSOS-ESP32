@@ -62,6 +62,9 @@ try {
     foreach ($artifact in $global:ssosTestOutputPaths) {
         if ((Get-Content -Raw $artifact).Trim() -ne 'offline-test-artifact') { throw 'Earlier artifact was lost.' }
     }
+    # GitHub's PowerShell wrapper propagates LASTEXITCODE. Clear the expected
+    # mocked collector failure only after all failure-path assertions pass.
+    $global:LASTEXITCODE = 0
     Write-Host 'PASS: DPAPI roundtrip, collector-only key access, failure cleanup, and previous-run preservation (offline mocks).'
 } finally {
     if ($null -ne $savedEnvironmentKey) { $env:TYPESAFE_API_KEY = $savedEnvironmentKey }
