@@ -1,6 +1,7 @@
 [CmdletBinding()]
 param(
     [switch]$Dialog,
+    [switch]$FromStdin,
     [string]$KeyFile = (Join-Path $env:LOCALAPPDATA 'SSOS-ESP32\typesafe-api-key.dpapi')
 )
 
@@ -9,7 +10,12 @@ $ErrorActionPreference = 'Stop'
 $secure = $null
 
 try {
-    if ($Dialog) {
+    if ($FromStdin) {
+        $inputKey = [Console]::In.ReadToEnd().Trim()
+        if ([string]::IsNullOrWhiteSpace($inputKey)) { throw 'No API key supplied.' }
+        $secure = ConvertTo-SecureString $inputKey -AsPlainText -Force
+        $inputKey = $null
+    } elseif ($Dialog) {
         Add-Type -AssemblyName System.Windows.Forms
         Add-Type -AssemblyName System.Drawing
         $form = New-Object System.Windows.Forms.Form

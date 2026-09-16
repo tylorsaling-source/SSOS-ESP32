@@ -76,6 +76,33 @@ Generated states, teacher labels, distilled weights, and reports are written und
 
 The collector explicitly uses `https://api.typesafe.ai` and the `jev-latest` alias. It records the resolved teacher model on every row and writes a metadata sidecar containing the input file SHA-256, SDK version, and exact questions. It refuses to overwrite an existing teacher dataset. These artifacts support auditing which live teacher produced the labels; they contain no API key.
 
+### Remote key entry over Tailscale
+
+`capture_key_tailscale.py` provides a temporary password form for a remote user.
+Use a dedicated, unused Tailscale Serve HTTPS port and leave existing Serve
+routes intact. The backend binds only `127.0.0.1`; never expose it directly.
+Example (replace the DNS name and login with the live Tailscale values):
+
+```powershell
+python experiments/system_one_jev_distill/capture_key_tailscale.py --origin https://YOUR-PC.YOUR-TAILNET.ts.net:8447 --allowed-user YOUR-TAILSCALE-LOGIN --status-file experiments/system_one_jev_distill/_local/tailscale-capture.json
+# In a second terminal, after the backend starts:
+tailscale serve --bg --https=8447 http://127.0.0.1:18761
+```
+
+The local status file contains the complete link with a random fragment token.
+Open that link on a device connected to the authorized Tailscale account. The
+server checks the Serve-injected identity, expected Host, exact POST Origin,
+and token. The API key travels only in the HTTPS POST body, then through stdin
+to the existing Windows DPAPI storage helper. No key is placed in URLs, process
+arguments, HTTP access logs, or source files. The page uses no external assets,
+disables caching, and clears the password field on submission.
+
+Only one successful submission is accepted. The backend and dedicated Serve
+port close after success or 30 minutes; other Serve routes remain intact. An
+existing stored key is not overwritten. To cancel early, stop this backend and
+run `tailscale serve --https=8447 off`. A successful local test is not proof that
+the user's remote device can reach the form; confirm the remote submission.
+
 The default run generates 1,024 deterministic SSOS-like states, asks Jev all eight Noul questions for each state, distills the returned probabilities into the fixed 72-weight Q10 head, and prints a final PASS/FAIL against the gate below. Use `-Count` or `-Seed` to change the experiment, for example:
 
 ```powershell

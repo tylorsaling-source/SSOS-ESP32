@@ -109,3 +109,6 @@ jobs:
       - name: Verify encrypted credential handling without a real key
         shell: pwsh
         run: ./experiments/system_one_jev_distill/test_credentials_windows.ps1
+      - name: Verify Tailscale capture and Windows stdin encryption offline
+        shell: pwsh
+        run: python -m unittest discover -s experiments/system_one_jev_distill -p 'test_capture_key_tailscale.py'
