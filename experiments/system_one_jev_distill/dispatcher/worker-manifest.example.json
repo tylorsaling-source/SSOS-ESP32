@@ -1,0 +1,25 @@
+{
+  "low_power": "low-power",
+  "powerful": "gpu-worker",
+  "nodes": [
+    {
+      "id": "low-power",
+      "argv": ["ssh", "-o", "BatchMode=yes", "-o", "StrictHostKeyChecking=yes", "YOUR_CPU_SSH_ALIAS", "python3 /YOUR/PRIVATE/worker.py --directory /YOUR/PRIVATE/state"],
+      "serve_argv": ["ssh", "-o", "BatchMode=yes", "-o", "StrictHostKeyChecking=yes", "YOUR_CPU_SSH_ALIAS", "python3 /YOUR/PRIVATE/worker.py --directory /YOUR/PRIVATE/state --serve"],
+      "host_probe_argv": ["ssh", "-o", "BatchMode=yes", "-o", "StrictHostKeyChecking=yes", "YOUR_CPU_SSH_ALIAS", "python3 /YOUR/PRIVATE/host_witness.py"],
+      "performance": 0.25,
+      "energy_cost": 0.1,
+      "wake_cost": 0.05
+    },
+    {
+      "id": "gpu-worker",
+      "argv": ["python", "C:/YOUR/PRIVATE/worker.py", "--directory", "C:/YOUR/PRIVATE/state"],
+      "serve_argv": ["python", "C:/YOUR/PRIVATE/worker.py", "--directory", "C:/YOUR/PRIVATE/state", "--serve"],
+      "host_probe_argv": ["python", "C:/YOUR/PRIVATE/host_witness.py"],
+      "performance": 1.0,
+      "energy_cost": 0.9,
+      "wake_cost": 0.05,
+      "is_controller": true
+    }
+  ]
+}

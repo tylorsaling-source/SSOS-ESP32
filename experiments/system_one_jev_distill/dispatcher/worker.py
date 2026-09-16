@@ -153,6 +153,7 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument('--directory', type=Path, required=True)
     p.add_argument('--hold', action='store_true')
+    p.add_argument('--serve', action='store_true')
     args = p.parse_args()
     args.directory.mkdir(parents=True, exist_ok=True)
     if args.hold:
@@ -160,12 +161,35 @@ def main():
             cpu_transform(4096)
             time.sleep(.02)
         return
-    try:
-        request = json.loads(sys.stdin.readline(8192))
-        result = handle(request, args.directory)
-    except Exception as exc:
-        result = {'ok': False, 'error': type(exc).__name__}
-    print(json.dumps(result), flush=True)
+    if args.serve:
+        # Dedicated bounded worker process. EOF or idle exits this process only.
+        instance = str(uuid.uuid4())
+        ready = handle({'action': 'probe'}, args.directory)
+        print(json.dumps({**ready, 'event': 'ready', 'process_id': os.getpid(),
+                          'instance': instance}), flush=True)
+        try:
+            for line in sys.stdin:
+                try:
+                    request = json.loads(line)
+                    exiting = request.get('action') == 'idle'
+                    result = {'ok': True, 'event': 'exiting'} if exiting else handle(request, args.directory)
+                    result.update(process_id=os.getpid(), instance=instance,
+                                  request_id=request.get('request_id'))
+                except Exception as exc:
+                    exiting = False
+                    result = {'ok': False, 'error': type(exc).__name__}
+                print(json.dumps(result), flush=True)
+                if exiting:
+                    break
+        finally:
+            handle({'action': 'clear'}, args.directory)
+    else:
+        try:
+            request = json.loads(sys.stdin.readline(8192))
+            result = handle(request, args.directory)
+        except Exception as exc:
+            result = {'ok': False, 'error': type(exc).__name__}
+        print(json.dumps(result), flush=True)
 
 if __name__ == '__main__':
     main()

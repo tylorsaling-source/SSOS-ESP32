@@ -1,0 +1,119 @@
+{
+  "seed": 2103,
+  "examples": 512,
+  "train_examples": 409,
+  "test_examples": 103,
+  "wake_train_examples": 301,
+  "wake_training": "readiness_0_training_subset_only",
+  "teacher_sha256": "b1820b5606a1cf609e7ca9b8468cde395bf30cc2da7db96c612dfacd7de68931",
+  "per_head": [
+    {
+      "name": "use_candidate",
+      "test_examples": 103,
+      "agreement": 0.8932038834951457,
+      "majority_baseline": 0.8058252427184466,
+      "positive_recall": 0.9,
+      "negative_recall": 0.891566265060241,
+      "positives": 20,
+      "negatives": 83,
+      "scope": "all_workers"
+    },
+    {
+      "name": "wake_candidate",
+      "test_examples": 71,
+      "agreement": 0.7887323943661971,
+      "majority_baseline": 0.647887323943662,
+      "positive_recall": 0.56,
+      "negative_recall": 0.9130434782608695,
+      "positives": 25,
+      "negatives": 46,
+      "scope": "inactive_workers_only"
+    },
+    {
+      "name": "candidate_busy",
+      "test_examples": 103,
+      "agreement": 1.0,
+      "majority_baseline": 0.883495145631068,
+      "positive_recall": 1.0,
+      "negative_recall": 1.0,
+      "positives": 12,
+      "negatives": 91,
+      "scope": "all_workers"
+    },
+    {
+      "name": "candidate_capable",
+      "test_examples": 103,
+      "agreement": 1.0,
+      "majority_baseline": 0.9611650485436893,
+      "positive_recall": 1.0,
+      "negative_recall": 1.0,
+      "positives": 99,
+      "negatives": 4,
+      "scope": "all_workers"
+    },
+    {
+      "name": "candidate_reliable",
+      "test_examples": 103,
+      "agreement": 1.0,
+      "majority_baseline": 0.8446601941747572,
+      "positive_recall": 1.0,
+      "negative_recall": 1.0,
+      "positives": 87,
+      "negatives": 16,
+      "scope": "all_workers"
+    },
+    {
+      "name": "query_again",
+      "test_examples": 103,
+      "agreement": 0.970873786407767,
+      "majority_baseline": 0.9514563106796117,
+      "positive_recall": 0.6,
+      "negative_recall": 0.9897959183673469,
+      "positives": 5,
+      "negatives": 98,
+      "scope": "all_workers"
+    },
+    {
+      "name": "fallback_local",
+      "test_examples": 103,
+      "agreement": 0.9223300970873787,
+      "majority_baseline": 0.8155339805825242,
+      "positive_recall": 0.9166666666666666,
+      "negative_recall": 0.9473684210526315,
+      "positives": 84,
+      "negatives": 19,
+      "scope": "all_workers"
+    },
+    {
+      "name": "reject_candidate",
+      "test_examples": 103,
+      "agreement": 0.8737864077669902,
+      "majority_baseline": 0.8446601941747572,
+      "positive_recall": 0.3125,
+      "negative_recall": 0.9770114942528736,
+      "positives": 16,
+      "negatives": 87,
+      "scope": "all_workers"
+    }
+  ],
+  "status": "DESCRIPTIVE_NOT_PHYSICAL_ACCEPTANCE",
+  "wake_capability": {
+    "status": "POSSIBLE_NOT_VALIDATED",
+    "check": "wake_head_can_reach_nonnegative_for_confirmed_sleep",
+    "maximum_sleeping_wake_logit": 0.9072265625,
+    "maximizing_state": {
+      "capable": 1,
+      "readiness": 0,
+      "free_capacity": 0,
+      "reliability": 0,
+      "work_value": 1,
+      "energy_cost": 0,
+      "wake_cost": 0,
+      "freshness": 1
+    },
+    "meaning": "A negative upper bound proves every legal sleeping state is denied wake. A nonnegative bound does not establish correct routing or physical wake."
+  },
+  "teacher_models": [
+    "jev-1.13.0"
+  ]
+}

@@ -12,6 +12,7 @@ import time
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from validate_jev_hardware import Device, proof
 from contract import NAMES, choose, project
+from audit_model import audit_wake
 from worker import cpu_transform
 
 class Workers:
@@ -59,14 +60,8 @@ class Workers:
         return result
 
     def power_command(self, ident, field):
-        node = self.nodes[ident]
-        if node.get('is_controller') or not node.get('safe_to_suspend') or not node.get(field):
-            return {'ok': False, 'error': 'no_authorized_external_power_adapter'}
-        try:
-            completed = subprocess.run(node[field], capture_output=True, text=True, timeout=45)
-            return {'ok': completed.returncode == 0, 'returncode': completed.returncode}
-        except (OSError, subprocess.TimeoutExpired):
-            return {'ok': False, 'error': 'power_adapter_failed'}
+        # Owner clarification: wake worker processes, never suspend their hosts.
+        return {'ok': False, 'error': 'operating_system_power_operations_disabled'}
 
     def sleep(self, ident):
         node = self.nodes[ident]
@@ -124,8 +119,13 @@ class HardwareScorer:
         identity = proof.identify(self.device)
         if 'release=2.0.1' not in identity:
             raise RuntimeError('Expected SSOS V2.0.1')
-        self.device.command('DUMP', proof.exact('OK end'))
-        packets = [s.split(' RX ', 1)[1] for s in self.transcript.path.read_text().splitlines() if ' RX PKT ' in s]
+        # Only these eight rows are replaced. Read each separately: a bulk DUMP
+        # can exceed the native USB transmit buffer and lose its final packet.
+        packets = []
+        for row in range(8):
+            reply = self.device.command(f'GET id=model:w:{row}',
+                                        proof.prefix(f'OK PKT id=model:w:{row} '))
+            packets.append(reply.removeprefix('OK '))
         (self.transcript.path.parent/'original-packets.txt').write_text('\n'.join(packets)+'\n')
         originals = {}
         for packet in packets:
@@ -230,6 +230,8 @@ def dispatch(workers, scorer, task, fail_after_selection=False):
 
 def gate(evidence):
     cases = evidence['scenarios']
+    if evidence.get('model_wake_audit', {}).get('status') == 'FAIL':
+        return 'FAIL'
     if evidence.get('restore_error') or any(s['status'] == 'FAIL' for s in cases):
         return 'FAIL'
     if evidence.get('error'):
@@ -253,6 +255,14 @@ def gate(evidence):
             return 'FAIL'
     return 'PASS'
 
+def worker_roles(manifest, workers):
+    """CUDA execution need not belong to the worker used for sleep tests."""
+    low, powerful = manifest['low_power'], manifest['powerful']
+    gpu = manifest.get('gpu', powerful)
+    if low == powerful or any(ident not in workers.nodes for ident in (low, powerful, gpu)):
+        raise ValueError('Low-power and powerful roles must be distinct configured workers')
+    return low, powerful, gpu
+
 def main():
     p = argparse.ArgumentParser()
     p.add_argument('--manifest', type=Path, required=True)
@@ -263,9 +273,7 @@ def main():
     args.output.mkdir(parents=True, exist_ok=False)
     manifest = json.loads(args.manifest.read_text())
     workers = Workers(manifest['nodes'])
-    low, powerful = manifest['low_power'], manifest['powerful']
-    if low == powerful or low not in workers.nodes or powerful not in workers.nodes:
-        raise ValueError('Distinct worker roles are required')
+    low, powerful, gpu = worker_roles(manifest, workers)
     model = json.loads(args.model.read_text())
     if model.get('skills') != NAMES:
         raise ValueError('Model is not the frozen dispatcher contract')
@@ -274,7 +282,16 @@ def main():
                 'profiles': [{k: n[k] for k in ('id','performance','energy_cost','wake_cost')} for n in manifest['nodes']],
                 'scenarios': [], 'gate': '18/18 physical correct decisions/executions including actual wake',
                 'head_names': NAMES}
+    evidence['roles'] = {'low_power': low, 'powerful': powerful, 'gpu': gpu}
     evidence['source_sha256'] = {path.name: proof.sha256(path) for path in Path(__file__).parent.glob('*.py')}
+    evidence['model_wake_audit'] = audit_wake(model)
+    if evidence['model_wake_audit']['status'] == 'FAIL':
+        # Do not suspend a worker when this frozen head cannot ever request wake.
+        evidence.update(status='FAIL', error='model_cannot_wake_any_sleeping_candidate',
+                        physical_scoring_started=False, model_changed=False)
+        (args.output/'evidence.json').write_text(json.dumps(evidence, indent=2)+'\n')
+        print('Overall dispatcher gate: FAIL (wake head is negative for every sleeping state)', flush=True)
+        return 2
     scorer = HardwareScorer(args.port, model, args.output)
     small = {'kernel': 'cpu', 'count': 4096, 'demand': .05}
     large = {'kernel': 'cpu', 'count': 262144, 'demand': 1.0}
@@ -295,8 +312,8 @@ def main():
         evidence['distinct_machine_fingerprints_verified'] = True
         for ident, probe in probes.items():
             workers.nodes[ident]['verified_capabilities'] = probe['capabilities']
-        if 'cuda' not in probes[powerful]['capabilities']:
-            raise RuntimeError('Designated powerful worker lacks CUDA')
+        if 'cuda' not in probes[gpu]['capabilities']:
+            raise RuntimeError('Designated GPU worker lacks CUDA')
         scorer.open()
         evidence['physical_scoring_started'] = True
         for scenario in range(1, 7):
@@ -317,7 +334,7 @@ def main():
                     if not item['busy']['ok']:
                         raise RuntimeError('Could not reserve preferred worker')
                 task = cuda if scenario == 2 else large if scenario == 5 else small
-                expected = powerful if scenario in (2, 3, 5, 6) else low
+                expected = gpu if scenario == 2 else powerful if scenario in (3, 5, 6) else low
                 result = dispatch(workers, scorer, task, fail_after_selection=scenario == 6)
                 item.update(result)
                 item['expected'] = expected

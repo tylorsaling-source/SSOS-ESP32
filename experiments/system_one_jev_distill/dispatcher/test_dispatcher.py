@@ -1,4 +1,5 @@
 import hashlib
+import itertools
 import math
 from pathlib import Path
 import tempfile
@@ -6,12 +7,28 @@ import unittest
 from unittest.mock import patch
 
 from contract import FEATURES, choose, project
-from run import Workers, dispatch, gate
+from audit_model import audit_wake
+from contract import NAMES
+from run import Workers, dispatch, gate, worker_roles
 from worker import cpu_transform, handle
 
 GOOD = [2., -1., -2., 2., 2., -2., -2., -2.]
 
 class ContractTests(unittest.TestCase):
+    def test_wake_bound_matches_exhaustive_legal_corners(self):
+        row = [.3, 100., -.7, .2, .9, -.4, -.1, .5, -4.]
+        model = {'skills': NAMES, 'rows': [[0.]*9, row] + [[0.]*9 for _ in range(6)]}
+        result = audit_wake(model)
+        scores = []
+        for values in itertools.product((0, 1), repeat=7):
+            state = dict(zip([f for f in FEATURES if f != 'readiness'], values))
+            state['readiness'] = 0
+            scores.append(sum(a*b for a,b in zip(row, project(state))))
+        self.assertAlmostEqual(result['maximum_sleeping_wake_logit'], max(scores))
+        self.assertEqual(result['status'], 'FAIL')
+        row[-1] = 0
+        self.assertEqual(audit_wake(model)['status'], 'POSSIBLE_NOT_VALIDATED')
+
     def test_projection_rejects_nonfinite_and_out_of_range(self):
         state = dict.fromkeys(FEATURES, 1)
         self.assertEqual(project(state), [1]*9)
@@ -69,6 +86,27 @@ class WorkerTests(unittest.TestCase):
             execute.assert_not_called()
 
 class RoutingTests(unittest.TestCase):
+    def test_awake_gpu_controller_can_be_separate_from_sleep_worker(self):
+        nodes = [dict(id=n, argv=['unused'], performance=1, energy_cost=1, wake_cost=1,
+                      is_controller=n == 'gpu', safe_to_suspend=True,
+                      sleep_argv=['unused']) for n in ('low', 'cpu', 'gpu')]
+        workers = Workers(nodes)
+        manifest = dict(low_power='low', powerful='cpu', gpu='gpu')
+        self.assertEqual(worker_roles(manifest, workers), ('low', 'cpu', 'gpu'))
+        with patch('run.subprocess.run') as execute:
+            self.assertFalse(workers.power_command('gpu', 'sleep_argv')['ok'])
+            execute.assert_not_called()
+            self.assertFalse(workers.power_command('cpu', 'sleep_argv')['ok'])
+            execute.assert_not_called()
+
+    def test_existing_two_worker_manifests_retain_roles(self):
+        class ExistingWorkers:
+            nodes = {'low': {}, 'high': {}}
+        self.assertEqual(worker_roles(dict(low_power='low', powerful='high'), ExistingWorkers()),
+                         ('low', 'high', 'high'))
+        with self.assertRaises(ValueError):
+            worker_roles(dict(low_power='low', powerful='high', gpu='missing'), ExistingWorkers())
+
     def test_partial_or_mock_results_cannot_pass_physical_gate(self):
         self.assertEqual(gate({'scenarios':[]}), 'BLOCKED')
         cases = [dict(scenario=s,repetition=r,status='PASS',
@@ -83,6 +121,9 @@ class RoutingTests(unittest.TestCase):
 
     def test_numerical_failure_during_physical_run_is_failure_not_blocker(self):
         self.assertEqual(gate(dict(scenarios=[],error='bad score',physical_scoring_started=True)), 'FAIL')
+
+    def test_impossible_wake_is_model_failure_even_before_physical_run(self):
+        self.assertEqual(gate(dict(scenarios=[],model_wake_audit={'status':'FAIL'})), 'FAIL')
 
     def test_failed_selection_is_rescored_before_failover(self):
         class FakeWorkers:

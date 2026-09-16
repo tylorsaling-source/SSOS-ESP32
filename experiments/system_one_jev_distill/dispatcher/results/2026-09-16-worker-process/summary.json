@@ -1,0 +1,83 @@
+{
+  "status": "FAIL",
+  "passed": 15,
+  "failed": 3,
+  "blocked": 0,
+  "total_executed": 18,
+  "contract": "worker-process-v3",
+  "physical_candidate_evaluations": 42,
+  "physical_outputs": 336,
+  "max_abs_error": 8.750000004553726e-07,
+  "serial_retries": 0,
+  "correct_completed_task_receipts": 18,
+  "original_head_restored": true,
+  "worker_cleanup_complete": true,
+  "operating_system_power_operations": false,
+  "per_scenario": {
+    "1": {
+      "passed": 3,
+      "failed": 0,
+      "median_dispatch_elapsed_ms": 62.000000005355105
+    },
+    "2": {
+      "passed": 3,
+      "failed": 0,
+      "median_dispatch_elapsed_ms": 219.00000001187436
+    },
+    "3": {
+      "passed": 3,
+      "failed": 0,
+      "median_dispatch_elapsed_ms": 62.000000005355105
+    },
+    "4": {
+      "passed": 3,
+      "failed": 0,
+      "median_dispatch_elapsed_ms": 62.000000005355105
+    },
+    "5": {
+      "passed": 0,
+      "failed": 3,
+      "median_dispatch_elapsed_ms": 406.00000001722947
+    },
+    "6": {
+      "passed": 3,
+      "failed": 0,
+      "median_dispatch_elapsed_ms": 125.0
+    }
+  },
+  "provenance": {
+    "raw_evidence_sha256": "97d833dc7c5836b977c665a94e928482220791f59a1175d01c31f3bb9f1b704e",
+    "raw_serial_sha256": "1f419322d4cb90cc2f873a1ba4f7e6527d8b7a36b44b0808a5bf660af61490f1",
+    "states_sha256": "0243ae218f67df3b55d5a74d147565840856cf14691917072ae4a9ec530d13af",
+    "teacher_sha256": "b1820b5606a1cf609e7ca9b8468cde395bf30cc2da7db96c612dfacd7de68931",
+    "model_sha256": "3112af1493bbba7d5ef4b3362efaf91d04fde75c3fcd2d3d017eada50ce94319",
+    "source_sha256": {
+      "audit_model.py": "1e792a86433dddaf9290a7ca524d23b270c0372bb5b9fbd03bd7b62a4d1760d7",
+      "contract.py": "5d497c8d33b0770ad8320b09acdcd36bcf56f8f46f71cede74e366f702d41753",
+      "host_witness.py": "790022c5c468c8eba39f37620dffa44ffe837254530e5780d083edae0e3d5172",
+      "process_workers.py": "909eb90c5ca4efc14ac0b390be4644f6ca4c74df209367a938de3daa734a1435",
+      "run.py": "90f288d782ba5a04066dff150e1a1cadf2dff8bac1d49216a38ba566b5c2b46d",
+      "run_workers.py": "46028d0f3ccfbe4298f93c22f04d7d1ea7cc3fea9e3cbd61108a3923ce7254ea",
+      "test_dispatcher.py": "f5b9ee4a421144c369500fca88ba6a4aaa11dfea5b0af75a9a2124c37d51b86e",
+      "train.py": "c92b72fdbc1bf5b7824b6736f71f7a6c9e8dc9b5858d6cd2a6fc74a22488143b",
+      "train_workers.py": "90c1f33b7a851b5ed567a414727d12460ba463637176774df456516ce244f92f",
+      "worker.py": "b88c320f4ae028a5b2b5752832ec854fc4398ebee83121f2ad07805cca2a54cd",
+      "worker_contract.py": "8a00907f69c443a5bfc87260da38500631faa4eedc0ac22309dc02fafd6e1cb6"
+    },
+    "seed": 2103
+  },
+  "prior_attempts": [
+    {
+      "attempt": "a",
+      "error": "No complete expected response for 'DUMP'.",
+      "model_changed": false,
+      "raw_evidence_sha256": "f2e608db9f10f29367d530b4c7b889d42fab63789adc497ab5dd5d494490ab0d"
+    },
+    {
+      "attempt": "b",
+      "error": "No complete expected response for 'DUMP'.",
+      "model_changed": false,
+      "raw_evidence_sha256": "81fdf7bd09ce832f6d7b31c75246d0b88b6293e793f513c0e02db7e229112640"
+    }
+  ]
+}
