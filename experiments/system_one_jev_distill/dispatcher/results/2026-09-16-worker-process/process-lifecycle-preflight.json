@@ -1,0 +1,140 @@
+{
+  "r1-worker": {
+    "start": {
+      "ok": true,
+      "kind": "worker_process_activation",
+      "ready": {
+        "ok": true,
+        "machine": "aarch64",
+        "os": "Linux",
+        "capabilities": [
+          "cpu"
+        ],
+        "free_capacity": 1.0,
+        "timestamp": 1789573809.5601542,
+        "event": "ready",
+        "instance": "instance-9"
+      },
+      "host_awake": {
+        "ok": true,
+        "boot_id": "boot_id-2"
+      },
+      "elapsed_ms": 2014.999999984866
+    },
+    "execute": {
+      "ok": true,
+      "kernel": "cpu",
+      "count": 2,
+      "sha256": "9a6651d558951af956874c209875d86d99328d82e4a5f5fbdce7fff1ef0c4718",
+      "elapsed_ms": 0.015458033885806799,
+      "instance": "instance-9",
+      "rpc_ms": 0.0
+    },
+    "idle": {
+      "ok": true,
+      "kind": "dedicated_worker_process_exit",
+      "exit_receipt": {
+        "ok": true,
+        "event": "exiting",
+        "instance": "instance-9",
+        "rpc_ms": 0.0
+      },
+      "exit_code": 0,
+      "host_awake": {
+        "ok": true,
+        "boot_id": "boot_id-2"
+      }
+    },
+    "wake": {
+      "ok": true,
+      "kind": "worker_process_activation",
+      "ready": {
+        "ok": true,
+        "machine": "aarch64",
+        "os": "Linux",
+        "capabilities": [
+          "cpu"
+        ],
+        "free_capacity": 1.0,
+        "timestamp": 1789573812.3209782,
+        "event": "ready",
+        "instance": "instance-10"
+      },
+      "host_awake": {
+        "ok": true,
+        "boot_id": "boot_id-2"
+      },
+      "elapsed_ms": 1687.999999994645
+    }
+  },
+  "gpu-worker": {
+    "start": {
+      "ok": true,
+      "kind": "worker_process_activation",
+      "ready": {
+        "ok": true,
+        "machine": "AMD64",
+        "os": "Windows",
+        "capabilities": [
+          "cpu",
+          "cuda"
+        ],
+        "free_capacity": 1.0,
+        "timestamp": 1789573815.349455,
+        "event": "ready",
+        "instance": "instance-11"
+      },
+      "host_awake": {
+        "ok": true,
+        "boot_id": "boot_id-1"
+      },
+      "elapsed_ms": 3000.0
+    },
+    "execute": {
+      "ok": true,
+      "kernel": "cpu",
+      "count": 2,
+      "sha256": "9a6651d558951af956874c209875d86d99328d82e4a5f5fbdce7fff1ef0c4718",
+      "elapsed_ms": 0.0,
+      "instance": "instance-11",
+      "rpc_ms": 0.0
+    },
+    "idle": {
+      "ok": true,
+      "kind": "dedicated_worker_process_exit",
+      "exit_receipt": {
+        "ok": true,
+        "event": "exiting",
+        "instance": "instance-11",
+        "rpc_ms": 0.0
+      },
+      "exit_code": 0,
+      "host_awake": {
+        "ok": true,
+        "boot_id": "boot_id-1"
+      }
+    },
+    "wake": {
+      "ok": true,
+      "kind": "worker_process_activation",
+      "ready": {
+        "ok": true,
+        "machine": "AMD64",
+        "os": "Windows",
+        "capabilities": [
+          "cpu",
+          "cuda"
+        ],
+        "free_capacity": 1.0,
+        "timestamp": 1789573816.6097004,
+        "event": "ready",
+        "instance": "instance-12"
+      },
+      "host_awake": {
+        "ok": true,
+        "boot_id": "boot_id-1"
+      },
+      "elapsed_ms": 703.9999999979045
+    }
+  }
+}

@@ -1,0 +1,126 @@
+{
+  "teacher_models": [
+    "jev-1.13.0"
+  ],
+  "mean_training_majority_baseline_agreement": 0.9408536585365854,
+  "per_head": [
+    {
+      "name": "route_fast_path",
+      "test_teacher_positive_rate": 0.0,
+      "student_agreement": 1.0,
+      "training_majority_baseline_agreement": 1.0,
+      "student_mae": 0.02893690098284591,
+      "training_mean_probability_baseline_mae": 0.04333392894368504
+    },
+    {
+      "name": "persist_state",
+      "test_teacher_positive_rate": 0.9658536585365853,
+      "student_agreement": 0.9658536585365853,
+      "training_majority_baseline_agreement": 0.9658536585365853,
+      "student_mae": 0.03857205187420372,
+      "training_mean_probability_baseline_mae": 0.050822299651567975
+    },
+    {
+      "name": "prefetch_context",
+      "test_teacher_positive_rate": 0.926829268292683,
+      "student_agreement": 0.9463414634146341,
+      "training_majority_baseline_agreement": 0.926829268292683,
+      "student_mae": 0.0204588842864026,
+      "training_mean_probability_baseline_mae": 0.026472259447869184
+    },
+    {
+      "name": "wake_worker",
+      "test_teacher_positive_rate": 0.7121951219512195,
+      "student_agreement": 0.7902439024390244,
+      "training_majority_baseline_agreement": 0.7121951219512195,
+      "student_mae": 0.09700087450068356,
+      "training_mean_probability_baseline_mae": 0.13348277197057687
+    },
+    {
+      "name": "retry_transport",
+      "test_teacher_positive_rate": 0.9658536585365853,
+      "student_agreement": 0.9658536585365853,
+      "training_majority_baseline_agreement": 0.9658536585365853,
+      "student_mae": 0.0371891100979891,
+      "training_mean_probability_baseline_mae": 0.039451323744006686
+    },
+    {
+      "name": "request_more_state",
+      "test_teacher_positive_rate": 0.9658536585365853,
+      "student_agreement": 0.9658536585365853,
+      "training_majority_baseline_agreement": 0.9658536585365853,
+      "student_mae": 0.032139903112703795,
+      "training_mean_probability_baseline_mae": 0.07098043419994639
+    },
+    {
+      "name": "state_anomalous",
+      "test_teacher_positive_rate": 1.0,
+      "student_agreement": 1.0,
+      "training_majority_baseline_agreement": 1.0,
+      "student_mae": 0.03272992776502558,
+      "training_mean_probability_baseline_mae": 0.05444599303135887
+    },
+    {
+      "name": "fallback_deterministic",
+      "test_teacher_positive_rate": 0.9902439024390244,
+      "student_agreement": 0.9902439024390244,
+      "training_majority_baseline_agreement": 0.9902439024390244,
+      "student_mae": 0.038580184307619926,
+      "training_mean_probability_baseline_mae": 0.06308710801393727
+    }
+  ],
+  "wake_worker_by_ready_count": [
+    {
+      "ready_workers": 0,
+      "train_examples": 143,
+      "test_examples": 38,
+      "training_teacher_mean_probability": 0.6018181818181818,
+      "test_teacher_mean_probability": 0.5931578947368421,
+      "student_mean_probability": 0.7016495200361945,
+      "test_teacher_positive_rate": 0.9210526315789473,
+      "student_agreement": 0.9210526315789473
+    },
+    {
+      "ready_workers": 1,
+      "train_examples": 156,
+      "test_examples": 36,
+      "training_teacher_mean_probability": 0.6296153846153846,
+      "test_teacher_mean_probability": 0.6244444444444444,
+      "student_mean_probability": 0.6213819520768832,
+      "test_teacher_positive_rate": 0.9722222222222222,
+      "student_agreement": 0.9722222222222222
+    },
+    {
+      "ready_workers": 2,
+      "train_examples": 174,
+      "test_examples": 40,
+      "training_teacher_mean_probability": 0.6357471264367817,
+      "test_teacher_mean_probability": 0.63025,
+      "student_mean_probability": 0.5297262838732933,
+      "test_teacher_positive_rate": 1.0,
+      "student_agreement": 0.925
+    },
+    {
+      "ready_workers": 3,
+      "train_examples": 184,
+      "test_examples": 41,
+      "training_teacher_mean_probability": 0.5320108695652174,
+      "test_teacher_mean_probability": 0.5395121951219513,
+      "student_mean_probability": 0.44756497567459413,
+      "test_teacher_positive_rate": 0.8780487804878049,
+      "student_agreement": 0.12195121951219512
+    },
+    {
+      "ready_workers": 4,
+      "train_examples": 162,
+      "test_examples": 50,
+      "training_teacher_mean_probability": 0.22339506172839504,
+      "test_teacher_mean_probability": 0.2256,
+      "student_mean_probability": 0.3624073457926133,
+      "test_teacher_positive_rate": 0.0,
+      "student_agreement": 1.0
+    }
+  ],
+  "wake_worker_training_group_mean_baseline_test_agreement": 0.9560975609756097,
+  "note": "Post-run diagnostic; original gate unchanged. Baselines are fitted only on training data. No new Jev requests."
+}

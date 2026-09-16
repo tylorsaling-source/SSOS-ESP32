@@ -1,0 +1,15 @@
+{
+  "starting_pr_commit": "c06fd00",
+  "local_preparation_commit": "e037f6c",
+  "teacher_model": "jev-1.13.0",
+  "sdk_version": "0.6.0",
+  "count": 1024,
+  "seed": 1337,
+  "files": {
+    "states.jsonl": "618919d0a66a67596ecbf40e146ebb90dead176792af0f3c321970bc0ab3938b",
+    "jev_teacher.jsonl": "69dc51354b77e896b95bc3d5c2b8f35985584b12aae64cf1b6c856cf73bf0a3e",
+    "jev_teacher.metadata.json": "b7fcb5f1f553873fd0844f0cc8af31f749990e7b6a250a1408e1b05da0c92f95"
+  },
+  "raw_data_location": "_local/20260916T132231705Z-05d83e57 (gitignored)",
+  "credential": "Windows DPAPI outside repository; no key copied into these artifacts"
+}

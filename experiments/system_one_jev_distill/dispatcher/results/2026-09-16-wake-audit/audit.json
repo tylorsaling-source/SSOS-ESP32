@@ -1,0 +1,99 @@
+{
+  "created": "2026-09-16T15:36:57.750295+00:00",
+  "model_sha256": "dfb6a8abb8c47141fe3550f158b68953d1d3a63ede064f4becd9cbc15545bda7",
+  "analytical": {
+    "status": "FAIL",
+    "check": "wake_head_can_reach_nonnegative_for_confirmed_sleep",
+    "maximum_sleeping_wake_logit": -0.18359375,
+    "maximizing_state": {
+      "capable": 1,
+      "readiness": 0,
+      "free_capacity": 1,
+      "reliability": 1,
+      "work_value": 1,
+      "energy_cost": 0,
+      "wake_cost": 0,
+      "freshness": 1
+    },
+    "meaning": "A negative upper bound proves every legal sleeping state is denied wake. A nonnegative bound does not establish correct routing or physical wake."
+  },
+  "kind": "synthetic_input_physical_esp32_model_capability_audit",
+  "physical_sleep_wake_claim": false,
+  "firmware_written": false,
+  "outputs": [
+    {
+      "x9": [
+        1.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        -1.0,
+        -1.0,
+        1.0,
+        1.0
+      ],
+      "y8": [
+        0.557617,
+        -0.183594,
+        -2.952148,
+        3.232422,
+        3.557617,
+        -3.614258,
+        -0.015625,
+        -1.243164
+      ],
+      "max_abs_error": 4.374999997835971e-07
+    },
+    {
+      "x9": [
+        1.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        -1.0,
+        -1.0,
+        1.0,
+        1.0
+      ],
+      "y8": [
+        0.557617,
+        -0.183594,
+        -2.952148,
+        3.232422,
+        3.557617,
+        -3.614258,
+        -0.015625,
+        -1.243164
+      ],
+      "max_abs_error": 4.374999997835971e-07
+    },
+    {
+      "x9": [
+        1.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        -1.0,
+        -1.0,
+        1.0,
+        1.0
+      ],
+      "y8": [
+        0.557617,
+        -0.183594,
+        -2.952148,
+        3.232422,
+        3.557617,
+        -3.614258,
+        -0.015625,
+        -1.243164
+      ],
+      "max_abs_error": 4.374999997835971e-07
+    }
+  ],
+  "status": "CONFIRMED_MODEL_CANNOT_WAKE_SLEEPING_WORKERS",
+  "original_head_restored": true
+}
